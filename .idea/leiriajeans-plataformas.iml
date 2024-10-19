@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/frontend/tests/_support" isTestSource="true" packagePrefix="frontend\tests\" />
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/bower-asset/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/bower-asset/inputmask" />
@@ -97,6 +98,11 @@
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-faker" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-gii" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-symfonymailer" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/almasaeed2010/adminlte" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/hail812/yii2-adminlte-widgets" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/hail812/yii2-adminlte3" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/npm-asset/bootstrap" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-bootstrap4" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

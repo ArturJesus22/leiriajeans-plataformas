@@ -38,6 +38,7 @@ class SignupForm extends Model
     {
 
         return [
+            //SignupForm Default
             ['username', 'trim'],
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
@@ -51,6 +52,32 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            //UserData
+            ['nome', 'required'],
+            ['nome', 'string', 'max' => 255],
+
+            ['morada', 'required'],
+            ['morada', 'string', 'max' => 255],
+
+            ['codigopostal', 'required'],
+            ['codigopostal', 'string', 'max' => 255],
+
+            ['localidade', 'required'],
+            ['localidade', 'string', 'max' => 255],
+
+            ['rua', 'required'],
+            ['rua', 'string', 'max' => 255],
+
+            ['telefone', 'required'],
+            ['telefone', 'string', 'max' => 255],
+
+            ['nif', 'required'],
+            ['nif', 'string', 'max' => 255],
+
+            ['role', 'required'],
+            ['role', 'string', 'max' => 255],
+
         ];
     }
 
@@ -66,13 +93,16 @@ class SignupForm extends Model
         }
         
         $user = new User();
+        $userData = new UsersForm();
+
+        //User
         $user->username = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        $userData = new UsersForm();
+        //userData
         $userData->nome = $this->nome;
         $userData->codpostal = $this->codigopostal;
         $userData->localidade = $this->localidade;
@@ -80,15 +110,19 @@ class SignupForm extends Model
         $userData->telefone = $this->telefone;
         $userData->nif = $this->nif;
 
-        //UserRole
-        $this->id = $user->id;
-        $auth = Yii::$app->authManager;
-        $role = $auth->getRole($this->role);
-        $auth->assign($role, $user->id);
+        $user->save();
+
+
+        $auth = \Yii::$app->authManager;
+        $userRole = $auth->getRole($this->role);
+        $auth->assign($userRole, $user->id);
 
         $userData->user_id = $user->id;
 
-        return $user->save() && $userData->save() && $this->sendEmail($user);
+        $userData->save();
+        var_dump($userData->getErrors());
+
+        return $this->sendEmail($user);
     }
 
     /**

@@ -32,19 +32,33 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => 'Password'
                 ]) ?>
 
-                <?= $form->field($model, 'nome') ?>
+                <?= $form->field($model, 'nome') ->label('Nome:')->textInput([
+                    'placeholder' => 'Nome'
+                ]) ?>
 
-                <?= $form->field($model, 'morada') ?>
+                <?= $form->field($model, 'morada') ->label('Morada:')->textInput([
+                    'placeholder' => 'Morada'
+                ]) ?>
 
-                <?= $form->field($model, 'codigopostal') ?>
+                <?= $form->field($model, 'codigopostal') ->label('Código Postal:')->textInput([
+                    'placeholder' => 'Código Postal'
+                ]) ?>
 
-                <?= $form->field($model, 'localidade') ?>
+                <?= $form->field($model, 'localidade') ->label('Localidade:')->textInput([
+                    'placeholder' => 'Localidade'
+                ]) ?>
 
-                <?= $form->field($model, 'rua') ?>
+                <?= $form->field($model, 'rua') ->label('Rua:')->textInput([
+                    'placeholder' => 'Rua'
+                ]) ?>
 
-                <?= $form->field($model, 'telefone') ?>
+                <?= $form->field($model, 'telefone') ->label('Telefone:')->textInput([
+                    'placeholder' => 'Telefone'
+                ]) ?>
 
-                <?= $form->field($model, 'nif') ?>
+                <?= $form->field($model, 'nif') ->label('NIF:')->textInput([
+                    'placeholder' => 'NIF'
+                ]) ?>
 
 
 

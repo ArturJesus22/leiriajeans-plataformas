@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\UsersForm;
 use Yii;
 use yii\base\Model;
 use common\models\User;
@@ -15,12 +16,27 @@ class SignupForm extends Model
     public $email;
     public $password;
 
+    //userData
+     public $nome;
+     public $morada;
+     public $codigopostal;
+     public $localidade;
+     public $rua;
+     public $telefone;
+     public $nif;
+     public $user_id;
+     public $role = 'cliente';
+
+
+
+
 
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
+
         return [
             ['username', 'trim'],
             ['username', 'required'],
@@ -56,7 +72,23 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        $userData = new UsersForm();
+        $userData->nome = $this->nome;
+        $userData->codpostal = $this->codigopostal;
+        $userData->localidade = $this->localidade;
+        $userData->rua = $this->rua;
+        $userData->telefone = $this->telefone;
+        $userData->nif = $this->nif;
+
+        //UserRole
+        $this->id = $user->id;
+        $auth = Yii::$app->authManager;
+        $role = $auth->getRole($this->role);
+        $auth->assign($role, $user->id);
+
+        $userData->user_id = $user->id;
+
+        return $user->save() && $userData->save() && $this->sendEmail($user);
     }
 
     /**

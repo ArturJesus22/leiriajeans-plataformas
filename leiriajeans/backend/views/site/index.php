@@ -63,20 +63,35 @@ $this->title = 'LeiriaJeans - BackOffice';
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => 'Ainda por fazer',
-            'text' => 'Stocks',
+            'title' => '0',
+            'text' => 'Produtos em Falta',
             'icon' => 'fas fa-home',
             'linkText' => 'Consultar Stocks',
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => 'Ainda por fazer',
-            'text' => 'Número de Marcas',
+            'title' => '0',
+            'text' => 'Total de Marcas',
             'icon' => 'fas fa-industry',
             'linkText' => 'Ver Marcas',
         ]) ?>
     </div>
-
+    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+        <?= \hail812\adminlte\widgets\SmallBox::widget([
+            'title' => '0',
+            'text' => 'Encomendas por enviar',
+            'icon' => 'fas fa-industry',
+            'linkText' => 'Ver Encomendas',
+        ]) ?>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+        <?= \hail812\adminlte\widgets\SmallBox::widget([
+            'title' => '0',
+            'text' => 'Encomendas por entregar',
+            'icon' => 'fas fa-industry',
+            'linkText' => 'Ver Encomendas',
+        ]) ?>
+    </div>
 
 </div>

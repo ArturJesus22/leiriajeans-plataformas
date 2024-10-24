@@ -41,7 +41,7 @@ $this->title = 'LeiriaJeans - BackOffice';
             'text' => 'Clientes Registados',
             'icon' => 'fas fa-user-plus',
             'linkText' => 'Ver Clientes',
-            'linkUrl' => Url::toRoute(["/clientes"]),
+            'linkUrl' => Url::toRoute(["/user"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -50,30 +50,32 @@ $this->title = 'LeiriaJeans - BackOffice';
             'text' => 'Produtos Registados',
             'icon' => 'fas fa-tag',
             'linkText' => 'Ver Produtos',
-            'linkUrl' => Url::toRoute(["/produtos"]),
+            'linkUrl' => Url::toRoute(["/produtos/index"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => $numCores,
             'text' => 'Cores',
-            'icon' => 'fas fa-industry',
+            'icon' => 'fas fa-palette',
             'linkText' => 'Ver Cores',
+            'linkUrl' => Url::toRoute(["/cores"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => '0',
             'text' => 'Produtos em Falta',
-            'icon' => 'fas fa-home',
+            'icon' => 'fas fa-box-open',
             'linkText' => 'Consultar Stocks',
+            'linkUrl' => Url::toRoute(["/produtos/index"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => '0',
             'text' => 'Total de Marcas',
-            'icon' => 'fas fa-industry',
+            'icon' => 'fas fa-registered',
             'linkText' => 'Ver Marcas',
         ]) ?>
     </div>
@@ -81,16 +83,18 @@ $this->title = 'LeiriaJeans - BackOffice';
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => '0',
             'text' => 'Encomendas por enviar',
-            'icon' => 'fas fa-industry',
+            'icon' => 'fas fa-boxes',
             'linkText' => 'Ver Encomendas',
+            'linkUrl' => Url::toRoute(["/faturas/index"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => '0',
             'text' => 'Encomendas por entregar',
-            'icon' => 'fas fa-industry',
+            'icon' => 'fas fa-shopping-cart',
             'linkText' => 'Ver Encomendas',
+            'linkUrl' => Url::toRoute(["/faturas/index"]),
         ]) ?>
     </div>
 

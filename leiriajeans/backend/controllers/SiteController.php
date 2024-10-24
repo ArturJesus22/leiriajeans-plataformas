@@ -2,7 +2,10 @@
 
 namespace backend\controllers;
 
+use backend\models\AuthAssignment;
+use common\models\Cores;
 use common\models\LoginForm;
+use common\models\Produtos;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -62,7 +65,38 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $userIdsWithAdminRole = AuthAssignment::find()
+            ->select('user_id')
+            ->where(['item_name' => 'admin'])
+            ->column();
+        $numUsersWithAdminRole = count($userIdsWithAdminRole);
+
+        $userIdsWithClienteRole = AuthAssignment::find()
+            ->select('user_id')
+            ->where(['item_name' => 'cliente'])
+            ->column();
+        $numUsersWithClienteRole = count($userIdsWithClienteRole);
+
+        $userIdsWithFuncionarioRole = AuthAssignment::find()
+            ->select('user_id')
+            ->where(['item_name' => 'funcionario'])
+            ->column();
+        $numUsersWithFuncionarioRole = count($userIdsWithFuncionarioRole);
+
+        $cores = Cores::find();
+        $numCores = $cores -> count();
+
+        $produtos = Produtos::find();
+        $numProdutos= $produtos-> count();
+
+        return $this->render('index', [
+            //PASSAR PARA O INDEX ESTAS VARIAVEIS
+            'numUsersWithClienteRole' => $numUsersWithClienteRole,
+            'numUsersWithFuncionarioRole' => $numUsersWithFuncionarioRole,
+            'numCores' => $numCores,
+            'numProdutos' => $numProdutos,
+            'numUsersWithAdminRole' => $numUsersWithAdminRole,
+        ]);
     }
 
     /**
@@ -80,7 +114,14 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->can('admin') || Yii::$app->user->can('funcionario')) {
+                return $this->goHome();
+            }
+            else{
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'Você não tem permissão para aceder a esta área.');
+                return $this->refresh();
+            }
         }
 
         $model->password = '';

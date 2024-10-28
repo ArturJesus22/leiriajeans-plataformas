@@ -15,13 +15,14 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'percentagem') ?>
 
     <?= $form->field($model, 'descricao') ?>
 
-    <?= $form->field($model, 'status') ?>
+    <?= $form->field($model, 'status')->dropDownList(
+        [1 => 'Ativo', 0 => 'Desativo'],
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

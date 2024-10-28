@@ -15,11 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="faturas-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Faturas', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -29,12 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'pagamento_id',
-            'metodoexpedicao_id',
-            'data',
-            'valorTotal',
-            //'statuspedido',
+//            'id',
+            [
+                'attribute' => 'pagamento_id',
+                'label' => 'Pagamento',
+            ],
+            [
+                'attribute' => 'metodoexpedicao_id',
+                'label' => 'Metodo Expedicao',
+            ],
+            [
+                'attribute' => 'data',
+                'label' => 'Data',
+            ],
+            [
+                'attribute' => 'valorTotal',
+                'label' => 'Valor Total',
+            ],
+            [
+                'attribute' => 'statuspedido',
+                'label' => 'Estado de Pagamento',
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Faturas $model, $key, $index, $column) {

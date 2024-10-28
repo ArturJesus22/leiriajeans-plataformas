@@ -16,9 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Pagamentos', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+   <!-- <p>
+        <?php /*= Html::a('Create Pagamentos', ['create'], ['class' => 'btn btn-success']) */?>
+    </p>-->
 
 
     <?= GridView::widget([
@@ -26,9 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'fatura_id',
-            'metodopagamento_id',
+            //'id',
+            [
+                'attribute' => 'fatura_id',
+                'label' => 'Fatura',
+            ],
+            [
+                'attribute' => 'metodopagamento_id',
+                'label' => 'Metodo de Pagamento',
+            ],
             'valor',
             'data',
             [

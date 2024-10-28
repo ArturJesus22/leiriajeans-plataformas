@@ -15,24 +15,29 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ivas-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Ivas', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Ivas', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'percentagem',
             'descricao',
-            'status',
+            [
+                'attribute' => 'status',
+                'label' => 'Estado',
+                'value' => function ($model) {
+                    return $model->status == 1 ? 'Ativo' : 'Desativado';
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Ivas $model, $key, $index, $column) {

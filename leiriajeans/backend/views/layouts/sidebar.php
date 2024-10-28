@@ -13,7 +13,7 @@
                 <img src="<?= Yii::getAlias('@web/public/images/user.png') ?>" alt=""/></a>
             </div>
             <div class="info">
-                <a href="#" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['user/index']) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 
@@ -40,31 +40,24 @@
 
 
                     ['label' => 'Encomendas', 'header' => true],
-                    ['label'=> 'Faturas','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
-                    ['label'=> 'Metodo Expedicao','icon'=>'fas fa-truck','url'=>['/metodos-expedicoes/index']],
-                    ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
-                    ['label'=> 'Pagamentos','icon'=>'fas fa-wallet','url'=>['/pagamentos/index']],
+                        ['label'=> 'Faturas','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
+                        ['label'=> 'Metodo Expedicao','icon'=>'fas fa-truck','url'=>['/metodos-expedicoes/index']],
+                        ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
+                        ['label'=> 'Pagamentos','icon'=>'fas fa-wallet','url'=>['/pagamentos/index']],
 
                     ['label' => 'Gestão de Dados', 'header' => true],
-                    [
-                        'label' => 'Gestão de Dados', 'icon' => 'fas fa-file',
-                        'items' => [
-                            ['label' => 'Gerir Trabalhadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
-                            ['label' => 'Gerir Clientes', 'icon' => 'user', 'url' => ['user/index']],
-                            ['label' => 'IVAS', 'icon' => 'fa-solid fa-percent', 'url' => ['ivas/index'], 'visible'],
-                            ['label' => 'Empresa', 'icon' => 'fa-solid fa-building', 'url' => ['empresa/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
-                            ['label' => 'Avaliações', 'icon' => 'fa-solid fa-star', 'url' => ['avaliacoes/index']],
-                        ],
-                    ],
+                        ['label' => 'Gerir Trabalhadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
+                        ['label' => 'Gerir Clientes', 'icon' => 'user', 'url' => ['user/index']],
+                        ['label' => 'IVAS', 'icon' => 'fa-solid fa-percent', 'url' => ['ivas/index'], 'visible'],
+                        ['label' => 'Empresa', 'icon' => 'fa-solid fa-building', 'url' => ['empresa/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
+                        ['label' => 'Avaliações', 'icon' => 'fa-solid fa-star', 'url' => ['avaliacoes/index']],
+
+
                     ['label' => 'Produtos', 'header' => true],
-                    ['label' => 'Cores', 'icon' => 'fa-solid fa-tag', 'url' => ['/cores/index']],
-                    ['label' => 'Criar Produtos', 'icon' => 'fa-solid fa-box', 'url' => ['/produtos/index'] ],
+                        ['label' => 'Cores', 'icon' => 'fa-solid fa-tag', 'url' => ['/cores/index']],
+                        ['label' => 'Criar Produtos', 'icon' => 'fa-solid fa-box', 'url' => ['/produtos/index'] ],
+                        ['label'=>'Imagens','icon'=>'fa-regular fa-image', 'url'=>['imagem/index']],
 
-                    ['label' => 'Imagens', 'header' => true],
-                    ['label'=>'Imagens','icon'=>'fa-regular fa-image', 'url'=>['imagem/index']],
-
-                    ['label' => 'Perfil', 'header' => true],
-                    ['label' => 'Perfil', 'icon' => 'fas fa-user', 'url' => ['/perfil/index']],
 
                     /*['label' => 'Debug Tools', 'header' => true, 'visible' => ($userRole == 'admin')],
                     ['label' => 'Gii', 'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank', 'visible' => ($userRole == 'admin')],

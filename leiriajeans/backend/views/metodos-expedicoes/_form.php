@@ -20,7 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'prazo_entrega')->textInput() ?>
 
-    <?= $form->field($model, 'ativo')->textInput() ?>
+    <?= $form->field($model, 'ativo')->dropDownList(
+        [1 => 'Ativo', 0 => 'Desativo'],
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

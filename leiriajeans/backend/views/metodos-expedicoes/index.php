@@ -14,24 +14,28 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="metodos-expedicoes-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Metodos Expedicoes', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Metodos Expedicoes', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'nome',
             'descricao:ntext',
             'custo',
             'prazo_entrega',
-            //'ativo',
+            [
+                'attribute' => 'ativo',
+                'label' => 'Estado',
+                'value' => function ($model) {
+                    return $model->ativo == 1 ? 'Ativo' : 'Desativado';
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, MetodosExpedicoes $model, $key, $index, $column) {

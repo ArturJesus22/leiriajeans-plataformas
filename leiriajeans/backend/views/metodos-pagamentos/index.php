@@ -14,19 +14,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="metodos-pagamentos-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Metodos Pagamentos', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Metodos Pagamentos', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'nome',
             [
                 'class' => ActionColumn::className(),

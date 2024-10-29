@@ -1,45 +1,40 @@
 <?php
 
-use common\models\Pagamentos;
+use common\Models\Categorias;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
+/** @var backend\Models\CategoriasSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Pagamentos';
+$this->title = 'Categorias';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="pagamentos-index">
+<div class="categorias-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-   <!-- <p>
-        <?php /*= Html::a('Create Pagamentos', ['create'], ['class' => 'btn btn-success']) */?>
-    </p>-->
+    <p>
+        <?= Html::a('Create Categorias', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
-            [
-                'attribute' => 'fatura_id',
-                'label' => 'Fatura',
-            ],
-            [
-                'attribute' => 'metodopagamento_id',
-                'label' => 'Metodo de Pagamento',
-            ],
-            'valor',
-            'data',
+            'id',
+            'sexo',
+            'tipo',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Pagamentos $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Categorias $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

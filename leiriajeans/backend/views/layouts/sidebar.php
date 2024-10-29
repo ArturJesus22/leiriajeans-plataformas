@@ -43,7 +43,6 @@
                         ['label'=> 'Faturas','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
                         ['label'=> 'Metodo Expedicao','icon'=>'fas fa-truck','url'=>['/metodos-expedicoes/index']],
                         ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
-                        ['label'=> 'Pagamentos','icon'=>'fas fa-wallet','url'=>['/pagamentos/index']],
 
                     ['label' => 'Gestão de Dados', 'header' => true],
                         ['label' => 'Gerir Trabalhadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
@@ -54,8 +53,10 @@
 
 
                     ['label' => 'Produtos', 'header' => true],
-                        ['label' => 'Cores', 'icon' => 'fa-solid fa-tag', 'url' => ['/cores/index']],
-                        ['label' => 'Criar Produtos', 'icon' => 'fa-solid fa-box', 'url' => ['/produtos/index'] ],
+                        ['label'=>'Categorias','icon'=>'fa-regular fa-folder', 'url'=>['categorias/index']],
+                        ['label' => 'Produtos', 'icon' => 'fa-solid fa-box', 'url' => ['produtos/index']],
+                        ['label' => 'Tamanhos', 'icon' => 'fa-regular fa-ruler combined', 'url' => ['tamanhos/index']],
+                        ['label' => 'Cores', 'icon' => 'fa-solid fa-tag', 'url' => ['cores/index']],
                         ['label'=>'Imagens','icon'=>'fa-regular fa-image', 'url'=>['imagem/index']],
 
 

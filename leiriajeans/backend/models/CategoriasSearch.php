@@ -4,12 +4,12 @@ namespace backend\Models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\Models\Faturas;
+use common\Models\Categorias;
 
 /**
- * FaturasSearch represents the model behind the search form of `common\Models\Faturas`.
+ * CategoriasSearch represents the model behind the search form of `common\Models\Categorias`.
  */
-class FaturasSearch extends Faturas
+class CategoriasSearch extends Categorias
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class FaturasSearch extends Faturas
     public function rules()
     {
         return [
-            [['id', 'metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
-            [['data'], 'safe'],
-            [['valorTotal'], 'number'],
+            [['id'], 'integer'],
+            [['sexo', 'tipo'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class FaturasSearch extends Faturas
      */
     public function search($params)
     {
-        $query = Faturas::find();
+        $query = Categorias::find();
 
         // add conditions that should always apply here
 
@@ -60,12 +59,10 @@ class FaturasSearch extends Faturas
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'metodopagamento_id' => $this->metodopagamento_id,
-            'metodoexpedicao_id' => $this->metodoexpedicao_id,
-            'data' => $this->data,
-            'valorTotal' => $this->valorTotal,
-            'statuspedido' => $this->statuspedido,
         ]);
+
+        $query->andFilterWhere(['like', 'sexo', $this->sexo])
+            ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
         return $dataProvider;
     }

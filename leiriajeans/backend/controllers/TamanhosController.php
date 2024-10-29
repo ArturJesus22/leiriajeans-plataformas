@@ -2,16 +2,16 @@
 
 namespace backend\Controllers;
 
-use common\Models\Faturas;
-use backend\Models\FaturasSearch;
+use common\Models\Tamanhos;
+use backend\Models\TamanhosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FaturasController implements the CRUD actions for Faturas model.
+ * TamanhosController implements the CRUD actions for Tamanhos model.
  */
-class FaturasController extends Controller
+class TamanhosController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,13 +32,13 @@ class FaturasController extends Controller
     }
 
     /**
-     * Lists all Faturas models.
+     * Lists all Tamanhos models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new FaturasSearch();
+        $searchModel = new TamanhosSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class FaturasController extends Controller
     }
 
     /**
-     * Displays a single Faturas model.
+     * Displays a single Tamanhos model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class FaturasController extends Controller
     }
 
     /**
-     * Creates a new Faturas model.
+     * Creates a new Tamanhos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Faturas();
+        $model = new Tamanhos();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +83,7 @@ class FaturasController extends Controller
     }
 
     /**
-     * Updates an existing Faturas model.
+     * Updates an existing Tamanhos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +103,7 @@ class FaturasController extends Controller
     }
 
     /**
-     * Deletes an existing Faturas model.
+     * Deletes an existing Tamanhos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +117,15 @@ class FaturasController extends Controller
     }
 
     /**
-     * Finds the Faturas model based on its primary key value.
+     * Finds the Tamanhos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Faturas the loaded model
+     * @return Tamanhos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Faturas::findOne(['id' => $id])) !== null) {
+        if (($model = Tamanhos::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

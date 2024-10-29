@@ -1,24 +1,24 @@
 <?php
 
-use common\Models\Faturas;
+use common\Models\Tamanhos;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\Models\FaturasSearch $searchModel */
+/** @var backend\Models\TamanhosSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Faturas';
+$this->title = 'Tamanhos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="faturas-index">
+<div class="tamanhos-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Faturas', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Tamanhos', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,14 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'metodopagamento_id',
-            'metodoexpedicao_id',
-            'data',
-            'valorTotal',
-            //'statuspedido',
+            'nome',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Faturas $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Tamanhos $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

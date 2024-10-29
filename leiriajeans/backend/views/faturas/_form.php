@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var common\models\Faturas $model */
+/** @var common\Models\Faturas $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'pagamento_id')->textInput() ?>
+    <?= $form->field($model, 'metodopagamento_id')->textInput() ?>
 
     <?= $form->field($model, 'metodoexpedicao_id')->textInput() ?>
 

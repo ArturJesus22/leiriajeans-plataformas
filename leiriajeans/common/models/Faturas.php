@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "fatura".
  *
  * @property int $id
- * @property int $pagamento_id
+ * @property int $metodopagamento_id
  * @property int $metodoexpedicao_id
  * @property string|null $data
  * @property float|null $valorTotal
@@ -16,8 +16,7 @@ use Yii;
  *
  * @property Linhafatura[] $linhafaturas
  * @property Metodoexpedicao $metodoexpedicao
- * @property Pagamento $pagamento
- * @property Pagamento[] $pagamentos
+ * @property Metodopagamento $metodopagamento
  */
 class Faturas extends \yii\db\ActiveRecord
 {
@@ -35,12 +34,12 @@ class Faturas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pagamento_id', 'metodoexpedicao_id'], 'required'],
-            [['pagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
+            [['metodopagamento_id', 'metodoexpedicao_id'], 'required'],
+            [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
             [['data'], 'safe'],
             [['valorTotal'], 'number'],
             [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoexpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
-            [['pagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pagamento::class, 'targetAttribute' => ['pagamento_id' => 'id']],
+            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodopagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
         ];
     }
 
@@ -51,7 +50,7 @@ class Faturas extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pagamento_id' => 'Pagamento ID',
+            'metodopagamento_id' => 'Metodopagamento ID',
             'metodoexpedicao_id' => 'Metodoexpedicao ID',
             'data' => 'Data',
             'valorTotal' => 'Valor Total',
@@ -80,22 +79,12 @@ class Faturas extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Pagamento]].
+     * Gets query for [[Metodopagamento]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPagamento()
+    public function getMetodopagamento()
     {
-        return $this->hasOne(Pagamento::class, ['id' => 'pagamento_id']);
-    }
-
-    /**
-     * Gets query for [[Pagamentos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPagamentos()
-    {
-        return $this->hasMany(Pagamento::class, ['fatura_id' => 'id']);
+        return $this->hasOne(Metodopagamento::class, ['id' => 'metodopagamento_id']);
     }
 }

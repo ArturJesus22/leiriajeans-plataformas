@@ -81,7 +81,7 @@ AppAsset::register($this);
                                 <li>  |    </li>
 
                                 <li><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index']) ?>">Produtos</a></li>
-                                <li><a href="<?= Yii::$app->urlManager->createUrl(['site/about']) ?>">Sobre Nós</a></li>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['empresa/index']) ?>">Sobre Nós</a></li>
                                 <li><a href="<?= Yii::$app->urlManager->createUrl(['site/contact']) ?>">Contactos</a></li>
 
 
@@ -162,7 +162,7 @@ AppAsset::register($this);
                         <li><a href="#">Mens</a></li>
                         <li><a href="#">Womens</a></li>
                         <li><a href="#">Youth</a></li>
-                    </ul>
+                       </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">

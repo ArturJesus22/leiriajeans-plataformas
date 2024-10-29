@@ -14,7 +14,7 @@ use Yii;
  * @property int $prazo_entrega
  * @property int $ativo
  *
- * @property Fatura[] $faturas
+ * @property Faturas[] $faturas
  */
 class MetodosExpedicoes extends \yii\db\ActiveRecord
 {
@@ -62,6 +62,6 @@ class MetodosExpedicoes extends \yii\db\ActiveRecord
      */
     public function getFaturas()
     {
-        return $this->hasMany(Fatura::class, ['metodoexpedicao_id' => 'id']);
+        return $this->hasMany(Faturas::class, ['metodoexpedicao_id' => 'id']);
     }
 }

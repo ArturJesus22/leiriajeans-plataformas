@@ -14,8 +14,8 @@ use Yii;
  * @property int|null $userdata_id
  * @property int|null $linhafatura_id
  *
- * @property Linhafatura $linhafatura
- * @property Userdata $userdata
+ * @property Linhasfaturas $linhafatura
+ * @property UsersForm $userdata
  */
 class Avaliacoes extends \yii\db\ActiveRecord
 {
@@ -36,8 +36,8 @@ class Avaliacoes extends \yii\db\ActiveRecord
             [['comentario'], 'string'],
             [['data'], 'safe'],
             [['rating', 'userdata_id', 'linhafatura_id'], 'integer'],
-            [['linhafatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhafatura::class, 'targetAttribute' => ['linhafatura_id' => 'id']],
-            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => Userdata::class, 'targetAttribute' => ['userdata_id' => 'id']],
+            [['linhafatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhasfaturas::class, 'targetAttribute' => ['linhafatura_id' => 'id']],
+            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
 

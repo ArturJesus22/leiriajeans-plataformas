@@ -15,8 +15,8 @@ use Yii;
  * @property float|null $total
  *
  * @property LinhasCarrinhos[] $linhacarrinhos
- * @property Produto $produto
- * @property Userdata $userdata
+ * @property Produtos $produto
+ * @property UsersForm $userdata
  */
 class Carrinhos extends \yii\db\ActiveRecord
 {
@@ -36,8 +36,8 @@ class Carrinhos extends \yii\db\ActiveRecord
         return [
             [['userdata_id', 'metodopagamento_id', 'produto_id'], 'integer'],
             [['ivatotal', 'total'], 'number'],
-            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
-            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => Userdata::class, 'targetAttribute' => ['userdata_id' => 'id']],
+            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
+            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
 

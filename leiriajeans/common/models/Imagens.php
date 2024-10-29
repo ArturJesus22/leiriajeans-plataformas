@@ -11,7 +11,7 @@ use Yii;
  * @property string|null $fileName
  * @property int|null $produto_id
  *
- * @property Produto $produto
+ * @property Produtos $produto
  */
 class Imagens extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,7 @@ class Imagens extends \yii\db\ActiveRecord
         return [
             [['produto_id'], 'integer'],
             [['fileName'], 'string', 'max' => 255],
-            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
+            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
         ];
     }
 
@@ -54,6 +54,6 @@ class Imagens extends \yii\db\ActiveRecord
      */
     public function getProduto()
     {
-        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
+        return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
     }
 }

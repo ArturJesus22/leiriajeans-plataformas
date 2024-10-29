@@ -25,10 +25,10 @@ use common\models\Ivas;
 
     <?= $form->field($model, 'tamanho_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cor_id')
-        ->label('Cor')
-        ->dropDownList(Cores::find()->select(['nome', 'id'])
-            ->indexBy('id')->column(), ['prompt' => 'Selecione uma cor']) ?>
+    <?= $form->field($model, 'cor_id')->dropDownList(ArrayHelper::map(\common\models\Cores::find()->all(),
+        'id', 'nome'),
+        ['prompt'=>'Selecione a Cor']) ?>
+
 
     <?= $form->field($model, 'iva_id')->dropDownList(ArrayHelper::map(Ivas::find()->where(['status' => 1])->all(),
         'id', 'percentagem'),

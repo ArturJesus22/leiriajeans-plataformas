@@ -27,11 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'fileName',
             'produto_id',
+
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Imagens $model, $key, $index, $column) {

@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Tamanhos $model */
+/** @var common\models\UsersForm $model */
 
-$this->title = 'Create Tamanhos';
-$this->params['breadcrumbs'][] = ['label' => 'Tamanhos', 'url' => ['index']];
+$this->title = 'Create Users Form';
+$this->params['breadcrumbs'][] = ['label' => 'Users Forms', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tamanhos-create">
+<div class="users-form-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Categorias;
+use common\models\UsersForm;
 
 /**
- * CategoriasSearch represents the model behind the search form of `common\models\Categorias`.
+ * UsersSearch represents the model behind the search form of `common\models\UsersForm`.
  */
-class CategoriasSearch extends Categorias
+class UsersSearch extends UsersForm
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class CategoriasSearch extends Categorias
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['sexo', 'tipo'], 'safe'],
+            [['id', 'user_id'], 'integer'],
+            [['nome', 'codpostal', 'localidade', 'rua', 'nif', 'telefone'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class CategoriasSearch extends Categorias
      */
     public function search($params)
     {
-        $query = Categorias::find();
+        $query = UsersForm::find();
 
         // add conditions that should always apply here
 
@@ -59,10 +59,15 @@ class CategoriasSearch extends Categorias
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'sexo', $this->sexo])
-            ->andFilterWhere(['like', 'tipo', $this->tipo]);
+        $query->andFilterWhere(['like', 'nome', $this->nome])
+            ->andFilterWhere(['like', 'codpostal', $this->codpostal])
+            ->andFilterWhere(['like', 'localidade', $this->localidade])
+            ->andFilterWhere(['like', 'rua', $this->rua])
+            ->andFilterWhere(['like', 'nif', $this->nif])
+            ->andFilterWhere(['like', 'telefone', $this->telefone]);
 
         return $dataProvider;
     }

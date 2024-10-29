@@ -1,25 +1,24 @@
 <?php
 
-use common\models\Tamanhos;
+use common\models\UsersForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\TamanhosSearch $searchModel */
+/** @var backend\models\UsersSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Tamanhos';
+$this->title = 'Dados dos Clientes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tamanhos-index">
+<div class="users-form-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Tamanhos', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+ <!--   <p>
+        <?php /*= Html::a('Criar Users Form', ['create'], ['class' => 'btn btn-success']) */?>
+    </p>-->
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -27,13 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+           // ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'nome',
+            'codpostal',
+            'localidade',
+            'rua',
+            'nif',
+            'telefone',
+            //'user_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Tamanhos $model, $key, $index, $column) {
+                'urlCreator' => function ($action, UsersForm $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

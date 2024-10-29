@@ -1,13 +1,13 @@
 <?php
 
-namespace backend\Models;
+namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\Models\Tamanhos;
+use common\models\Tamanhos;
 
 /**
- * TamanhosSearch represents the model behind the search form of `common\Models\Tamanhos`.
+ * TamanhosSearch represents the model behind the search form of `common\models\Tamanhos`.
  */
 class TamanhosSearch extends Tamanhos
 {

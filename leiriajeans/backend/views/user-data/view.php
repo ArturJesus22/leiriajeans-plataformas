@@ -4,20 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Tamanhos $model */
+/** @var common\models\UsersForm $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Tamanhos', 'url' => ['index']];
+$this->title = $model->nome;
+$this->params['breadcrumbs'][] = ['label' => 'Users Forms', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="tamanhos-view">
+<div class="users-form-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Atualizar Dados', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Apagar Cliente', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -29,8 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'nome',
+            'codpostal',
+            'localidade',
+            'rua',
+            'nif',
+            'telefone',
+            //'user_id',
         ],
     ]) ?>
 

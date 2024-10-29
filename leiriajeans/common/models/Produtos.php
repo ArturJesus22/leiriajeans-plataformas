@@ -12,7 +12,7 @@ use Yii;
  * @property string|null $descricao
  * @property float|null $preco
  * @property string|null $sexo
- * @property string|null $tamanho
+ * @property string|null $tamanho_id
  * @property int|null $cor_id
  * @property int|null $iva_id
  *
@@ -38,10 +38,11 @@ class Produtos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descricao', 'sexo', 'tamanho'], 'string'],
+            [['descricao', 'sexo'], 'string'],
             [['preco'], 'number'],
             [['cor_id', 'iva_id'], 'integer'],
             [['nome'], 'string', 'max' => 255],
+            [['tamanho_id'], 'string', 'max' => 5],
             [['cor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cor::class, 'targetAttribute' => ['cor_id' => 'id']],
             [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Iva::class, 'targetAttribute' => ['iva_id' => 'id']],
         ];
@@ -58,7 +59,7 @@ class Produtos extends \yii\db\ActiveRecord
             'descricao' => 'Descricao',
             'preco' => 'Preco',
             'sexo' => 'Sexo',
-            'tamanho' => 'Tamanho',
+            'tamanho_id' => 'Tamanho ID',
             'cor_id' => 'Cor ID',
             'iva_id' => 'Iva ID',
         ];

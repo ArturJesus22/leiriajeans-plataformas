@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\Controllers;
+namespace backend\controllers;
 
-use common\Models\Tamanhos;
-use backend\Models\TamanhosSearch;
+use common\models\Tamanhos;
+use backend\models\TamanhosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

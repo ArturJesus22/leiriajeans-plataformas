@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'descricao:ntext',
             'preco',
             'sexo',
-            'tamanho',
+            'tamanho_id',
             'cor_id',
             'iva_id',
         ],

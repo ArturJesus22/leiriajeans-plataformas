@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\Models\Tamanhos $model */
+/** @var common\models\Tamanhos $model */
 
 $this->title = 'Update Tamanhos: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Tamanhos', 'url' => ['index']];

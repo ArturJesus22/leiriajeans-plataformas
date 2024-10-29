@@ -31,17 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="container">
                     <div class="row shop_box-top">
                         <div class="col-md-3 shop_box"><a href="single.html">
-                                <img src="../../web/images/calcas.jpg" class="img-responsive" alt=""/>
+                                <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>"><img src="../../web/images/calcas.jpg" class="img-responsive" alt=""/>
                                 <span class="new-box">
                         </span>
                                 </span>
                                 <div class="shop_desc">
-                                    <h3><a href="#"><?= Html::encode($model->Nome) ?></a></h3>
-                                    <p><?= Html::encode($model->Descricao) ?> </p>
-                                    <span class="actual"><?= Html::encode($model->Preco) ?></span>
+                                    <h3><a href="#"><?= Html::encode($model->nome) ?></a></h3>
+                                    <p><?= Html::encode($model->descricao) ?> </p>
+                                    <span class="actual"><?= Html::encode($model->preco) ?></span>
                                     <ul class="buttons">
                                         <li class="cart"><a href="#">Adicionar ao Carrinho</a></li>
-                                        <li class="shop_btn"><a href="#">Veja mais</a></li>
+                                        <li class="shop_btn">
+                                            <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja mais</a>
+                                        </li>
                                         <div class="clear"> </div>
                                     </ul>
                                 </div>

@@ -21,7 +21,7 @@ use common\models\Ivas;
 
     <?= $form->field($model, 'preco')->textInput() ?>
 
-    <?= $form->field($model, 'sexo')->dropDownList([ 'M' => 'M', 'F' => 'F', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'sexo')->dropDownList([ 'M' => 'Masculino', 'F' => 'Feminino', 'U' => 'Unisexo'], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'tamanho_id')->textInput(['maxlength' => true]) ?>
 

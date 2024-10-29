@@ -114,4 +114,11 @@ class Produtos extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Linhascarrinhos::class, ['produto_id' => 'id']);
     }
+
+    public function getTamanho()
+    {
+        return $this->hasOne(Tamanhos::class, ['id' => 'tamanho_id']);
+    }
+
+
 }

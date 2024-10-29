@@ -12,8 +12,8 @@ use Yii;
  * @property string|null $descricao
  * @property int|null $status
  *
- * @property Linhafatura[] $linhafaturas
- * @property Produto[] $produtos
+ * @property LinhasFaturas[] $linhafaturas
+ * @property Produtos[] $produtos
  */
 class Ivas extends \yii\db\ActiveRecord
 {
@@ -57,7 +57,7 @@ class Ivas extends \yii\db\ActiveRecord
      */
     public function getLinhafaturas()
     {
-        return $this->hasMany(Linhafatura::class, ['iva_id' => 'id']);
+        return $this->hasMany(LinhasFaturas::class, ['iva_id' => 'id']);
     }
 
     /**
@@ -67,6 +67,6 @@ class Ivas extends \yii\db\ActiveRecord
      */
     public function getProdutos()
     {
-        return $this->hasMany(Produto::class, ['iva_id' => 'id']);
+        return $this->hasMany(Produtos::class, ['iva_id' => 'id']);
     }
 }

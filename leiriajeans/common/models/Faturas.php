@@ -14,9 +14,9 @@ use Yii;
  * @property float|null $valorTotal
  * @property int|null $statuspedido
  *
- * @property Linhafatura[] $linhafaturas
- * @property Metodoexpedicao $metodoexpedicao
- * @property Metodopagamento $metodopagamento
+ * @property LinhasFaturas[] $linhafaturas
+ * @property MetodosExpedicoes $metodoexpedicao
+ * @property MetodosPagamentos $metodopagamento
  */
 class Faturas extends \yii\db\ActiveRecord
 {
@@ -38,8 +38,8 @@ class Faturas extends \yii\db\ActiveRecord
             [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
             [['data'], 'safe'],
             [['valorTotal'], 'number'],
-            [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoexpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
-            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodopagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
+            [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodosExpedicoes::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
+            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodosPagamentos::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
         ];
     }
 
@@ -65,7 +65,7 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getLinhafaturas()
     {
-        return $this->hasMany(Linhafatura::class, ['fatura_id' => 'id']);
+        return $this->hasMany(LinhasFaturas::class, ['fatura_id' => 'id']);
     }
 
     /**
@@ -75,7 +75,7 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getMetodoexpedicao()
     {
-        return $this->hasOne(Metodoexpedicao::class, ['id' => 'metodoexpedicao_id']);
+        return $this->hasOne(MetodosExpedicoes::class, ['id' => 'metodoexpedicao_id']);
     }
 
     /**
@@ -85,6 +85,6 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getMetodopagamento()
     {
-        return $this->hasOne(Metodopagamento::class, ['id' => 'metodopagamento_id']);
+        return $this->hasOne(MetodosPagamentos::class, ['id' => 'metodopagamento_id']);
     }
 }

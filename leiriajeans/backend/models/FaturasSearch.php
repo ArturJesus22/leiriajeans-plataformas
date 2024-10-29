@@ -1,13 +1,13 @@
 <?php
 
-namespace backend\Models;
+namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\Models\Faturas;
+use common\models\Faturas;
 
 /**
- * FaturasSearch represents the model behind the search form of `common\Models\Faturas`.
+ * FaturasSearch represents the model behind the search form of `common\models\Faturas`.
  */
 class FaturasSearch extends Faturas
 {

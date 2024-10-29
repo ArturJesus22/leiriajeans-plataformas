@@ -16,8 +16,8 @@ use Yii;
  * @property string|null $telefone
  * @property int|null $user_id
  *
- * @property Avaliacao[] $avaliacaos
- * @property Carrinho[] $carrinhos
+ * @property Avaliacoes[] $avaliacaos
+ * @property Carrinhos[] $carrinhos
  * @property User $user
  */
 class UsersForm extends \yii\db\ActiveRecord
@@ -92,7 +92,7 @@ class UsersForm extends \yii\db\ActiveRecord
      */
     public function getAvaliacaos()
     {
-        return $this->hasMany(Avaliacao::class, ['userdata_id' => 'id']);
+        return $this->hasMany(Avaliacoes::class, ['userdata_id' => 'id']);
     }
 
     /**
@@ -102,7 +102,7 @@ class UsersForm extends \yii\db\ActiveRecord
      */
     public function getCarrinhos()
     {
-        return $this->hasMany(Carrinho::class, ['userdata_id' => 'id']);
+        return $this->hasMany(Carrinhos::class, ['userdata_id' => 'id']);
     }
 
     /**

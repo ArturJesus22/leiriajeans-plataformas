@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $nome
  *
- * @property Produto[] $produtos
+ * @property Produtos[] $produtos
  */
 class Cores extends \yii\db\ActiveRecord
 {
@@ -51,6 +51,6 @@ class Cores extends \yii\db\ActiveRecord
      */
     public function getProdutos()
     {
-        return $this->hasMany(Produto::class, ['cor_id' => 'id']);
+        return $this->hasMany(Produtos::class, ['cor_id' => 'id']);
     }
 }

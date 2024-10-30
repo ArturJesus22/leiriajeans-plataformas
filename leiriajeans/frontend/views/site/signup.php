@@ -36,10 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => 'Nome'
                 ]) ?>
 
-                <?= $form->field($model, 'morada') ->label('Morada:')->textInput([
-                    'placeholder' => 'Morada'
-                ]) ?>
-
                 <?= $form->field($model, 'codigopostal') ->label('Código Postal:')->textInput([
                     'placeholder' => 'Código Postal'
                 ]) ?>

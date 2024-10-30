@@ -18,7 +18,6 @@ class SignupForm extends Model
 
     //userData
      public $nome;
-     public $morada;
      public $codigopostal;
      public $localidade;
      public $rua;
@@ -56,9 +55,6 @@ class SignupForm extends Model
             //UserData
             ['nome', 'required'],
             ['nome', 'string', 'max' => 255],
-
-            ['morada', 'required'],
-            ['morada', 'string', 'max' => 255],
 
             ['codigopostal', 'required'],
             ['codigopostal', 'string', 'max' => 255],

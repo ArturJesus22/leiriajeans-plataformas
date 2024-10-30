@@ -16,13 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="faturas-index">
 
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id',
             [

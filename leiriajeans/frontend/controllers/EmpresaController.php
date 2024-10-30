@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use common\Models\Empresa;
 use yii\data\ActiveDataProvider;

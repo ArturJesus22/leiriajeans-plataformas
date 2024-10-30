@@ -1,7 +1,9 @@
 <?php
 
-
 namespace common\models;
+
+use Yii;
+
 /**
  * This is the model class for table "empresa".
  *
@@ -14,6 +16,7 @@ namespace common\models;
  * @property string|null $codigopostal
  * @property string|null $localidade
  * @property float|null $capitalsocial
+ * @property string $descricao
  */
 class Empresa extends \yii\db\ActiveRecord
 {
@@ -31,12 +34,13 @@ class Empresa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['designacao', 'email', 'nif'], 'required'],
+            [['designacao', 'email', 'nif', 'descricao'], 'required'],
             [['capitalsocial'], 'number'],
             [['designacao', 'rua'], 'string', 'max' => 255],
             [['email', 'localidade'], 'string', 'max' => 100],
             [['telefone', 'nif'], 'string', 'max' => 15],
             [['codigopostal'], 'string', 'max' => 10],
+            [['descricao'], 'string', 'max' => 2000],
             [['email'], 'unique'],
             [['nif'], 'unique'],
         ];
@@ -57,6 +61,7 @@ class Empresa extends \yii\db\ActiveRecord
             'codigopostal' => 'Codigopostal',
             'localidade' => 'Localidade',
             'capitalsocial' => 'Capitalsocial',
+            'descricao' => 'Descricao',
         ];
     }
 }

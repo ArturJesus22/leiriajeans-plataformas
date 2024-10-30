@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Empresa;
+use common\Models\Empresa;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'codigopostal',
             //'localidade',
             //'capitalsocial',
+            //'descricao',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Empresa $model, $key, $index, $column) {

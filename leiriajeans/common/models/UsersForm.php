@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\models\AuthAssignment;
 use Yii;
 
 /**
@@ -113,6 +114,11 @@ class UsersForm extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getAuthAssignment()
+    {
+        return $this->hasOne(AuthAssignment::class, ['user_id' => 'id']);
     }
 
     public function atualizarUser()

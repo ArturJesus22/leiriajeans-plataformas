@@ -15,17 +15,17 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+<!--    --><?php //= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'nome') ?>
 
-    <?= $form->field($model, 'codpostal') ?>
+<!--    --><?php //= $form->field($model, 'codpostal') ?>
 
     <?= $form->field($model, 'localidade') ?>
 
-    <?= $form->field($model, 'rua') ?>
+<!--    --><?php //= $form->field($model, 'rua') ?>
 
-    <?php // echo $form->field($model, 'nif') ?>
+    <?php echo $form->field($model, 'nif') ?>
 
     <?php // echo $form->field($model, 'telefone') ?>
 

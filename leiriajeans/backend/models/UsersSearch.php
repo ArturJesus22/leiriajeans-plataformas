@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\UsersForm;
@@ -40,9 +41,9 @@ class UsersSearch extends UsersForm
      */
     public function search($params)
     {
-        $query = UsersForm::find();
-
-        // add conditions that should always apply here
+        $query = UsersForm::find()
+            ->joinWith('authAssignment') // junta a tabela auth_assignment(join)
+            ->where(['auth_assignment.item_name' => 'cliente']); // Filtra pela role "cliente"
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -51,24 +52,15 @@ class UsersSearch extends UsersForm
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-        ]);
-
-        $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'codpostal', $this->codpostal])
-            ->andFilterWhere(['like', 'localidade', $this->localidade])
-            ->andFilterWhere(['like', 'rua', $this->rua])
-            ->andFilterWhere(['like', 'nif', $this->nif])
-            ->andFilterWhere(['like', 'telefone', $this->telefone]);
+        $query->andFilterWhere(['like', 'nome', $this->nome]);
+        $query->andFilterWhere(['like', 'nif', $this->nif]);
+        $query->andFilterWhere(['like', 'localidade', $this->localidade]);
 
         return $dataProvider;
     }
+
 }

@@ -24,32 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <li>
                                     <a href="optionallink.html">
                                         <img class="etalage_thumb_image" src="images/3.jpg" />
-                                        <img class="etalage_source_image" src="images/3.jpg" />
                                     </a>
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/4.jpg" />
-                                    <img class="etalage_source_image" src="images/4.jpg" />
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/5.jpg" />
-                                    <img class="etalage_source_image" src="images/5.jpg" />
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/6.jpg" />
-                                    <img class="etalage_source_image" src="images/6.jpg" />
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/7.jpg" />
-                                    <img class="etalage_source_image" src="images/7.jpg" />
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/8.jpg" />
-                                    <img class="etalage_source_image" src="images/8.jpg" />
-                                </li>
-                                <li>
-                                    <img class="etalage_thumb_image" src="images/9.jpg" />
-                                    <img class="etalage_source_image" src="images/9.jpg" />
                                 </li>
                             </ul>
                         </div>
@@ -82,13 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             </ul>
 
                             <h4 class="m_12">Sexo</h4>
-                            <p><?= Html::encode($model->sexo) ?></p>
+                            <p>
+                                <?= Html::encode(
+                                        $model->sexo === 'M' ? 'Masculino' :
+                                               ($model->sexo === 'F' ? 'Feminino' :
+                                               ($model->sexo === 'U' ? 'Unisexo' : 'Não definido'))
+                                ) ?>
+                            </p>
 
-                            <div class="btn_form">
-                                <form>
-                                    <input type="submit" value="buy now" title="">
-                                </form>
-                            </div>
                             <div class="social_buttons">
                                 <h4>95 Items</h4>
                             </div>
@@ -119,9 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= DetailView::widget([
+<!--    --><?php /*= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
@@ -133,6 +108,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'cor_id',
             'iva_id',
         ],
-    ]) ?>
+    ]) */?>
 
 </div>

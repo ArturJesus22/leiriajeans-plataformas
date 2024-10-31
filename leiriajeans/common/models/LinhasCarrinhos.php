@@ -63,6 +63,8 @@ class LinhasCarrinhos extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+
+    //buscar o carrinho para adicionar linha
     public function getCarrinho()
     {
         return $this->hasOne(Carrinhos::class, ['id' => 'carrinho_id']);

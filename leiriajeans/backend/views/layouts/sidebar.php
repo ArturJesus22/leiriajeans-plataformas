@@ -1,3 +1,5 @@
+
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -13,7 +15,7 @@
                 <img src="<?= Yii::getAlias('@web/public/images/user.png') ?>" alt=""/></a>
             </div>
             <div class="info">
-                <a href="<?= Yii::$app->urlManager->createUrl(['user/index']) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['user/perfil']) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 

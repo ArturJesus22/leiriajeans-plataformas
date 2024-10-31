@@ -6,6 +6,7 @@ use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\UsersForm;
+use yii\helpers\VarDumper;
 
 /**
  * UsersSearch represents the model behind the search form of `common\models\UsersForm`.
@@ -42,8 +43,8 @@ class UsersSearch extends UsersForm
     public function search($params)
     {
         $query = UsersForm::find()
-            ->joinWith('authAssignment') // junta a tabela auth_assignment(join)
-            ->where(['auth_assignment.item_name' => 'cliente']); // Filtra pela role "cliente"
+            ->joinWith('authAssignment') // Junta com auth_assignment usando a relação definida
+            ->where(['auth_assignment.item_name' => 'cliente']); // Filtra para usuários com papel "cliente"
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -52,13 +53,14 @@ class UsersSearch extends UsersForm
         $this->load($params);
 
         if (!$this->validate()) {
-            $query->where('0=1');
+            $query->where('0=1'); // Retorna zero registros se a validação falhar
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'nome', $this->nome]);
-        $query->andFilterWhere(['like', 'nif', $this->nif]);
-        $query->andFilterWhere(['like', 'localidade', $this->localidade]);
+        // Filtros adicionais
+        $query->andFilterWhere(['like', 'nome', $this->nome])
+            ->andFilterWhere(['like', 'nif', $this->nif])
+            ->andFilterWhere(['like', 'localidade', $this->localidade]);
 
         return $dataProvider;
     }

@@ -61,6 +61,8 @@ class Carrinhos extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+
+    //Carregar os itens do carrinho;
     public function getLinhacarrinhos()
     {
         return $this->hasMany(LinhasCarrinhos::class, ['carrinho_id' => 'id']);
@@ -73,7 +75,7 @@ class Carrinhos extends \yii\db\ActiveRecord
      */
     public function getProduto()
     {
-        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
+        return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
     }
 
     /**
@@ -81,8 +83,10 @@ class Carrinhos extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+
+    //buscar o user;
     public function getUserdata()
     {
-        return $this->hasOne(Userdata::class, ['id' => 'userdata_id']);
+        return $this->hasOne(UsersForm::class, ['id' => 'userdata_id']);
     }
 }

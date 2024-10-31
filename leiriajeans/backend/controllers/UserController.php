@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\User;
+use common\models\UsersForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -78,17 +79,15 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $modelUserData = new UsersForm();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if ($model->load(\Yii::$app->request->post()) && $modelUserData->load(\Yii::$app->request->post()) && $model->save() && $modelUserData->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
+        return $this->render('_form', [
             'model' => $model,
+            'modelUserData' => $modelUserData,
         ]);
     }
 
@@ -102,13 +101,26 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelUserData = UsersForm::findOne(['user_id' => $id]); // UsersForm relacionado
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        //Se não houver um UsersForm relacionado, cria um novo
+        if (!$modelUserData) {
+            $modelUserData = new UsersForm();
+            $modelUserData->user_id = $model->id;
+        }
+
+        if (\Yii::$app->request->isPost) {
+            $model->load(\Yii::$app->request->post());
+            $modelUserData->load(\Yii::$app->request->post());
+
+            if ($model->save() && $modelUserData->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelUserData' => $modelUserData,
         ]);
     }
 
@@ -140,5 +152,14 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionPerfil() {
+        $userId = \Yii::$app->user->id; //ID do user com login
+        $model = User::findOne($userId); // Dados do usuário
+
+        return $this->render('view', [
+            'model' => $model,
+        ]);
     }
 }

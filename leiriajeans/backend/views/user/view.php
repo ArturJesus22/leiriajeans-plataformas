@@ -5,19 +5,18 @@ use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
+/** @var common\models\UsersForm $modelForm */
 
-$this->title = $model->id;
+$this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Atualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -26,19 +25,36 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $model, // Model User
         'attributes' => [
-            'id',
             'username',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
             'email:email',
-            'status',
-            'created_at',
-            'updated_at',
-            'verification_token',
+            [
+                'attribute' => 'userform.nome',
+                'label' => 'Nome Completo',
+            ],
+            [
+                'attribute' => 'userform.codpostal',
+                'label' => 'Código Postal',
+            ],
+            [
+                'attribute' => 'userform.localidade',
+                'label' => 'Localidade',
+            ],
+            [
+                'attribute' => 'userform.rua',
+                'label' => 'Rua',
+            ],
+            [
+                'attribute' => 'userform.nif',
+                'label' => 'NIF',
+            ],
+            [
+                'attribute' => 'userform.telefone',
+                'label' => 'Telefone',
+            ],
         ],
     ]) ?>
 

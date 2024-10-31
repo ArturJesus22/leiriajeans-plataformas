@@ -118,10 +118,9 @@ AppAsset::register($this);
                                 <ul class="sub-icon1 list">
                                     <div class="clear"></div>
                                     <li class="list_img"><img src="images/1.jpg" alt=""/></li>
-                                    <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x
-                          $12.00</span></li>
+                                    <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x$12.00</span></li>
                                     <div class="login_buttons">
-                                        <div class="check_button"><a href="checkout.html">Check out</a></div>
+                                        <div class="check_button"><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Check out</a></div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="clear"></div>

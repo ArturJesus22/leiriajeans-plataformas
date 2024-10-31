@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $model->designacao;
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <p class="m_8"><p><?= Html::encode($model->descricao) ?></p></p>
+                            <p class="m_8"><p><?= Html::encode($model->descricao) ?></p>
                             <div class="address">
                                 <p><?= Html::encode($model->rua) ?></p>
                                 <p><?= Html::encode($model->codigopostal) ?></p>

@@ -38,24 +38,40 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
+        $query = Faturas::find()->where(['statuspedido' => 'ativo']);
         $dataProvider = new ActiveDataProvider([
-            'query' => Faturas::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
+            'query' => $query,
         ]);
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => Faturas::find()->where(['statuspedido' => 'ativo']),
+//            'pagination' => [
+//                'pageSize' => 50
+//            ],
+//            'sort' => [
+//                'defaultOrder' => [
+//                    'id' => SORT_DESC,
+//                ]
+//            ],
+//        ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function search($params)
+    {
+        $query = Faturas::find(); // Ajuste isso conforme necessário para obter os métodos de pagamento.
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
 
     /**
      * Displays a single Faturas model.

@@ -12,15 +12,18 @@ use Yii;
  * @property string|null $descricao
  * @property float|null $preco
  * @property string|null $sexo
+ * @property int|null $stock
  * @property string|null $tamanho_id
  * @property int|null $cor_id
  * @property int|null $iva_id
+ * @property int|null $categoria_id
  *
- * @property Carrinhos[] $carrinhos
- * @property Cores $cor
- * @property Imagens[] $imagems
- * @property Ivas $iva
- * @property Linhascarrinhos[] $linhacarrinhos
+ * @property Carrinho[] $carrinhos
+ * @property Categoria $categoria
+ * @property Cor $cor
+ * @property Imagem[] $imagems
+ * @property Iva $iva
+ * @property Linhacarrinho[] $linhacarrinhos
  */
 class Produtos extends \yii\db\ActiveRecord
 {
@@ -40,11 +43,12 @@ class Produtos extends \yii\db\ActiveRecord
         return [
             [['descricao', 'sexo'], 'string'],
             [['preco'], 'number'],
-            [['cor_id', 'iva_id'], 'integer'],
+            [['stock', 'cor_id', 'iva_id', 'categoria_id'], 'integer'],
             [['nome'], 'string', 'max' => 255],
             [['tamanho_id'], 'string', 'max' => 5],
-            [['cor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cores::class, 'targetAttribute' => ['cor_id' => 'id']],
-            [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ivas::class, 'targetAttribute' => ['iva_id' => 'id']],
+            [['categoria_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::class, 'targetAttribute' => ['categoria_id' => 'id']],
+            [['cor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cor::class, 'targetAttribute' => ['cor_id' => 'id']],
+            [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Iva::class, 'targetAttribute' => ['iva_id' => 'id']],
         ];
     }
 
@@ -59,9 +63,11 @@ class Produtos extends \yii\db\ActiveRecord
             'descricao' => 'Descricao',
             'preco' => 'Preco',
             'sexo' => 'Sexo',
+            'stock' => 'Stock',
             'tamanho_id' => 'Tamanho ID',
             'cor_id' => 'Cor ID',
             'iva_id' => 'Iva ID',
+            'categoria_id' => 'Categoria ID',
         ];
     }
 
@@ -72,7 +78,17 @@ class Produtos extends \yii\db\ActiveRecord
      */
     public function getCarrinhos()
     {
-        return $this->hasMany(Carrinhos::class, ['produto_id' => 'id']);
+        return $this->hasMany(Carrinho::class, ['produto_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Categoria]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoria()
+    {
+        return $this->hasOne(Categoria::class, ['id' => 'categoria_id']);
     }
 
     /**
@@ -82,7 +98,7 @@ class Produtos extends \yii\db\ActiveRecord
      */
     public function getCor()
     {
-        return $this->hasOne(Cores::class, ['id' => 'cor_id']);
+        return $this->hasOne(Cor::class, ['id' => 'cor_id']);
     }
 
     /**
@@ -92,7 +108,7 @@ class Produtos extends \yii\db\ActiveRecord
      */
     public function getImagems()
     {
-        return $this->hasMany(Imagens::class, ['produto_id' => 'id']);
+        return $this->hasMany(Imagem::class, ['produto_id' => 'id']);
     }
 
     /**
@@ -102,7 +118,7 @@ class Produtos extends \yii\db\ActiveRecord
      */
     public function getIva()
     {
-        return $this->hasOne(Ivas::class, ['id' => 'iva_id']);
+        return $this->hasOne(Iva::class, ['id' => 'iva_id']);
     }
 
     /**
@@ -112,13 +128,6 @@ class Produtos extends \yii\db\ActiveRecord
      */
     public function getLinhacarrinhos()
     {
-        return $this->hasMany(Linhascarrinhos::class, ['produto_id' => 'id']);
+        return $this->hasMany(Linhacarrinho::class, ['produto_id' => 'id']);
     }
-
-    public function getTamanho()
-    {
-        return $this->hasOne(Tamanhos::class, ['id' => 'tamanho_id']);
-    }
-
-
 }

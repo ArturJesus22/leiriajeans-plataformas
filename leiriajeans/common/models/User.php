@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\models\AuthAssignment;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -214,5 +215,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUserform()
     {
         return $this->hasOne(UsersForm::class, ['user_id' => 'id']);
+    }
+
+    public function getAuthAssignment()
+    {
+        return $this->hasOne(AuthAssignment::class, ['user_id' => 'id']);
     }
 }

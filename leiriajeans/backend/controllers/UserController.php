@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\UsersSearch;
 use common\models\User;
 use common\models\UsersForm;
 use yii\data\ActiveDataProvider;
@@ -39,24 +40,15 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $searchModel = new UsersSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single User model.
@@ -162,4 +154,5 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
+
 }

@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Criar Cliente', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -35,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'userform.telefone',
             'userform.rua',
             'userform.codpostal',
+            'authAssignment.item_name',
             //'status',
             //'created_at',
             //'updated_at',

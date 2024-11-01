@@ -38,22 +38,14 @@ class EmpresaController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Empresa::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $model = Empresa::find()->one(); // Procura a primeira empresa existente.
+
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Nenhuma empresa encontrada.');
+        }
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 

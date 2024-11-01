@@ -8,8 +8,8 @@ use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var common\models\Empresa $model */
 
-foreach ($dataProvider->getModels() as $model)
 
 $this->params['breadcrumbs'][] = $model->designacao;
 ?>

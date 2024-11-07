@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\UsersSearch;
+use common\models\SignupForm;
 use common\models\User;
 use common\models\UsersForm;
 use yii\data\ActiveDataProvider;
@@ -86,16 +87,14 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
-        $modelUserData = new UsersForm();
-
-        if ($model->load(\Yii::$app->request->post()) && $modelUserData->load(\Yii::$app->request->post()) && $model->save() && $modelUserData->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            return $this->goHome();
         }
 
-        return $this->render('_form', [
+        return $this->render('create', [
             'model' => $model,
-            'modelUserData' => $modelUserData,
         ]);
     }
 

@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $model->designacao;
                                 <div class="text">
                                     <textarea value="Message:" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message:</textarea>
                                     <div class="form-submit">
-                                        <input name="submit" type="submit" id="submit" value="Submit"><br>
+                                        <input name="enviar" type="submit" id="enviar" value="Enviar"><br>
                                     </div>
                                 </div>
                                 <div class="clear"></div>

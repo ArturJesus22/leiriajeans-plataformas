@@ -5,16 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Avaliacoes $model */
 
-$this->title = 'Create Avaliacoes';
-$this->params['breadcrumbs'][] = ['label' => 'Avaliacoes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="avaliacoes-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?php echo '<div class="alert alert-danger">Não é possível criar avaliações.</div>';
+    ?>
 
 </div>

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Avaliacoes;
 use backend\models\AvaliacoesSearch;
+use http\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,17 +70,19 @@ class AvaliacoesController extends Controller
     {
         $model = new Avaliacoes();
 
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+
+        /*
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        }*/
     }
 
     /**

@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii;
 
 /**
  * EmpresaController implements the CRUD actions for Empresa model.
@@ -38,24 +39,26 @@ class EmpresaController extends Controller
      */
     public function actionIndex()
     {
+        $empresa = Empresa::find()->one();
+
         $dataProvider = new ActiveDataProvider([
             'query' => Empresa::find(),
-            /*
             'pagination' => [
-                'pageSize' => 50
+                'pageSize' => 50,
             ],
             'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_DESC,
-                ]
+                ],
             ],
-            */
         ]);
 
         return $this->render('index', [
+            'empresa' => $empresa,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single Empresa model.
@@ -77,9 +80,15 @@ class EmpresaController extends Controller
      */
     public function actionCreate()
     {
+        $empresa = Empresa::find()->count();
+        if ($empresa > 0) {
+            Yii::$app->session->setFlash('error', 'Já existe uma empresa cadastrada.');
+            return $this->redirect(['index']);
+        }
+
         $model = new Empresa();
 
-        if ($this->request->isPost) {
+            if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

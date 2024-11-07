@@ -41,6 +41,7 @@ class UserController extends Controller
      *
      * @return string
      */
+
     public function actionIndex()
     {
         $userRole = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);

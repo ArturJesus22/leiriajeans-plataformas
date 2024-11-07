@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="empresa-index">
 
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php if ($empresa === null): ?>

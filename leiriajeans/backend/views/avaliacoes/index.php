@@ -13,6 +13,7 @@ use yii\grid\GridView;
 $this->title = 'Avaliacoes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="avaliacoes-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

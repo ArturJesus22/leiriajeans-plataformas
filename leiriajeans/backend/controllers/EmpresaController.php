@@ -73,6 +73,7 @@ class EmpresaController extends Controller
         ]);
     }
 
+
     /**
      * Creates a new Empresa model.
      * If creation is successful, the browser will be redirected to the 'view' page.

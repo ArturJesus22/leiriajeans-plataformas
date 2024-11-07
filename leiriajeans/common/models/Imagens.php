@@ -15,6 +15,9 @@ use Yii;
  */
 class Imagens extends \yii\db\ActiveRecord
 {
+
+    public $imageFiles;
+
     /**
      * {@inheritdoc}
      */
@@ -29,9 +32,11 @@ class Imagens extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'], 'safe'],
             [['produto_id'], 'integer'],
-            [['fileName'], 'string', 'max' => 255],
+            [['fileName'],  'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
             [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
+            [['produto_id'], 'required', 'message' => 'Selecione um Produto!'],
         ];
     }
 
@@ -42,8 +47,8 @@ class Imagens extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fileName' => 'File Name',
-            'produto_id' => 'Produto ID',
+            'fileName' => 'Imagens',
+            'produto_id' => 'Produtos Associados',
         ];
     }
 
@@ -55,5 +60,31 @@ class Imagens extends \yii\db\ActiveRecord
     public function getProduto()
     {
         return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
+    }
+
+    public function upload()
+    {
+
+        $uploadPaths = [];
+
+        if ($this->validate()) {
+
+            foreach ($this->imageFiles as $file) {
+                $uid = uniqid();
+                //Caminho para dar  upload
+                $uploadCommon = Yii::getAlias('@common/public/imagens/produtos/') . $uid . $file->baseName . '.' . $file->extension;
+
+                // guardar imagem no common
+                $file->saveAs($uploadCommon, false);
+
+                // Adiciona o caminho de upload para a lista
+                $uploadPaths[] = $uploadCommon;
+            }
+
+            return $uploadPaths;
+        } else {
+            return false;
+
+        }
     }
 }

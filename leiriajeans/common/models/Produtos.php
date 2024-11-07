@@ -81,6 +81,11 @@ class Produtos extends \yii\db\ActiveRecord
         return $this->hasMany(Carrinhos::class, ['produto_id' => 'id']);
     }
 
+    public function getTamanhos()
+    {
+        return $this->hasMany(Tamanhos::class, ['produto_id' => 'id']);
+    }
+
     /**
      * Gets query for [[Categoria]].
      *
@@ -106,7 +111,7 @@ class Produtos extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getImagems()
+    public function getImagens()
     {
         return $this->hasMany(Imagens::class, ['produto_id' => 'id']);
     }

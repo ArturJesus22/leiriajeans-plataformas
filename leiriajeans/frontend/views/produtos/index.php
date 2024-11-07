@@ -35,7 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span class="new-box">
                         </span>
                                 </span>
+
+
                                 <div class="shop_desc">
+                       
+
                                     <h3><a href="#"><?= Html::encode($model->nome) ?></a></h3>
                                     <p><?= Html::encode($model->descricao) ?> </p>
                                     <span class="actual"><?= Html::encode($model->preco) ?></span>

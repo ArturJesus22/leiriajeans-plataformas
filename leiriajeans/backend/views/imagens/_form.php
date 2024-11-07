@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\Produtos;
 
 /** @var yii\web\View $this */
 /** @var common\models\Imagens $model */
@@ -10,11 +12,16 @@ use yii\widgets\ActiveForm;
 
 <div class="imagens-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'], // Essencial para enviar arquivos
+    ]); ?>
 
-    <?= $form->field($model, 'fileName')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
 
-    <?= $form->field($model, 'produto_id')->textInput() ?>
+    <?= $form->field($model, 'produto_id')->dropDownList(
+        ArrayHelper::map(Produtos::find()->all(), 'id', 'nome'),
+        ['prompt' => 'Selecione um produto']
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

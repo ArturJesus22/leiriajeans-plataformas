@@ -7,6 +7,7 @@ use backend\models\ImagensSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ImagensController implements the CRUD actions for Imagens model.
@@ -69,9 +70,28 @@ class ImagensController extends Controller
     {
         $model = new Imagens();
 
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+
+                if ($uploadPaths = $model->upload()) {
+                    foreach ($uploadPaths as $file) {
+                        $newModel = new Imagens();
+                        $newModel->imageFiles = UploadedFile::getInstances($newModel, 'imageFiles');
+
+                        $fileImagem = pathinfo($file);
+
+                        $newModel->fileName = $fileImagem['basename'];
+                        $newModel->produto_id = $model->produto_id;
+                        // If $produto_id is provided, set it in the new model
+                        $newModel->save();
+                    }
+
+
+                    // Redirect to the index action with or without produto_id
+                    return $this->redirect(['index']);
+                }
             }
         } else {
             $model->loadDefaultValues();

@@ -47,8 +47,7 @@
                         ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
 
                     ['label' => 'Gestão de Dados', 'header' => true],
-                        ['label' => 'Gerir Trabalhadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
-                        ['label' => 'Gerir Clientes', 'icon' => 'user', 'url' => ['user/index']],
+                        ['label' => 'Administrar contas', 'icon' => 'user', 'url' => ['user/index']],
                         ['label' => 'IVAS', 'icon' => 'fa-solid fa-percent', 'url' => ['ivas/index'], 'visible'],
                         ['label' => 'Empresa', 'icon' => 'fa-solid fa-building', 'url' => ['empresa/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
                         ['label' => 'Avaliações', 'icon' => 'fa-solid fa-star', 'url' => ['avaliacoes/index']],

@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -27,6 +28,7 @@ class UserController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'Colaboradores' => 'GET',
                     ],
                 ],
             ]
@@ -40,11 +42,25 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UsersSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $userRole = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+
+
+        if(isset($userRole['admin'])){
+            $query = User::find()
+                ->joinWith('authAssignment');
+        }
+        else if(isset($userRole['funcionario'])){
+            $query = User::find()
+                ->joinWith('authAssignment') // Faz o join com a tabela auth_assignment
+                ->where(['auth_assignment.item_name' => 'cliente']); // Filtro para item_name 'cliente'
+        }
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

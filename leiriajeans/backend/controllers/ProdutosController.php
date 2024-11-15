@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
+use common\models\Imagens;
 use common\models\Produtos;
 use backend\models\ProdutosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use yii;
 
 /**
  * ProdutosController implements the CRUD actions for Produtos model.
@@ -68,9 +71,33 @@ class ProdutosController extends Controller
     public function actionCreate()
     {
         $model = new Produtos();
+        $modelImagens = new Imagens();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                
+                $modelImagens->imageFiles = UploadedFile::getInstances($modelImagens, 'imageFiles');
+                $modelImagens->produto_id = $model->id;
+
+                if ($modelImagens->imageFiles) {
+                    // Chama o método de upload
+                    $uploadPaths = $modelImagens->upload();
+
+                    if ($uploadPaths !== false) {
+                        foreach ($modelImagens->imageFiles as $index => $file) {
+                            $imagem = new Imagens();
+                            $imagem->produto_id = $model->id;
+                            $imagem->fileName = basename($uploadPaths[$index]);
+
+                            if (!$imagem->save()) {
+                                Yii::error("Erro ao guardar imagem: ");
+                            }
+                        }
+                    } else {
+                        Yii::error("Erro na validação das imagens.");
+                    }
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -79,8 +106,10 @@ class ProdutosController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelImagens' => $modelImagens,
         ]);
     }
+
 
     /**
      * Updates an existing Produtos model.

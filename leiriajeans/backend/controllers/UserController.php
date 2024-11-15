@@ -44,14 +44,12 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        $userRole = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
 
-
-        if(isset($userRole['admin'])){
+        if(Yii::$app->user->can('admin')){
             $query = User::find()
                 ->joinWith('authAssignment');
         }
-        else if(isset($userRole['funcionario'])){
+        else if(Yii::$app->user->can('funcionario')){
             $query = User::find()
                 ->joinWith('authAssignment') // Faz o join com a tabela auth_assignment
                 ->where(['auth_assignment.item_name' => 'cliente']); // Filtro para item_name 'cliente'
@@ -110,6 +108,12 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
         $modelUserData = UsersForm::findOne(['user_id' => $id]); // UsersForm relacionado
+        $rolename = Yii::$app->authManager->getRolesByUser($id);
+
+        foreach ($rolename as $role) {
+            $roleName = $role->name;
+            $model->role = $roleName;
+        }
 
         //Se não houver um UsersForm relacionado, cria um novo
         if (!$modelUserData) {
@@ -117,13 +121,19 @@ class UserController extends Controller
             $modelUserData->user_id = $model->id;
         }
 
-        if (\Yii::$app->request->isPost) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             $model->load(\Yii::$app->request->post());
             $modelUserData->load(\Yii::$app->request->post());
+            //entrar no authManager
+            $auth = Yii::$app->authManager;
+            $role = $auth->getRole($model->role);
+            //apagar a role atual
+            $auth -> revokeAll($model->id);
+            //atribuir a nova role
+            $auth->assign($role, $model->id);
 
-            if ($model->save() && $modelUserData->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

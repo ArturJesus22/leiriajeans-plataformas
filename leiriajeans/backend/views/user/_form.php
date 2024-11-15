@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput() ?>
 
-    <?= $form->field($model, 'password_hash')->textInput() ?>
+    <?= $form->field($model, 'password_hash')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'email')->textInput() ?>
 
@@ -31,6 +31,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($modelUserData, 'nif')->textInput() ?>
 
     <?= $form->field($modelUserData, 'telefone')->textInput() ?>
+
+    <?= $form->field($model, 'role')->dropDownList(
+        [
+            '' => 'Selecione um cargo', // Opção padrão
+            'admin' => 'Admin',
+            'funcionario' => 'Funcionário',
+            'cliente' => 'Cliente',
+        ],
+    ) ?>
 
 
     <div class="form-group">

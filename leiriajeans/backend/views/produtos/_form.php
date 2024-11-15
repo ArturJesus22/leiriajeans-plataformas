@@ -7,15 +7,17 @@ use common\models\Cores;
 use common\models\Categorias;
 use yii\helpers\ArrayHelper;
 use common\models\Tamanhos;
+use common\models\Produtos;
 
 /** @var yii\web\View $this */
 /** @var common\models\Produtos $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var common\models\Imagens $modelImagens */
 ?>
 
 <div class="produtos-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
 
@@ -47,6 +49,7 @@ use common\models\Tamanhos;
         ['prompt'=>'Selecione a Categoria']
     ) ?>
 
+    <?= $form->field($modelImagens, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

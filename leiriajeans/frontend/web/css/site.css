@@ -18,6 +18,8 @@ main > .container, main > .container-fluid
     font-style: italic;
 }
 
+
+
 /* add sorting icons to gridview sort links */
 a.asc:after, a.desc:after {
     content: '';

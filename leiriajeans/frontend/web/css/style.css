@@ -493,8 +493,10 @@ li.list_desc h4 a:hover{
 	margin:2% 0 0 0;
 }
 #flexiselDemo1, #flexiselDemo2, #flexiselDemo3 {
-	display: none;
+	display: inline-block;
+	margin-right: 10px;
 }
+
 .nbs-flexisel-container {
 	position: relative;
 	max-width: 100%;
@@ -522,7 +524,7 @@ li.list_desc h4 a:hover{
 .nbs-flexisel-item > img {
 	width:100%;
 	cursor: pointer;
-	positon: relative;
+	position: relative;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	max-width:210px;

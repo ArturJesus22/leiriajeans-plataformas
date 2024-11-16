@@ -22,8 +22,6 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="<?= Yii::getAlias('@web/js/jquery.min.js') ?>"></script>
 
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,7 +44,7 @@ AppAsset::register($this);
                             <a href="<?= Yii::$app->urlManager->createUrl(['site/index']) ?>"> <img src="<?= Yii::getAlias('@web/images/logo.png') ?>" alt=""/></a>
                         </div>
                         <div class="menu">
-                            <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
+                            <a class="toggleMenu" href="#"><img src="<?= Yii::getAlias('@web/images/nav.png') ?>" alt="" /></a>
                             <ul class="nav" id="nav">
                                 <?php
 
@@ -88,7 +86,7 @@ AppAsset::register($this);
 
                                 <div class="clear"></div>
                             </ul>
-                            <script type="text/javascript" src="js/responsive-nav.js"></script>
+
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -104,12 +102,6 @@ AppAsset::register($this);
                                 </form>
                             </div>
                         </div>
-                        <!----search-scripts---->
-                        <script src="js/classie.js"></script>
-                        <script src="js/uisearch.js"></script>
-                        <script>
-                            new UISearch( document.getElementById( 'sb-search' ) );
-                        </script>
 
 
                         <!----//search-scripts---->
@@ -117,7 +109,7 @@ AppAsset::register($this);
                             <li><a class="active-icon c1" href="#"> </a>
                                 <ul class="sub-icon1 list">
                                     <div class="clear"></div>
-                                    <li class="list_img"><img src="images/1.jpg" alt=""/></li>
+                                    <li class="list_img"><img src="<?= Yii::getAlias('@web/images/1.jpg') ?>" alt=""/></li>
                                     <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x$12.00</span></li>
                                     <div class="login_buttons">
                                         <div class="check_button"><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Check out</a></div>

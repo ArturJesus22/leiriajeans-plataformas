@@ -23,7 +23,6 @@
       <path value="$PROJECT_DIR$/leiriajeans/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/psr/log" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/psy/psysh" />
-      <path value="$PROJECT_DIR$/leiriajeans/vendor/cebe/markdown" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/behat/gherkin" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/ezyang/htmlpurifier" />
@@ -107,6 +106,7 @@
       <path value="$PROJECT_DIR$/leiriajeans/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/doctrine/deprecations" />
       <path value="$PROJECT_DIR$/leiriajeans/vendor/codeception/phpunit-wrapper" />
+      <path value="$PROJECT_DIR$/leiriajeans/vendor/cebe/markdown" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4">

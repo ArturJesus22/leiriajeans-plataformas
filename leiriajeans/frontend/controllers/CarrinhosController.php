@@ -2,16 +2,16 @@
 
 namespace frontend\controllers;
 
-use common\Models\Produtos;
-use frontend\Models\ProdutosSearch;
+use common\Models\Carrinhos;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ProdutosController implements the CRUD actions for Produtos model.
+ * CarrinhosController implements the CRUD actions for Carrinhos model.
  */
-class ProdutosController extends Controller
+class CarrinhosController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,23 +32,33 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Lists all Produtos models.
+     * Lists all Carrinhos models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProdutosSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Carrinhos::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Produtos model.
+     * Displays a single Carrinhos model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +71,13 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Creates a new Produtos model.
+     * Creates a new Carrinhos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Produtos();
+        $model = new Carrinhos();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +93,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Updates an existing Produtos model.
+     * Updates an existing Carrinhos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +113,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Deletes an existing Produtos model.
+     * Deletes an existing Carrinhos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +127,15 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Finds the Produtos model based on its primary key value.
+     * Finds the Carrinhos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Produtos the loaded model
+     * @return Carrinhos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produtos::findOne(['id' => $id])) !== null) {
+        if (($model = Carrinhos::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

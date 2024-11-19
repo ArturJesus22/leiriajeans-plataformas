@@ -87,40 +87,12 @@ AppAsset::register($this);
 
                                 <div class="clear"></div>
                             </ul>
-
                         </div>
-                        <div class="clear"></div>
                     </div>
                     <div class="header_right">
-
-                        <!-- start search-->
-                        <div class="search-box">
-                            <div id="sb-search" class="sb-search">
-                                <form>
-                                    <input class="sb-search-input" placeholder="Pesquisar produtos..." type="search" name="search" id="search">
-                                    <input class="sb-search-submit" type="submit" value="">
-                                    <span class="sb-icon-search"> </span>
-                                </form>
-                            </div>
-                        </div>
-
-
-                        <!----//search-scripts---->
                         <ul class="icon1 sub-icon1 profile_img">
-                            <li><a class="active-icon c1" href="#"> </a>
-                                <ul class="sub-icon1 list">
-                                    <div class="clear"></div>
-                                    <li class="list_img"><img src="<?= Yii::getAlias('@web/images/1.jpg') ?>" alt=""/></li>
-                                    <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x$12.00</span></li>
-                                    <div class="login_buttons">
-                                        <div class="check_button"><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Check out</a></div>
-                                        <div class="clear"></div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </ul>
-                            </li>
+                            <li><a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['carrinhos/index']) ?>"> </a></li>
                         </ul>
-                        <div class="clear"></div>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\AuthItem;
 use Yii;
 
 /**

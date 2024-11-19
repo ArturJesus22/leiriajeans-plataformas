@@ -14,7 +14,7 @@ use Yii;
  * @property float|null $total
  *
  * @property Linhacarrinho[] $linhacarrinhos
- * @property Produto $produto
+ * @property Produtos $produtos
  * @property Userdata $userdata
  */
 class Carrinhos extends \yii\db\ActiveRecord
@@ -35,7 +35,7 @@ class Carrinhos extends \yii\db\ActiveRecord
         return [
             [['userdata_id', 'produto_id'], 'integer'],
             [['ivatotal', 'total'], 'number'],
-            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
+            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => Userdata::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
@@ -71,7 +71,7 @@ class Carrinhos extends \yii\db\ActiveRecord
      */
     public function getProduto()
     {
-        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
+        return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
     }
 
     /**

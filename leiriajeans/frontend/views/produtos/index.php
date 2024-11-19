@@ -38,7 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                 <div class="shop_desc">
-                       
+
+                                    <h1><?= Html::encode($model->nome) ?></h1>
+                                    <p>Preço: <?= Html::encode($model->preco) ?></p>
+
+                                    <?= Html::beginForm(['produtos/adicionar-ao-carrinho', 'id' => $model->id], 'post') ?>
+                                    <label>Quantidade:</label>
+                                    <?= Html::input('number', 'quantidade', 1, ['min' => 1]) ?>
+                                    <?= Html::submitButton('Adicionar ao Carrinho', ['class' => 'btn btn-success']) ?>
+                                    <?= Html::endForm() ?>
 
                                     <h3><a href="#"><?= Html::encode($model->nome) ?></a></h3>
                                     <p><?= Html::encode($model->descricao) ?> </p>

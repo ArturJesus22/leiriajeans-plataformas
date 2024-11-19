@@ -70,33 +70,6 @@ class ImagensController extends Controller
     {
         $model = new Imagens();
 
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
-
-                if ($uploadPaths = $model->upload()) {
-                    foreach ($uploadPaths as $file) {
-                        $newModel = new Imagens();
-                        $newModel->imageFiles = UploadedFile::getInstances($newModel, 'imageFiles');
-
-                        $fileImagem = pathinfo($file);
-
-                        $newModel->fileName = $fileImagem['basename'];
-                        $newModel->produto_id = $model->produto_id;
-                        // If $produto_id is provided, set it in the new model
-                        $newModel->save();
-                    }
-
-
-                    // Redirect to the index action with or without produto_id
-                    return $this->redirect(['index']);
-                }
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
         return $this->render('create', [
             'model' => $model,
         ]);

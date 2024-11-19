@@ -42,7 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-
                             <ul class="product-colors">
                                 <h3>Cores</h3>
                                 <ul class="list-unstyled d-flex flex-wrap">

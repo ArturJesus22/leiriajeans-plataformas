@@ -41,4 +41,11 @@ class Tamanhos extends \yii\db\ActiveRecord
             'nome' => 'Nome',
         ];
     }
+
+    public function getProdutos()
+    {
+        return $this->hasMany(Produto::class, ['id' => 'produto_id'])
+            ->viaTable('produto_tamanho', ['tamanho_id' => 'id']);
+    }
+
 }

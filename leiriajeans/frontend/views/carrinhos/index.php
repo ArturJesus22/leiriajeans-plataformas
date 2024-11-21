@@ -1,6 +1,6 @@
 <?php
 
-use common\Models\Carrinhos;
+use common\models\Carrinhos;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

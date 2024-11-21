@@ -1,0 +1,86 @@
+
+/* Geral */
+body {
+    background-color: #f4f7fc;
+    font-family: 'Arial', sans-serif;
+}
+
+.user-view {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Título */
+.user-view h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Botões */
+.user-view p {
+    text-align: center;
+}
+
+.user-view .btn {
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+/* Detalhes */
+.detail-view th {
+    width: 200px;
+    text-align: left;
+    color: #6c757d;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.detail-view td {
+    color: #333;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* Labels personalizadas */
+.detail-view th {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.detail-view td {
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .user-view {
+        padding: 15px;
+    }
+
+    .detail-view th,
+    .detail-view td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

@@ -32,22 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row shop_box-top">
                         <div class="col-md-3 shop_box"><a href="single.html">
                                 <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>"><img src="../../web/images/calcas.jpg" class="img-responsive" alt=""/>
-                                <span class="new-box">
-                        </span>
-                                </span>
-
-
+                                <span class="new-box"></span>
                                 <div class="shop_desc">
-
-                                    <h1><?= Html::encode($model->nome) ?></h1>
-                                    <p>Preço: <?= Html::encode($model->preco) ?></p>
-
-                                    <?= Html::beginForm(['produtos/adicionar-ao-carrinho', 'id' => $model->id], 'post') ?>
-                                    <label>Quantidade:</label>
-                                    <?= Html::input('number', 'quantidade', 1, ['min' => 1]) ?>
-                                    <?= Html::submitButton('Adicionar ao Carrinho', ['class' => 'btn btn-success']) ?>
-                                    <?= Html::endForm() ?>
-
                                     <h3><a href="#"><?= Html::encode($model->nome) ?></a></h3>
                                     <p><?= Html::encode($model->descricao) ?> </p>
                                     <span class="actual"><?= Html::encode($model->preco) ?></span>

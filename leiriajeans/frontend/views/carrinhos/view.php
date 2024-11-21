@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\Models\Carrinhos $model */
+/** @var common\models\Carrinhos $model */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Carrinhos', 'url' => ['index']];

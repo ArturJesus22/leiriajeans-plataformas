@@ -61,7 +61,7 @@ class FaturasController extends Controller
 
     public function search($params)
     {
-        $query = Faturas::find(); // Ajuste isso conforme necessário para obter os métodos de pagamento.
+        $query = Faturas::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

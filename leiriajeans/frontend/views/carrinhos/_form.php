@@ -4,7 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
+<<<<<<< HEAD
+/** @var common\models\Carrinhos $model */
+=======
 /** @var common\Models\Carrinhos $model */
+>>>>>>> origin/main
 /** @var yii\widgets\ActiveForm $form */
 ?>
 

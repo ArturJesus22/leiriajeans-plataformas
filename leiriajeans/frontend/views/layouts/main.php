@@ -19,7 +19,6 @@ AppAsset::register($this);
     <link rel="icon" href="<?= Yii::getAlias('@web/images/logo2.png') ?>" type="image/x-icon">
     <link href="<?= Yii::getAlias('@web/css/bootstrap.css') ?>" rel='stylesheet' type='text/css' />
     <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
-    <link href="<?= Yii::getAlias('@web/css/style2.css') ?>" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -89,12 +88,24 @@ AppAsset::register($this);
 
                                 <div class="clear"></div>
                             </ul>
+
                         </div>
+                        <div class="clear"></div>
                     </div>
                     <div class="header_right">
+
+
                         <ul class="icon1 sub-icon1 profile_img">
-                            <li><a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['carrinhos/index']) ?>"> </a></li>
+                            <li>
+                                <?php if (!Yii::$app->user->isGuest): ?>
+                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>"></a>
+                                <?php else: ?>
+                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>"></a>
+                                <?php endif; ?>
+                            </li>
                         </ul>
+
+                        <div class="clear"></div>
                     </div>
                 </div>
             </div>
@@ -125,28 +136,22 @@ AppAsset::register($this);
                 <div class="col-md-3">
                     <ul class="footer_box">
                         <h4>Products</h4>
-                        <li><a href="#">Mens</a></li>
-                        <li><a href="#">Womens</a></li>
-                        <li><a href="#">Youth</a></li>
+                        <li><a href="#">Homem</a></li>
+                        <li><a href="#">Mulher</a></li>
                        </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">
-                        <h4>About</h4>
-                        <li><a href="#">Careers and internships</a></li>
-                        <li><a href="#">Sponserships</a></li>
-                        <li><a href="#">team</a></li>
-                        <li><a href="#">Catalog Request/Download</a></li>
+                        <h4>Sobre</h4>
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['site/team']) ?>">Team</a></li>
+                        <li><a href="#">Ver Produtos</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">
-                        <h4>Customer Support</h4>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping and Order Tracking</a></li>
-                        <li><a href="#">Easy Returns</a></li>
-                        <li><a href="#">Warranty</a></li>
-                        <li><a href="#">Replacement Binding Parts</a></li>
+                        <h4>Suporte</h4>
+                        <li><a href="#">Contacta-nos!</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -159,9 +164,9 @@ AppAsset::register($this);
                             </form>
                         </div>
                         <ul class="social">
-                            <li class="facebook"><a href="#"><span> </span></a></li>
-                            <li class="twitter"><a href="#"><span> </span></a></li>
-                            <li class="instagram"><a href="#"><span> </span></a></li>
+                            <li class="facebook"><a href="https://www.facebook.com/politecnico.de.leiria/"><span> </span></a></li>
+                            <li class="twitter"><a href="https://x.com/estg_ei"><span> </span></a></li>
+                            <li class="instagram"><a href="https://www.instagram.com/politecnico_de_leiria/"><span> </span></a></li>
                         </ul>
 
                     </ul>

@@ -1,8 +1,8 @@
 <?php
 
-namespace frontend\controllers;
+namespace frontend\Controllers;
 
-use common\Models\Carrinhos;
+use common\models\Carrinhos;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

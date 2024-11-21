@@ -3,7 +3,7 @@
 /** @var yii\web\View $this */
 
 use yii\helpers\Html;
-
+use yii\helpers\Url;
 $this->title = 'LeiriaJeans';
 ?>
 
@@ -14,6 +14,7 @@ $this->title = 'LeiriaJeans';
         <title><?= Html::encode($this->title) ?></title>
         <link href="<?= Yii::getAlias('@web/css/bootstrap.css') ?>" rel='stylesheet' type='text/css' />
         <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
+        <link href="<?= Yii::getAlias('@web/css/style.css2') ?>" rel='stylesheet' type='text/css' />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -68,16 +69,13 @@ $this->title = 'LeiriaJeans';
     <br>
     <br>
 
-    <div class="content-bottom">
-        <div class="container">
-            <div class="row content_bottom-text">
-                <div class="col-md-7">
-                    <h3>The Mountains<br>Snowboarding</h3>
-                    <p class="m_1">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio.</p>
-                    <p class="m_2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio.</p>
-                </div>
-            </div>
-        </div>
+    <div class="imagens">
+        <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
+         <img src="<?= Yii::getAlias('@web/images/vestidopreto.jpg')?>" alt="Imagem 1" class="imagem"/>
+        </a>
+        <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
+        <img src="<?= Yii::getAlias('@web/images/polo1.webp')?>" alt="Imagem 2" class="imagem"/>
+        </a>
     </div>
     <div class="features">
         <div class="container">
@@ -86,12 +84,12 @@ $this->title = 'LeiriaJeans';
             <div class="row">
                 <div class="col-md-3 top_box">
                     <div class="view view-ninth"><a href="">
-                            <img src="<?= Yii::getAlias('@web/images/pic1.jpg') ?>" class="img-responsive" alt=""/>
+                            <img src="<?= Yii::getAlias('@web/images/jordancactus.webp') ?>" class="img-responsive" alt=""/>
                             <div class="mask mask-1"> </div>
                             <div class="mask mask-2"> </div>
                             <div class="content">
-                                <h2>LeiriaJeans Style #9</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing.</p>
+                                <h2>Sapatilhas</h2>
+                                <p>Veste-te com LeiriaJeans</p>
                             </div>
                         </a> </div
                 </div>
@@ -100,25 +98,25 @@ $this->title = 'LeiriaJeans';
             </div>
             <div class="col-md-3 top_box">
                 <div class="view view-ninth"><a href="single.html">
-                        <img src="<?= Yii::getAlias('@web/images/pic2.jpg') ?>" class="img-responsive" alt=""/>
+                        <img src="<?= Yii::getAlias('@web/images/nudeproject.webp') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">
-                            <h2>LeiriaJeans Style #9</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing.</p>
+                            <h2>T-Shirts</h2>
+                            <p>A melhor roupa na LeiriaJeans</p>
                         </div>
                     </a> </div>
-                <h4 class="m_4"><a href="#">Veste-te com a LeiriaJeans!</a></h4>
-                <p class="m_5">Junta-te a nós!</p>
+                <h4 class="m_4"><a href="#">LeiriaJeans!</a></h4>
+
             </div>
             <div class="col-md-3 top_box">
                 <div class="view view-ninth"><a href="single.html">
-                        <img src="<?= Yii::getAlias('@web/images/pic3.jpg') ?>" class="img-responsive" alt=""/>
+                        <img src="<?= Yii::getAlias('@web/images/calçacarhart.jpg') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">
-                            <h2>LeiriaJeans Style #9</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing.</p>
+                            <h2>Calças</h2>
+                            <p>Grande variedade de roupa</p>
                         </div>
                     </a> </div>
                 <h4 class="m_4"><a href="#">Veste-te com a LeiriaJeans!</a></h4>
@@ -126,7 +124,7 @@ $this->title = 'LeiriaJeans';
             </div>
             <div class="col-md-3 top_box1">
                 <div class="view view-ninth"><a href="single.html">
-                        <img src="<?= Yii::getAlias('@web/images/pic4.jpg') ?>" class="img-responsive" alt=""/>
+                        <img src="<?= Yii::getAlias('@web/images/cap.jpg') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">

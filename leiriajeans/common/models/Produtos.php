@@ -83,8 +83,10 @@ class Produtos extends \yii\db\ActiveRecord
 
     public function getTamanhos()
     {
-        return $this->hasMany(Tamanhos::class, ['produto_id' => 'id']);
+        return $this->hasMany(Tamanho::class, ['id' => 'tamanho_id'])
+            ->viaTable('produto_tamanho', ['produto_id' => 'id']);
     }
+
 
     /**
      * Gets query for [[Categoria]].

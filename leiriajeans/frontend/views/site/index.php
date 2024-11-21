@@ -13,8 +13,8 @@ $this->title = 'LeiriaJeans';
     <head>
         <title><?= Html::encode($this->title) ?></title>
         <link href="<?= Yii::getAlias('@web/css/bootstrap.css') ?>" rel='stylesheet' type='text/css' />
-        <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' /><!--end slider -->
-
+        <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
+        <link href="<?= Yii::getAlias('@web/css/style2.css') ?>" rel='stylesheet' type='text/css' /><
 
 
 
@@ -27,18 +27,18 @@ $this->title = 'LeiriaJeans';
     <style>
         .content-top {
             position: relative;
-            background-image: url('<?= Yii::getAlias('@web/images/banner.gif') ?>'); /* Caminho para a sua imagem de fundo */
-            background-size: cover; /* Faz a imagem cobrir toda a área */
-            background-position: center; /* Centraliza a imagem de fundo */
-            padding: 50px; /* Espaçamento interno para o texto */
-            color: white; /* Cor do texto */
+            background-image: url('<?= Yii::getAlias('@web/images/banner.gif') ?>');
+            background-size: cover;
+            background-position: center;
+            padding: 50px;
+            color: white;
         }
 
 
-        /* Ajuste de estilo para o parágrafo */
+
         .content-top p {
-            font-size: 20px; /* Tamanho do texto */
-            font-style: italic; /* Torna o texto em itálico */
+            font-size: 20px;
+            font-style: italic;
         }
     </style>
 
@@ -62,10 +62,10 @@ $this->title = 'LeiriaJeans';
     <br>
 
     <div class="imagens">
-        <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
+        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','categoria' =>'sexo'])?>">
          <img src="<?= Yii::getAlias('@web/images/roupamulher.jpg')?>" alt="Imagem 1" class="imagem"/>
         </a>
-        <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
+        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','categoria' =>'sexo'])?>">
         <img src="<?= Yii::getAlias('@web/images/polo1.webp')?>" alt="Imagem 2" class="imagem"/>
         </a>
     </div>

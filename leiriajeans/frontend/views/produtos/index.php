@@ -53,28 +53,28 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
 
 
-<!--    --><?php //= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//            'id',
-//            'nome',
-//            'descricao:ntext',
-//            'preco',
-//            'sexo',
+    <?php GridView::widget([
+      'dataProvider' => $dataProvider,
+       'filterModel' => $searchModel,
+       'columns' => [
+           ['class' => 'yii\grid\SerialColumn'],
+
+          'id',
+          'nome',
+          'descricao:ntext',
+          'preco',
+          'sexo',
 //            //'tamanho_id',
 //            //'cor_id',
 //            //'iva_id',
-//            [
-//                'class' => ActionColumn::className(),
-//                'urlCreator' => function ($action, Produtos $model, $key, $index, $column) {
+       [
+                'class' => ActionColumn::className(),
+               'urlCreator' => function ($action, Produtos $model, $key, $index, $column) {
 //                    return Url::toRoute([$action, 'id' => $model->id]);
-//                 }
-//            ],
-//        ],
-//    ]); ?>
+                }
+           ],
+       ],
+  ]); ?>
 
 
 

@@ -70,6 +70,9 @@ class ProdutosSearch extends Produtos
             ->andFilterWhere(['like', 'sexo', $this->sexo])
             ->andFilterWhere(['like', 'tamanho_id', $this->tamanho_id]);
 
+
+
+
         return $dataProvider;
     }
 }

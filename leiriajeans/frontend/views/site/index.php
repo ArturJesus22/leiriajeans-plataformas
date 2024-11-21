@@ -69,6 +69,7 @@ $this->title = 'LeiriaJeans';
         <img src="<?= Yii::getAlias('@web/images/polo1.webp')?>" alt="Imagem 2" class="imagem"/>
         </a>
     </div>
+
     <div class="features">
         <div class="container">
             <h3 class="m_3">Features</h3>

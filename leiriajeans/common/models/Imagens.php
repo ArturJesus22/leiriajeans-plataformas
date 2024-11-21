@@ -64,18 +64,23 @@ class Imagens extends \yii\db\ActiveRecord
 
     public function upload()
     {
+
         $uploadPaths = [];
 
         if ($this->validate()) {
-            foreach ($this->imageFiles as $file) {
-                $uid = uniqid();
-                $uploadPath = Yii::getAlias('@frontend/web/images/produtos/') . $uid . $file->baseName . '.' . $file->extension;
 
-                if ($file->saveAs($uploadPath, false)) {
-                    $uploadPaths[] = $uploadPath;
-                } else {
-                    return false;
-                }
+            foreach ($this->imageFiles as $file) {
+
+                $uid = uniqid(); //gerar identificadores para os nomes nunca serem iguais
+
+                $uploadBackOfficePath = Yii::getAlias('@backend/web/public/images/produtos/') . $uid . $file->baseName . '.' . $file->extension;
+                $uploadFrontOfficePath = Yii::getAlias('@frontend/web/public/imagens/produtos/') . $uid . $file->baseName . '.' . $file->extension;
+
+                $file->saveAs($uploadBackOfficePath, false);
+                $file->saveAs($uploadFrontOfficePath, false);
+
+                $uploadPaths[] = $uploadBackOfficePath;
+
             }
             return $uploadPaths;
         } else {

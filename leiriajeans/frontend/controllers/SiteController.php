@@ -256,4 +256,10 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionTeam()
+    {
+        return $this->render('team', [
+        ]);
+    }
 }

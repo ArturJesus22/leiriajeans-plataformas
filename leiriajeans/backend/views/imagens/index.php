@@ -24,8 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($dataProvider->getModels() as $model): ?>
             <div class="image-item">
                 <?php
-                // Gere a URL pública para a imagem no frontend
-                $imageUrl = Url::to('@frontend/web/images/produtos/' . $model->fileName); // Alterado para '@frontend' no lugar de '@web'
+                $imageUrl = Yii::getAlias('@web/backend/web/public/images/produtos/' . $model->fileName);
                 ?>
                 <?= Html::a(
                     Html::img($imageUrl, ['alt' => $model->fileName, 'class' => 'img-thumbnail']),
@@ -34,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php endforeach; ?>
     </div>
+
 
     <style>
         .images-gallery {

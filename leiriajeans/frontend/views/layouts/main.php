@@ -92,33 +92,17 @@ AppAsset::register($this);
                     </div>
                     <div class="header_right">
 
-                        <!-- start search-->
-                        <div class="search-box">
-                            <div id="sb-search" class="sb-search">
-                                <form>
-                                    <input class="sb-search-input" placeholder="Pesquisar produtos..." type="search" name="search" id="search">
-                                    <input class="sb-search-submit" type="submit" value="">
-                                    <span class="sb-icon-search"> </span>
-                                </form>
-                            </div>
-                        </div>
 
-
-                        <!----//search-scripts---->
                         <ul class="icon1 sub-icon1 profile_img">
-                            <li><a class="active-icon c1" href="#"> </a>
-                                <ul class="sub-icon1 list">
-                                    <div class="clear"></div>
-                                    <li class="list_img"><img src="<?= Yii::getAlias('@web/images/1.jpg') ?>" alt=""/></li>
-                                    <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x$12.00</span></li>
-                                    <div class="login_buttons">
-                                        <div class="check_button"><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Check out</a></div>
-                                        <div class="clear"></div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </ul>
+                            <li>
+                                <?php if (!Yii::$app->user->isGuest): ?>
+                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>"></a>
+                                <?php else: ?>
+                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>"></a>
+                                <?php endif; ?>
                             </li>
                         </ul>
+
                         <div class="clear"></div>
                     </div>
                 </div>
@@ -150,28 +134,22 @@ AppAsset::register($this);
                 <div class="col-md-3">
                     <ul class="footer_box">
                         <h4>Products</h4>
-                        <li><a href="#">Mens</a></li>
-                        <li><a href="#">Womens</a></li>
-                        <li><a href="#">Youth</a></li>
+                        <li><a href="#">Homem</a></li>
+                        <li><a href="#">Mulher</a></li>
                        </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">
-                        <h4>About</h4>
-                        <li><a href="#">Careers and internships</a></li>
-                        <li><a href="#">Sponserships</a></li>
-                        <li><a href="#">team</a></li>
-                        <li><a href="#">Catalog Request/Download</a></li>
+                        <h4>Sobre</h4>
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['site/team']) ?>">Team</a></li>
+                        <li><a href="#">Ver Produtos</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">
-                        <h4>Customer Support</h4>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping and Order Tracking</a></li>
-                        <li><a href="#">Easy Returns</a></li>
-                        <li><a href="#">Warranty</a></li>
-                        <li><a href="#">Replacement Binding Parts</a></li>
+                        <h4>Suporte</h4>
+                        <li><a href="#">Contacta-nos!</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -184,9 +162,9 @@ AppAsset::register($this);
                             </form>
                         </div>
                         <ul class="social">
-                            <li class="facebook"><a href="#"><span> </span></a></li>
-                            <li class="twitter"><a href="#"><span> </span></a></li>
-                            <li class="instagram"><a href="#"><span> </span></a></li>
+                            <li class="facebook"><a href="https://www.facebook.com/politecnico.de.leiria/"><span> </span></a></li>
+                            <li class="twitter"><a href="https://x.com/estg_ei"><span> </span></a></li>
+                            <li class="instagram"><a href="https://www.instagram.com/politecnico_de_leiria/"><span> </span></a></li>
                         </ul>
 
                     </ul>

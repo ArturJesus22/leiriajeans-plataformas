@@ -15,7 +15,8 @@
                 <img src="<?= Yii::getAlias('@web/public/images/user.png') ?>" alt=""/></a>
             </div>
             <div class="info">
-                <a href="<?= Yii::$app->urlManager->createUrl(['user/perfil']) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
+                <?php $userid = Yii::$app->user->id; ?>
+                <a href="<?= Yii::$app->urlManager->createUrl(['user/view', 'id' => $userid]) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 

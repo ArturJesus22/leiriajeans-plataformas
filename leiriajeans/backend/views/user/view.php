@@ -12,7 +12,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+
+<head>
+    <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/style.css')?> ">
+</head>
+
 <div class="user-view">
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Atualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -25,9 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-
     <?= DetailView::widget([
-        'model' => $model, // Model User
+        'model' => $model,
         'attributes' => [
             'username',
             'email:email',
@@ -57,5 +62,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
-
 </div>

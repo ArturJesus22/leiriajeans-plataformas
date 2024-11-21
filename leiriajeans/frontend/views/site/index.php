@@ -13,15 +13,7 @@ $this->title = 'LeiriaJeans';
     <head>
         <title><?= Html::encode($this->title) ?></title>
         <link href="<?= Yii::getAlias('@web/css/bootstrap.css') ?>" rel='stylesheet' type='text/css' />
-        <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
-        <link href="<?= Yii::getAlias('@web/css/style.css2') ?>" rel='stylesheet' type='text/css' />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="<?= Yii::getAlias('@web/css/fwslider.css') ?>" media="all">
-
-
-        <!--end slider -->
+        <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' /><!--end slider -->
 
 
 
@@ -71,7 +63,7 @@ $this->title = 'LeiriaJeans';
 
     <div class="imagens">
         <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
-         <img src="<?= Yii::getAlias('@web/images/vestidopreto.jpg')?>" alt="Imagem 1" class="imagem"/>
+         <img src="<?= Yii::getAlias('@web/images/roupamulher.jpg')?>" alt="Imagem 1" class="imagem"/>
         </a>
         <a href="<?= Url::to(['user/index']) ?>"> <!-- Gera a URL para user/index -->
         <img src="<?= Yii::getAlias('@web/images/polo1.webp')?>" alt="Imagem 2" class="imagem"/>

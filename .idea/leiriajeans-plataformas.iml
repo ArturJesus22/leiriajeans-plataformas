@@ -10,7 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/frontend/tests/_support" isTestSource="true" packagePrefix="frontend\tests\" />
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/leiriajeans/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/almasaeed2010/adminlte" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/behat/gherkin" />

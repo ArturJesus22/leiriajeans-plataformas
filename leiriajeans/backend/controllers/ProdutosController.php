@@ -83,7 +83,7 @@ class ProdutosController extends Controller
                     $uploadPaths = $modelImagens->upload();
 
                     if ($uploadPaths !== false) {
-                        // Iterar sobre os caminhos e salvar as imagens na base de dados
+                        // Iterar sobre os caminhos e guardar as imagens na base de dados
                         foreach ($modelImagens->imageFiles as $index => $file) {
                             $imagem = new Imagens();
                             $imagem->produto_id = $model->id;

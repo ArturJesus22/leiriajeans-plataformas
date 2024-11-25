@@ -1,144 +1,149 @@
 <?php
 
-namespace frontend\Controllers;
+namespace frontend\controllers;
 
+use Yii;
+use yii\web\Response;
+use common\models\Produtos;
 use common\models\Carrinhos;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\UsersForm;
 
 /**
  * CarrinhosController implements the CRUD actions for Carrinhos model.
  */
 class CarrinhosController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'add' => ['post'],
                 ],
-            ]
-        );
-    }
-
-    /**
-     * Lists all Carrinhos models.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Carrinhos::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
             ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        ];
     }
 
-    /**
-     * Displays a single Carrinhos model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
+    public function beforeAction($action)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if ($action->id === 'add') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
-    /**
-     * Creates a new Carrinhos model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
+    public function actionAdd()
     {
-        $model = new Carrinhos();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        try {
+            if (Yii::$app->user->isGuest) {
+                return ['success' => false, 'message' => 'Faça login primeiro.'];
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+            if (!$userForm) {
+                return ['success' => false, 'message' => 'Utilizador não encontrado.'];
+            }
+
+            $id = Yii::$app->request->post('id');
+            $produto = Produtos::findOne($id);
+
+            if (!$produto) {
+                return ['success' => false, 'message' => 'Produto não encontrado.'];
+            }
+
+            // Guardar na sessao
+            $session = Yii::$app->session;
+            $cart = $session->get('cart', []);
+
+            if (isset($cart[$id])) {
+                $cart[$id]['quantidade']++;
+            } else {
+                $cart[$id] = [
+                    'id' => $id,
+                    'nome' => $produto->nome,
+                    'preco' => $produto->preco,
+                    'quantidade' => 1,
+                ];
+            }
+
+            $session->set('cart', $cart);
+
+            // Guardar na base de dados
+            $carrinho = new Carrinhos([
+                'userdata_id' => $userForm->id,
+                'produto_id' => $id,
+                'total' => $produto->preco,
+                'ivatotal' => $produto->preco * $produto->iva_id,
+            ]);
+
+            if (!$carrinho->save()) {
+                return ['success' => false, 'message' => 'Erro ao guardar no carrinho: '];
+            }
+
+            return ['success' => true, 'message' => 'Produto adicionado ao carrinho com sucesso!'];
+
+        } catch (\Exception $e) {
+            Yii::error('Erro ao adicionar ao carrinho: ' . $e->getMessage());
+            return ['success' => false, 'message' => 'Erro ao adicionar produto: ' . $e->getMessage()];
+        }
     }
 
-    /**
-     * Updates an existing Carrinhos model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
+    public function actionRemove($id)
     {
-        $model = $this->findModel($id);
+        // Remover da sessão
+        $session = Yii::$app->session;
+        $cart = $session->get('cart', []);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            $session->set('cart', $cart);
+
+            // Remover da base de dados
+            if (!Yii::$app->user->isGuest) {
+                $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+                if ($userForm) {
+                    Carrinhos::deleteAll([
+                        'userdata_id' => $userForm->id,
+                        'produto_id' => $id
+                    ]);
+                }
+            }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['faturas/index']);
     }
 
-    /**
-     * Deletes an existing Carrinhos model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
+    public function carregarCarrinho()
     {
-        $this->findModel($id)->delete();
+        if (!Yii::$app->user->isGuest) {
+            $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+            if ($userForm) {
+                $carrinhoItems = Carrinhos::find()
+                    ->where(['userdata_id' => $userForm->id])
+                    ->all();
 
-        return $this->redirect(['index']);
-    }
+                $session = Yii::$app->session;
+                $cart = [];
 
-    /**
-     * Finds the Carrinhos model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Carrinhos the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Carrinhos::findOne(['id' => $id])) !== null) {
-            return $model;
+                foreach ($carrinhoItems as $item) {
+                    $produto = Produtos::findOne($item->produto_id);
+                    if ($produto) {
+                        $cart[$produto->id] = [
+                            'id' => $produto->id,
+                            'nome' => $produto->nome,
+                            'preco' => $produto->preco,
+                            'quantidade' => 1,
+                        ];
+                    }
+                }
+
+                $session->set('cart', $cart);
+            }
         }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

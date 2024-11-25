@@ -108,6 +108,9 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        // Limpar carrinho da sessão
+        Yii::$app->session->remove('cart');
+        
         Yii::$app->user->logout();
 
         return $this->goHome();

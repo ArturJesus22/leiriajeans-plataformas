@@ -174,7 +174,7 @@ class UserController extends Controller
 
     public function actionPerfil() {
         $userId = \Yii::$app->user->id; //ID do user com login
-        $model = User::findOne($userId); // Dados do usuário
+        $model = User::findOne($userId); // Dados do utilizador
 
         return $this->render('view', [
             'model' => $model,

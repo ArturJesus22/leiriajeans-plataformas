@@ -230,4 +230,41 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(AuthAssignment::class, ['user_id' => 'id']);
     }
 
+    public function afterLogin($event)
+    {
+        try {
+            // Encontrar o userdata_id correspondente
+            $userForm = UsersForm::findOne(['user_id' => $this->id]);
+            if (!$userForm) {
+                Yii::error('UserForm não encontrado para user_id: ' . $this->id);
+                return;
+            }
+
+            // Carregar produtos do carrinho
+            $carrinhoItems = Carrinhos::find()
+                ->where(['userdata_id' => $userForm->id])
+                ->all();
+
+            $session = Yii::$app->session;
+            $cart = [];
+
+            foreach ($carrinhoItems as $item) {
+                $produto = Produtos::findOne($item->produto_id);
+                if ($produto) {
+                    $cart[$produto->id] = [
+                        'id' => $produto->id,
+                        'nome' => $produto->nome,
+                        'preco' => $produto->preco,
+                        'quantidade' => 1,
+                    ];
+                }
+            }
+
+            $session->set('cart', $cart);
+
+        } catch (\Exception $e) {
+            Yii::error('Erro ao carregar carrinho: ' . $e->getMessage());
+        }
+    }
+
 }

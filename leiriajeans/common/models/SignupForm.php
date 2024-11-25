@@ -66,10 +66,10 @@ class SignupForm extends Model
             ['rua', 'string', 'max' => 255],
 
             ['telefone', 'required'],
-            ['telefone', 'string', 'max' => 255],
+            ['telefone', 'string', 'max' => 9],
 
             ['nif', 'required'],
-            ['nif', 'string', 'max' => 255],
+            ['nif', 'string', 'max' => 9],
 
             ['role', 'required'],
             ['role', 'string', 'max' => 255],

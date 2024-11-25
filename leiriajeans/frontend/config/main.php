@@ -19,6 +19,16 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'class' => 'yii\web\User',
+            'on afterLogin' => function($event) {
+                $user = $event->identity;
+                if (method_exists($user, 'afterLogin')) {
+                    $user->afterLogin($event);
+                }
+            },
+            'on beforeLogout' => function($event) {
+                Yii::$app->session->remove('cart');
+            },
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -40,6 +50,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'carrinhos/add' => 'carrinhos/add',
             ],
         ],
     ],

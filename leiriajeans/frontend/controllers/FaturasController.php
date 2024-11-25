@@ -7,6 +7,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii;
+use common\models\Carrinhos;
 
 /**
  * FaturasController implements the CRUD actions for Faturas model.
@@ -18,17 +20,14 @@ class FaturasController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**
@@ -38,24 +37,11 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
-        $query = Faturas::find()->where(['statuspedido' => 'ativo']);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => Faturas::find()->where(['statuspedido' => 'ativo']),
-//            'pagination' => [
-//                'pageSize' => 50
-//            ],
-//            'sort' => [
-//                'defaultOrder' => [
-//                    'id' => SORT_DESC,
-//                ]
-//            ],
-//        ]);
+        $session = Yii::$app->session;
+        $cart = $session->get('cart', []);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'cart' => $cart,
         ]);
     }
 

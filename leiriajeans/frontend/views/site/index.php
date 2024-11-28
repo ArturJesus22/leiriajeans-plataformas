@@ -62,12 +62,14 @@ $this->title = 'LeiriaJeans';
     <br>
 
     <div class="imagens">
-        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','categoria' =>'sexo'])?>">
+        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','sexo' =>'F'])?>">
          <img src="<?= Yii::getAlias('@web/images/roupamulher.jpg')?>" alt="Imagem 1" class="imagem"/>
         </a>
-        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','categoria' =>'sexo'])?>">
+
+        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index','sexo' =>'M'])?>">
         <img src="<?= Yii::getAlias('@web/images/polo1.webp')?>" alt="Imagem 2" class="imagem"/>
         </a>
+
     </div>
 
     <div class="features">

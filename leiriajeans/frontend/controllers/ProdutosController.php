@@ -2,12 +2,13 @@
 
 namespace frontend\controllers;
 
+use common\models\Categorias;
 use common\Models\Produtos;
 use frontend\Models\ProdutosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
 /**
  * ProdutosController implements the CRUD actions for Produtos model.
  */
@@ -36,15 +37,39 @@ class ProdutosController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($sexo)
     {
+
+        $categorias = Categorias::find()
+                        ->select('id')
+                        ->where(['sexo' => $sexo])
+                        ->column();
+
+
+
+
+
         $searchModel = new ProdutosSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $query = Produtos::find()
+            ->where(['categoria_id' => $categorias]);
+
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 12, // Número de produtos por página
+            ],
+        ]);
+
+        $searchModel = new ProdutosSearch();
+
+
+
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                ]);
+
     }
 
     /**

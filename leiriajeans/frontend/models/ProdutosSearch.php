@@ -67,10 +67,12 @@ class ProdutosSearch extends Produtos
 
         $query->andFilterWhere(['like', 'nome', $this->nome])
             ->andFilterWhere(['like', 'descricao', $this->descricao])
-            ->andFilterWhere(['like', 'sexo', $this->sexo])
+            ->andFilterWhere(['categoria' => $this->categoria])
+
             ->andFilterWhere(['like', 'tamanho_id', $this->tamanho_id]);
 
 
+        $query->andFilterWhere(['like', 'sexo', $this->sexo]);
 
 
         return $dataProvider;

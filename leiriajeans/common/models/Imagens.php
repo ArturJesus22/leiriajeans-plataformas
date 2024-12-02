@@ -72,7 +72,7 @@ class Imagens extends \yii\db\ActiveRecord
             foreach ($this->imageFiles as $file) {
                 $uid = uniqid();
                 $uploadPathBack = Yii::getAlias('@backend/web/public/imagens/produtos/') . $uid . $file->baseName . '.' . $file->extension;
-                $uploadPathFront = Yii::getAlias('@frontend/web/public/imagens/produtos/') . $uid . $file->baseName . '.' . $file->extension;
+                $uploadPathFront = Yii::getAlias('@frontend/web/images/produtos/') . $uid . $file->baseName . '.' . $file->extension;
 
                 $file->saveAs($uploadPathBack, false);
                 $file->saveAs($uploadPathFront, false);
@@ -81,8 +81,10 @@ class Imagens extends \yii\db\ActiveRecord
             }
             return $uploadPaths;
         } else {
+
             return false;
         }
     }
+
 
 }

@@ -6,14 +6,14 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Imagens $model */
 
-$this->title = $model->id;
+$this->title = "Nome do Produto: " . $model->produto->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Imagens', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-?>
-<div class="imagens-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+?>
+
+<div class="imagens-view">
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -26,13 +26,37 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'fileName',
-            'produto_id',
-        ],
-    ]) ?>
+    <div class="image-details">
+        <!-- Exibir a imagem -->
+        <?php
+        $imageUrl = Yii::getAlias('@web/public/imagens/produtos/' . $model->fileName);
+        ?>
+        <div class="image">
+            <?= Html::img($imageUrl, ['alt' => $model->fileName, 'class' => 'img-thumbnail']) ?>
+        </div>
+    </div>
 
 </div>
+
+<style>
+    .image-details {
+        margin-top: 20px;
+    }
+
+    .image {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .product-info {
+        font-size: 16px;
+    }
+
+    .img-thumbnail {
+        max-width: 800px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+

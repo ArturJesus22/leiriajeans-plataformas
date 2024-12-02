@@ -23,8 +23,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'preco') ?>
 
-    <?= $form->field($model, 'sexo') ?>
-
     <?php // echo $form->field($model, 'stock') ?>
 
     <?php // echo $form->field($model, 'tamanho_id') ?>

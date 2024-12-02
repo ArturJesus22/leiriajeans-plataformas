@@ -97,6 +97,9 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->role = $this->role;
+
+        $user->save();
 
         //userData
         $userData->nome = $this->nome;
@@ -105,18 +108,13 @@ class SignupForm extends Model
         $userData->rua = $this->rua;
         $userData->telefone = $this->telefone;
         $userData->nif = $this->nif;
+        $userData->user_id = $user->id;
 
-        $user->save();
-
-
-        $auth = \Yii::$app->authManager;
+        $auth = Yii::$app->authManager;
         $userRole = $auth->getRole($this->role);
         $auth->assign($userRole, $user->id);
 
-        $userData->user_id = $user->id;
-
         $userData->save();
-        var_dump($userData->getErrors());
 
         return $this->sendEmail($user);
     }

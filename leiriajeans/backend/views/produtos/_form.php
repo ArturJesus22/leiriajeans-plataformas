@@ -25,8 +25,6 @@ use common\models\Produtos;
 
     <?= $form->field($model, 'preco')->textInput() ?>
 
-    <?= $form->field($model, 'sexo')->dropDownList([ 'M' => 'M', 'F' => 'F', ], ['prompt' => '']) ?>
-
     <?= $form->field($model, 'stock')->textInput() ?>
 
     <?= $form->field($model, 'tamanho_id')->dropDownList(ArrayHelper::map(Tamanhos::find()->all(),

@@ -24,31 +24,73 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-
             //'id',
             'username',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
             'email:email',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    if ($model->status == 9) {
+                        return 'Bloqueado';
+                    } elseif ($model->status == 10) {
+                        return 'Ativado';
+                    } else {
+                        return 'Desconhecido';
+                    }
+                },
+            ],
+
             'userform.nome',
             'userform.telefone',
             'userform.rua',
             'userform.codpostal',
             'authAssignment.item_name',
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'header' => 'Ações', // Título da coluna
+                'template' => '{view} {update} {delete}',
+                'buttons' =>
+                    [
+                    'view' => function ($url, $model) {
+                        return Html::a(
+                            '<i class="fas fa-eye"></i> Ver User', // Ver User
+                            $url,
+                            ['title' => 'Visualizar User', 'class' => 'btn btn-sm btn-primary']
+                        );
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::a(
+                            '<i class="fas fa-edit"></i> Editar User', // Editar User
+                            $url,
+                            ['title' => 'Editar User', 'class' => 'btn btn-sm btn-warning']
+                        );
+                    },
+                    'delete' => function ($url, $model) {
+                        // Verifica se o status do user é "Bloqueado" (9) ou "Ativado" (10)
+                        $actionUrl = $model->status == 9
+                            ? Url::to(['user/activate', 'id' => $model->id]) // URL para desbloquear
+                            : Url::to(['user/delete', 'id' => $model->id]);  // URL para bloquear
+
+                        $buttonText = $model->status == 9 ? 'Desbloquear' : 'Bloquear';
+                        $buttonClass = $model->status == 9 ? 'btn-success' : 'btn-danger'; // Cor do botão
+                        $icon = $model->status == 9 ? 'fas fa-unlock' : 'fas fa-ban';
+
+                        return Html::a(
+                            "<i class=\"$icon\"></i> $buttonText",
+                            $actionUrl,
+                            [
+                                'title' => $model->status == 9 ? 'Desbloquear User' : 'Bloquear User',
+                                'class' => "btn btn-sm $buttonClass",
+                                'data-confirm' => 'Tem certeza de que deseja alterar o status deste user?',
+                                'data-method' => 'post',
+                            ]
+                        );
+                    },
+                ],
             ],
         ],
     ]); ?>
+
 
 
 </div>

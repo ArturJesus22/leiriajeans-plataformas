@@ -38,10 +38,38 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, MetodosExpedicoes $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+            'header' => 'Ações', // Cabeçalho da coluna
+            'template' => '{view} {update} {delete}', // Define os botões que serão exibidos
+            'buttons' => [
+                'view' => function ($url, $model) {
+                    return Html::a(
+                        '<i class="fas fa-eye"></i> Ver',
+                        $url,
+                        ['title' => 'Visualizar Método de Expedição', 'class' => 'btn btn-sm btn-primary']
+                    );
+                },
+                'update' => function ($url, $model) {
+                    return Html::a(
+                        '<i class="fas fa-edit"></i>Editar',
+                        $url,
+                        ['title' => 'Editar Método de Expedição', 'class' => 'btn btn-sm btn-warning']
+                    );
+                },
+                'delete' => function ($url, $model) {
+                    $blockUrl = Url::to(['metodosexpedicoes/delete', 'id' => $model->id]); // URL para a ação "block"
+                    return Html::a(
+                        '<i class="fas fa-trash"></i> Apagar',
+                        $blockUrl,
+                        [
+                            'title' => 'Apagar Metodo',
+                            'class' => 'btn btn-sm btn-danger',
+                            'data-confirm' => 'Tem certeza de que deseja apagar este Método Expedição?', // Confirmação
+                            'data-method' => 'post', // Método POST para segurança
+                        ]
+                     );
+                    },
+                  ],
+                ],
         ],
     ]); ?>
 

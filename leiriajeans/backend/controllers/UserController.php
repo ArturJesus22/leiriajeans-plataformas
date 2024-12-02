@@ -151,7 +151,22 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        // Atualiza o status para 'inactive'
+        $model->status = 9;
+        $model->save(false);
+
+        return $this->redirect(['index']);
+    }
+
+    public  function actionActivate($id)
+    {
+        $model = $this->findModel($id);
+
+        // Atualiza o status para 'inactive'
+        $model->status = 10;
+        $model->save(false);
 
         return $this->redirect(['index']);
     }

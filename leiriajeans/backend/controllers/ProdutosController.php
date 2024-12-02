@@ -147,7 +147,31 @@ class ProdutosController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        // obter o produto
+        $produto = $this->findModel($id);
+
+        // imagens associadas
+        $imagens = $this->findModelImagens($id);
+
+        foreach ($imagens as $imagem) {
+            $backendPath = Yii::getAlias('@backend/web/public/imagens/produtos/' . $imagem->fileName);
+            $frontendPath = Yii::getAlias('@frontend/web/images/produtos/' . $imagem->fileName);
+
+            // Apagar as imagens
+            if (file_exists($backendPath)) {
+                unlink($backendPath);
+            }
+
+            if (file_exists($frontendPath)) {
+                unlink($frontendPath);
+            }
+
+            // Apagar imagem
+            $imagem->delete();
+        }
+
+        // Apagar o produto
+        $produto->delete();
 
         return $this->redirect(['index']);
     }
@@ -167,4 +191,16 @@ class ProdutosController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    protected function findModelImagens($produtoId)
+    {
+        $imagens = Imagens::findAll(['produto_id' => $produtoId]);
+        if ($imagens !== null && !empty($imagens)) {
+            return $imagens;
+        }
+
+        throw new NotFoundHttpException('Nenhuma imagem foi encontrada para este produto.');
+    }
+
 }

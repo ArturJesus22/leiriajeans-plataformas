@@ -79,6 +79,7 @@ class Imagens extends \yii\db\ActiveRecord
                 $uploadPaths[] = $uploadPathBack;
 
             }
+
             return $uploadPaths;
         } else {
 

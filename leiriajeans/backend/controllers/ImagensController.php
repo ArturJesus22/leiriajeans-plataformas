@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii;
 
 /**
  * ImagensController implements the CRUD actions for Imagens model.
@@ -70,7 +71,7 @@ class ImagensController extends Controller
     {
         $model = new Imagens();
 
-        return $this->render('create', [
+        return $this->render('index', [
             'model' => $model,
         ]);
     }
@@ -104,8 +105,24 @@ class ImagensController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id); // Carrega o modelo da imagem pelo ID
 
+        // Caminhos para as imagens no backend e frontend
+        $backendPath = Yii::getAlias('@backend/web/public/imagens/produtos/' . $model->fileName);
+        $frontendPath = Yii::getAlias('@frontend/web/images/produtos/' . $model->fileName);
+
+        // Apagar arquivos , se existirem
+        if (file_exists($backendPath)) {
+            unlink($backendPath);
+        }
+
+        if (file_exists($frontendPath)) {
+            unlink($frontendPath);
+        }
+
+        $model->delete();
+
+        // Redirecionar para o índice
         return $this->redirect(['index']);
     }
 

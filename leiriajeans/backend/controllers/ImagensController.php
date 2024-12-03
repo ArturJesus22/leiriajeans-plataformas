@@ -107,7 +107,7 @@ class ImagensController extends Controller
     {
         $model = $this->findModel($id); // Carrega o modelo da imagem pelo ID
 
-        // Caminhos para as imagens no backend e frontend
+        // Caminho para as imagens no backend e frontend
         $backendPath = Yii::getAlias('@backend/web/public/imagens/produtos/' . $model->fileName);
         $frontendPath = Yii::getAlias('@frontend/web/images/produtos/' . $model->fileName);
 
@@ -122,7 +122,7 @@ class ImagensController extends Controller
 
         $model->delete();
 
-        // Redirecionar para o índice
+        // Redirecionar para o index
         return $this->redirect(['index']);
     }
 

@@ -80,7 +80,8 @@ AppAsset::register($this);
                                 }?>
                                 <li>  |    </li>
 
-                                <li><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index']) ?>">Produtos</a></li>
+                                <li><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'sexo' => 'All']) ?>">Produtos</a></li>
+
                                 <li><a href="<?= Yii::$app->urlManager->createUrl(['empresa/index']) ?>">Sobre Nós</a></li>
                                 <li><a href="<?= Yii::$app->urlManager->createUrl(['site/contact']) ?>">Contactos</a></li>
 

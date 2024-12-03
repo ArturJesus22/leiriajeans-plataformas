@@ -8,12 +8,6 @@ use yii\helpers\Url;
 /** @var frontend\Models\ProdutosSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-if (Yii::$app->user->isGuest) {
-    echo 'Utilizador não tem sessão iniciada';
-} else {
-    echo 'Utilizador com sessão iniciada, ID: ' . Yii::$app->user->id;
-}
-
 $this->title = 'Produtos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,8 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="container">
                         <div class="row shop_box-top">
                             <div class="col-md-3 shop_box">
+                                <?php
+                                // Obter a primeira imagem associada ao produto
+                                $imagem = $model->imagens ? $model->imagens[0] : null;
+                                // Verifique se a imagem existe e tenha um caminho válido
+                                $imageUrl = $imagem ? Yii::getAlias('@web/images/produtos/' . $imagem->fileName) : Yii::getAlias('@web/images/default_product_image.jpg');
+                                ?>
                                 <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
-                                    <img src="<?= Yii::getAlias('@web/images/calcas.jpg') ?>" class="img-responsive" alt=""/>
+                                    <img src="<?= $imageUrl ?>" class="img-responsive" alt="Imagem do produto"/>
                                     <div class="shop_desc">
                                         <h3><?= Html::encode($model->nome) ?></h3>
                                         <p><?= Html::encode($model->descricao) ?></p>
@@ -57,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
     </div>
 </div>
+
 
 <?php
 $this->registerJs("

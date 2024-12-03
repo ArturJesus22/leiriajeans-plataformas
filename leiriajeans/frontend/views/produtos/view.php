@@ -57,11 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <h4 class="m_12">Sexo</h4>
                             <p>
-                                <?= Html::encode(
-                                        $model->sexo === 'M' ? 'Masculino' :
-                                               ($model->sexo === 'F' ? 'Feminino' :
-                                               ($model->sexo === 'U' ? 'Unisexo' : 'Não definido'))
-                                ) ?>
+                                <?php echo('POR FAZER')?>
                             </p>
 
                             <div class="social_buttons">

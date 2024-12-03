@@ -47,7 +47,26 @@ use common\models\Produtos;
         ['prompt'=>'Selecione a Categoria']
     ) ?>
 
-    <?= $form->field($modelImagens, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
+    <div class="imagens-associadas">
+        <h3>Imagens Associadas</h3>
+        <div class="lista-imagens">
+            <?php if (!empty($imagensAssociadas)): ?>
+                <?php foreach ($imagensAssociadas as $imagem): ?>
+                    <div class="imagem-item">
+                        <img src="<?= Yii::getAlias('@web/public/imagens/produtos/' . $imagem->fileName) ?>"
+                             alt="Imagem do produto" style="max-width: 500px; max-height: 500px;">
+                        <p>Nome da Imagem: <?= Html::encode($imagem->fileName) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Nenhuma imagem associada a este produto.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <?= $form->field($modelImagens, 'imageFiles[]')->fileInput(['multiple' => true])->label('Associar Imagens:') ?>
+
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

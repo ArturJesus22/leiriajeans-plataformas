@@ -127,16 +127,50 @@ class ProdutosController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modeImagens = new Imagens();
+        $modelImagens = new Imagens(); // Para o upload de novos arquivos
+        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                // Carregar os arquivos
+                $modelImagens->imageFiles = UploadedFile::getInstances($modelImagens, 'imageFiles');
+                $modelImagens->produto_id = $model->id;
+
+                if (!empty($modelImagens->imageFiles)) {
+                    // Realizar o upload
+                    $uploadPaths = $modelImagens->upload();
+
+
+                    if ($uploadPaths !== false) {
+                        foreach ($uploadPaths as $path) {
+                            $imagem = new Imagens();
+                            $imagem->produto_id = $model->id;
+                            $imagem->fileName = basename($path);
+
+                            if (!$imagem->save()) {
+                                Yii::error("Erro ao salvar imagem no banco: {$path}");
+                            }
+                        }
+                    } else {
+                        Yii::error("Erro no upload de imagens.");
+                    }
+                } else {
+                    Yii::warning("Nenhuma imagem foi enviada.");
+                }
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelImagens' => $modelImagens,
+            'imagensAssociadas' => $imagensAssociadas, // Passa as imagens associadas
         ]);
     }
+
 
     /**
      * Deletes an existing Produtos model.
@@ -151,10 +185,10 @@ class ProdutosController extends Controller
         $produto = $this->findModel($id);
 
         // imagens associadas
-        $imagens = $this->findModelImagens($id);
+        $imagens = $this->findModelImg($id);
 
         foreach ($imagens as $imagem) {
-            $backendPath = Yii::getAlias('@backend/web/public/imagens/produtos/' . $imagem->fileName);
+            $backendPath = Yii::getAlias('@web/public/imagens/produtos/' . $imagem->fileName);
             $frontendPath = Yii::getAlias('@frontend/web/images/produtos/' . $imagem->fileName);
 
             // Apagar as imagens
@@ -193,14 +227,14 @@ class ProdutosController extends Controller
     }
 
 
-    protected function findModelImagens($produtoId)
+    protected function findModelImg($produtoId)
     {
         $imagens = Imagens::findAll(['produto_id' => $produtoId]);
         if ($imagens !== null && !empty($imagens)) {
             return $imagens;
         }
-
         throw new NotFoundHttpException('Nenhuma imagem foi encontrada para este produto.');
     }
+
 
 }

@@ -39,19 +39,22 @@ class ProdutosController extends Controller
      */
     public function actionIndex($sexo)
     {
+        // Se o parâmetro sexo for 'all', mostrar todos os produtos
+        if ($sexo === 'All') {
+            $query = Produtos::find();
+        } else {
+            $sexos = is_array($sexo) ? $sexo : [$sexo];
 
-        $categorias = Categorias::find()
-                        ->select('id')
-                        ->where(['sexo' => $sexo])
-                        ->column();
+            // Procurar categorias que correspondem a qualquer um dos sexos
+            $categorias = Categorias::find()
+                ->select('id')
+                ->where(['sexo' => $sexos])
+                ->column();
 
-
-
-
-
-        $searchModel = new ProdutosSearch();
-        $query = Produtos::find()
-            ->where(['categoria_id' => $categorias]);
+            // Filtrar os produtos baseados nas categorias encontradas
+            $query = Produtos::find()
+                ->where(['categoria_id' => $categorias]);
+        }
 
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
@@ -60,16 +63,14 @@ class ProdutosController extends Controller
             ],
         ]);
 
+        // Criar o model de pesquisa
         $searchModel = new ProdutosSearch();
 
-
-
-
+        // Renderizar a view
         return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                ]);
-
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

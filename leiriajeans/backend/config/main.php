@@ -19,6 +19,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -45,6 +48,19 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                //USERS
+                ['class' => 'yii\rest\UrlRule',
+                'controller' => 'api/users',
+                'extraPatterns' => [
+                    'GET {username}/dados' => 'dados',
+                    'GET {id}' => 'getuserbyid',
+                    'POST {id}/criar' => 'criarperfil',
+                ],
+                'tokens' => [
+                    '{id}' => '<id:\d+>',
+                    '{username}' => '<username:\w+>',
+                ],
+            ],
             ],
         ],
     ],

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\LinhasCarrinhos;
 use Yii;
 use yii\web\Response;
 use common\models\Produtos;
@@ -56,34 +57,56 @@ class CarrinhosController extends Controller
                 return ['success' => false, 'message' => 'Produto não encontrado.'];
             }
 
-            // Guardar na sessao
-            $session = Yii::$app->session;
-            $cart = $session->get('cart', []);
-
-            if (isset($cart[$id])) {
-                $cart[$id]['quantidade']++;
-            } else {
-                $cart[$id] = [
-                    'id' => $id,
-                    'nome' => $produto->nome,
-                    'preco' => $produto->preco,
-                    'quantidade' => 1,
-                ];
+            // Procura ou cria um carrinho para o usuário
+            $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+            if (!$carrinho) {
+                $carrinho = new Carrinhos([
+                    'userdata_id' => $userForm->id,
+                    'total' => 0,
+                    'ivatotal' => 0,
+                    'produto_id' => $id, // Necessário devido à regra 'required'
+                ]);
+                if (!$carrinho->save()) {
+                    return ['success' => false, 'message' => 'Erro ao criar carrinho'];
+                }
             }
 
-            $session->set('cart', $cart);
-
-            // Guardar na base de dados
-            $carrinho = new Carrinhos([
-                'userdata_id' => $userForm->id,
-                'produto_id' => $id,
-                'total' => $produto->preco,
-                'ivatotal' => $produto->preco * $produto->iva_id,
+            // Verifica se já existe uma linha para este produto
+            $linhaCarrinho = LinhasCarrinhos::findOne([
+                'carrinho_id' => $carrinho->id,
+                'produto_id' => $id
             ]);
 
-            if (!$carrinho->save()) {
-                return ['success' => false, 'message' => 'Erro ao guardar no carrinho: '];
+            if ($linhaCarrinho) {
+                // Se já existe, atualiza a quantidade e totais
+                $linhaCarrinho->quantidade++;
+                $linhaCarrinho->precoVenda = $produto->preco;
+                $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
+                $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
+            } else {
+                // Se não existe, cria nova linha
+                $linhaCarrinho = new LinhasCarrinhos([
+                    'carrinho_id' => $carrinho->id,
+                    'produto_id' => $id,
+                    'quantidade' => 1,
+                    'precoVenda' => $produto->preco,
+                    'subTotal' => $produto->preco,
+                    'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
+                ]);
             }
+
+            if (!$linhaCarrinho->save()) {
+                return ['success' => false, 'message' => 'Erro ao guardar linha do carrinho: ' . implode(', ', $linhaCarrinho->getErrorSummary(true))];
+            }
+
+            // Atualiza os totais do carrinho
+            $carrinho->total = LinhasCarrinhos::find()
+                ->where(['carrinho_id' => $carrinho->id])
+                ->sum('subTotal');
+            $carrinho->ivatotal = LinhasCarrinhos::find()
+                ->where(['carrinho_id' => $carrinho->id])
+                ->sum('valorIva');
+            $carrinho->save();
 
             return ['success' => true, 'message' => 'Produto adicionado ao carrinho com sucesso!'];
 
@@ -95,22 +118,31 @@ class CarrinhosController extends Controller
 
     public function actionRemove($id)
     {
-        // Remover da sessão
-        $session = Yii::$app->session;
-        $cart = $session->get('cart', []);
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
 
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            $session->set('cart', $cart);
+        $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+        if ($userForm) {
+            $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+            if ($carrinho) {
+                // Remove a linha do carrinho
+                $linha = LinhasCarrinhos::findOne([
+                    'carrinho_id' => $carrinho->id,
+                    'produto_id' => $id
+                ]);
+                
+                if ($linha) {
+                    $linha->delete();
 
-            // Remover da base de dados
-            if (!Yii::$app->user->isGuest) {
-                $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
-                if ($userForm) {
-                    Carrinhos::deleteAll([
-                        'userdata_id' => $userForm->id,
-                        'produto_id' => $id
-                    ]);
+                    // Atualiza os totais do carrinho
+                    $carrinho->total = LinhasCarrinhos::find()
+                        ->where(['carrinho_id' => $carrinho->id])
+                        ->sum('subTotal');
+                    $carrinho->ivatotal = LinhasCarrinhos::find()
+                        ->where(['carrinho_id' => $carrinho->id])
+                        ->sum('valorIva');
+                    $carrinho->save();
                 }
             }
         }
@@ -118,32 +150,46 @@ class CarrinhosController extends Controller
         return $this->redirect(['faturas/index']);
     }
 
-    public function carregarCarrinho()
+    // Método para obter o carrinho atual do usuário
+    public function getCarrinhoAtual()
     {
-        if (!Yii::$app->user->isGuest) {
-            $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
-            if ($userForm) {
-                $carrinhoItems = Carrinhos::find()
-                    ->where(['userdata_id' => $userForm->id])
-                    ->all();
+        if (Yii::$app->user->isGuest) {
+            return null;
+        }
 
-                $session = Yii::$app->session;
-                $cart = [];
+        $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return null;
+        }
 
-                foreach ($carrinhoItems as $item) {
-                    $produto = Produtos::findOne($item->produto_id);
-                    if ($produto) {
-                        $cart[$produto->id] = [
-                            'id' => $produto->id,
-                            'nome' => $produto->nome,
-                            'preco' => $produto->preco,
-                            'quantidade' => 1,
-                        ];
-                    }
-                }
+        $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+        if (!$carrinho) {
+            return null;
+        }
 
-                $session->set('cart', $cart);
+        $linhasCarrinho = LinhasCarrinhos::find()
+            ->where(['carrinho_id' => $carrinho->id])
+            ->all();
+
+        $itens = [];
+        foreach ($linhasCarrinho as $linha) {
+            $produto = $linha->produto;
+            if ($produto) {
+                $itens[] = [
+                    'id' => $produto->id,
+                    'nome' => $produto->nome,
+                    'preco' => $linha->precoVenda,
+                    'quantidade' => $linha->quantidade,
+                    'subtotal' => $linha->subTotal,
+                    'valorIva' => $linha->valorIva
+                ];
             }
         }
+
+        return [
+            'itens' => $itens,
+            'total' => $carrinho->total,
+            'ivatotal' => $carrinho->ivatotal
+        ];
     }
 }

@@ -15,11 +15,10 @@ class Carrinhos extends ActiveRecord
     public function rules()
     {
         return [
-            [['userdata_id', 'produto_id', 'total', 'ivatotal'], 'required'],
-            [['userdata_id', 'produto_id'], 'integer'],
+            [['userdata_id', 'total', 'ivatotal'], 'required'],
+            [['userdata_id'], 'integer'],
             [['ivatotal', 'total'], 'number'],
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
-            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
         ];
     }
 

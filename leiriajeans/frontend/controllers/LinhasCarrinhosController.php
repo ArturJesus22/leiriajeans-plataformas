@@ -1,62 +1,64 @@
 <?php
 
-namespace frontend\controllers;
+namespace frontend\Controllers;
 
-use common\Models\Faturas;
-use common\models\Carrinhos;
-use common\models\LinhasCarrinhos;
-use common\models\UsersForm;
+use common\Models\LinhasCarrinhos;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use Yii;
 
 /**
- * FaturasController implements the CRUD actions for Faturas model.
+ * LinhasCarrinhosController implements the CRUD actions for LinhasCarrinhos model.
  */
-class FaturasController extends Controller
+class LinhasCarrinhosController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
-     * Lists all Faturas models.
+     * Lists all LinhasCarrinhos models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
-
-    public function search($params)
-    {
-        $query = Faturas::find();
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => LinhasCarrinhos::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
         ]);
 
-        $this->load($params);
-
-        return $dataProvider;
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
-     * Displays a single Faturas model.
+     * Displays a single LinhasCarrinhos model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,13 +71,13 @@ class FaturasController extends Controller
     }
 
     /**
-     * Creates a new Faturas model.
+     * Creates a new LinhasCarrinhos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Faturas();
+        $model = new LinhasCarrinhos();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -91,7 +93,7 @@ class FaturasController extends Controller
     }
 
     /**
-     * Updates an existing Faturas model.
+     * Updates an existing LinhasCarrinhos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -111,7 +113,7 @@ class FaturasController extends Controller
     }
 
     /**
-     * Deletes an existing Faturas model.
+     * Deletes an existing LinhasCarrinhos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -125,60 +127,18 @@ class FaturasController extends Controller
     }
 
     /**
-     * Finds the Faturas model based on its primary key value.
+     * Finds the LinhasCarrinhos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Faturas the loaded model
+     * @return LinhasCarrinhos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Faturas::findOne(['id' => $id])) !== null) {
+        if (($model = LinhasCarrinhos::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function getCarrinhoAtual()
-    {
-        if (Yii::$app->user->isGuest) {
-            return null;
-        }
-
-        $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
-        if (!$userForm) {
-            return null;
-        }
-
-        $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
-        if (!$carrinho) {
-            return null;
-        }
-
-        $linhasCarrinho = LinhasCarrinhos::find()
-            ->where(['carrinho_id' => $carrinho->id])
-            ->all();
-
-        $itens = [];
-        foreach ($linhasCarrinho as $linha) {
-            $produto = $linha->produto;
-            if ($produto) {
-                $itens[] = [
-                    'id' => $produto->id,
-                    'nome' => $produto->nome,
-                    'preco' => $linha->precoVenda,
-                    'quantidade' => $linha->quantidade,
-                    'subtotal' => $linha->subTotal,
-                    'valorIva' => $linha->valorIva
-                ];
-            }
-        }
-
-        return [
-            'itens' => $itens,
-            'total' => $carrinho->total,
-            'ivatotal' => $carrinho->ivatotal
-        ];
     }
 }

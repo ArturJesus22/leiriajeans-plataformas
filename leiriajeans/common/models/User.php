@@ -81,7 +81,10 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        {
+            return static::findOne(['auth_key' => $token, 'status' =>
+                self::STATUS_ACTIVE]);
+        }
     }
 
     /**
@@ -240,31 +243,18 @@ class User extends ActiveRecord implements IdentityInterface
                 return;
             }
 
-            // Carregar produtos do carrinho
+            // Verifica se existem itens no carrinho
             $carrinhoItems = Carrinhos::find()
                 ->where(['userdata_id' => $userForm->id])
                 ->all();
 
-            $session = Yii::$app->session;
-            $cart = [];
 
-            foreach ($carrinhoItems as $item) {
-                $produto = Produtos::findOne($item->produto_id);
-                if ($produto) {
-                    $cart[$produto->id] = [
-                        'id' => $produto->id,
-                        'nome' => $produto->nome,
-                        'preco' => $produto->preco,
-                        'quantidade' => 1,
-                    ];
-                }
-            }
-
-            $session->set('cart', $cart);
-
+            
         } catch (\Exception $e) {
-            Yii::error('Erro ao carregar carrinho: ' . $e->getMessage());
+            Yii::error('Erro ao verificar carrinho: ' . $e->getMessage());
         }
     }
+
+
 
 }

@@ -50,8 +50,9 @@ return [
             'rules' => [
                 //USERS
                 ['class' => 'yii\rest\UrlRule',
-                'controller' => 'api/users',
+                'controller' => 'api/user',
                 'extraPatterns' => [
+                    'GET nomes'=> 'nomes',// 'nomes' refers to 'actionNomes' action
                     'GET {username}/dados' => 'dados',
                     'GET {id}' => 'getuserbyid',
                     'POST {id}/criar' => 'criarperfil',

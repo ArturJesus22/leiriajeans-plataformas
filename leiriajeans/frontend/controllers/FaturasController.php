@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\Models\Faturas;
 use common\models\Carrinhos;
 use common\models\LinhasCarrinhos;
+use common\models\LinhasFaturas;
 use common\models\UsersForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -39,7 +40,20 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $query = Faturas::find()
+            ->with(['linhafaturas', 'linhafaturas.linhacarrinho', 'linhafaturas.linhacarrinho.produto'])
+            ->orderBy(['data' => SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function search($params)
@@ -180,5 +194,57 @@ class FaturasController extends Controller
             'total' => $carrinho->total,
             'ivatotal' => $carrinho->ivatotal
         ];
+    }
+
+    public function actionCreateFromCart()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
+
+        // Busca o carrinho do usuário
+        $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+        if (!$carrinho) {
+            Yii::$app->session->setFlash('error', 'Carrinho não encontrado.');
+            return $this->redirect(['carrinhos/index']);
+        }
+
+        // Cria uma nova fatura
+        $fatura = new Faturas();
+        $fatura->metodopagamento_id = 1; // Defina o método de pagamento conforme necessário
+        $fatura->metodoexpedicao_id = 1; // Defina o método de expedição conforme necessário
+        $fatura->data = date('Y-m-d H:i:s');
+        $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal; // Total da fatura
+
+        if ($fatura->save()) {
+            // Busca as linhas do carrinho
+            $linhasCarrinho = LinhasCarrinhos::find()->where(['carrinho_id' => $carrinho->id])->all();
+
+            foreach ($linhasCarrinho as $linha) {
+                // Cria uma nova linha de fatura
+                $linhaFatura = new LinhasFaturas();
+                $linhaFatura->fatura_id = $fatura->id;
+                $linhaFatura->linhacarrinho_id = $linha->id; // Associa a linha do carrinho
+                $linhaFatura->iva_id = $linha->produto->iva_id; // Assumindo que o produto tem um campo iva_id
+                $linhaFatura->preco = $linha->precoVenda; // Preço da linha
+
+                $linhaFatura->save(); // Salva a linha de fatura
+            }
+
+            // Limpa o carrinho após a criação da fatura
+            LinhasCarrinhos::deleteAll(['carrinho_id' => $carrinho->id]);
+            $carrinho->delete();
+
+            Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
+            return $this->redirect(['view', 'id' => $fatura->id]);
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
+            return $this->redirect(['carrinhos/index']);
+        }
     }
 }

@@ -99,7 +99,7 @@ AppAsset::register($this);
                         <ul class="icon1 sub-icon1 profile_img">
                             <li>
                                 <?php if (!Yii::$app->user->isGuest): ?>
-                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>"></a>
+                                     <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['carrinhos/index']) ?>"></a>
                                 <?php else: ?>
                                      <a class="active-icon c1" href="<?= Yii::$app->urlManager->createUrl(['site/login']) ?>"></a>
                                 <?php endif; ?>

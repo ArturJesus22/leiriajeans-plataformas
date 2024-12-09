@@ -1,6 +1,5 @@
 <?php
 
-use common\models\Carrinhos;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -9,36 +8,76 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Carrinhos';
+$this->title = 'Carrinho de Compras';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="carrinhos-index">
 
+<div class="carrinhos-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Carrinhos', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if ($carrinhoAtual && !empty($carrinhoAtual['itens'])): ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Subtotal</th>
+                        <th>IVA</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($carrinhoAtual['itens'] as $item): ?>
+                        <tr>
+                            <td><?= Html::encode($item['nome']) ?></td>
+                            <td><?= Yii::$app->formatter->asCurrency($item['preco']) ?></td>
+                            <td>
+                                <?= Html::beginForm(['carrinhos/update-quantidade', 'id' => $item['id']], 'post') ?>
+                                <?= Html::input('number', 'quantidade', $item['quantidade'], ['min' => 1, 'class' => 'form-control', 'style' => 'width: 80px; display: inline;']) ?>
+                                <?= Html::submitButton('Atualizar', ['class' => 'btn btn-primary btn-sm']) ?>
+                                <?= Html::endForm() ?>
+                            </td>
+                            <td><?= Yii::$app->formatter->asCurrency($item['subtotal']) ?></td>
+                            <td><?= Yii::$app->formatter->asCurrency($item['valorIva']) ?></td>
+                            <td>
+                                <?= Html::a('Remover', ['carrinhos/remove', 'id' => $item['id']], [
+                                    'class' => 'btn btn-danger btn-sm',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Tem a certeza que deseja remover este artigo?'
+                                ]) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
+                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total']) ?></strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>IVA Total:</strong></td>
+                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['ivatotal']) ?></strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Total com IVA:</strong></td>
+                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total'] + $carrinhoAtual['ivatotal']) ?></strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
 
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'userdata_id',
-            'produto_id',
-            'ivatotal',
-            'total',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Carrinhos $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+            <div class="text-right mt-3">
+                <?= Html::a('Continuar a Comprar', ['produtos/index'], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Criar Fatura', ['faturas/create-from-cart'], ['class' => 'btn btn-success', 'data-method' => 'post', 'data-confirm' => 'Tem certeza que deseja criar uma fatura a partir do carrinho?']) ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-info">
+            O seu carrinho está vazio. <?= Html::a('Continue a comprar', ['produtos/index']) ?>
+        </div>
+    <?php endif; ?>
 </div>

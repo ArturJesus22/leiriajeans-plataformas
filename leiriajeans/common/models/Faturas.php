@@ -87,4 +87,9 @@ class Faturas extends \yii\db\ActiveRecord
     {
         return $this->hasOne(MetodosPagamentos::class, ['id' => 'metodopagamento_id']);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(UsersForm::class, ['id' => 'user_id']);
+    }
 }

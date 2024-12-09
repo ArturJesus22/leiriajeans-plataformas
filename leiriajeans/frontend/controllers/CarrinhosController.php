@@ -28,6 +28,60 @@ class CarrinhosController extends Controller
         ];
     }
 
+    public function actionIndex()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
+
+        $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+        if (!$carrinho) {
+            return $this->render('index', [
+                'carrinhoAtual' => null
+            ]);
+        }
+
+        $linhasCarrinho = LinhasCarrinhos::find()
+            ->where(['carrinho_id' => $carrinho->id])
+            ->with(['produto']) // Carrega os produtos relacionados
+            ->all();
+
+        $itens = [];
+        $total = 0;
+        $ivatotal = 0;
+
+        foreach ($linhasCarrinho as $linha) {
+            $produto = $linha->produto;
+            if ($produto) {
+                $itens[] = [
+                    'id' => $produto->id,
+                    'nome' => $produto->nome,
+                    'preco' => $linha->precoVenda,
+                    'quantidade' => $linha->quantidade,
+                    'subtotal' => $linha->subTotal,
+                    'valorIva' => $linha->valorIva
+                ];
+                $total += $linha->subTotal;
+                $ivatotal += $linha->valorIva;
+            }
+        }
+
+        $carrinhoAtual = [
+            'itens' => $itens,
+            'total' => $total,
+            'ivatotal' => $ivatotal
+        ];
+
+        return $this->render('index', [
+            'carrinhoAtual' => $carrinhoAtual
+        ]);
+    }
+
     public function beforeAction($action)
     {
         if ($action->id === 'add') {
@@ -57,18 +111,15 @@ class CarrinhosController extends Controller
                 return ['success' => false, 'message' => 'Produto não encontrado.'];
             }
 
-            // Procura ou cria um carrinho para o usuário
-            $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
-            if (!$carrinho) {
-                $carrinho = new Carrinhos([
-                    'userdata_id' => $userForm->id,
-                    'total' => 0,
-                    'ivatotal' => 0,
-                    'produto_id' => $id, // Necessário devido à regra 'required'
-                ]);
-                if (!$carrinho->save()) {
-                    return ['success' => false, 'message' => 'Erro ao criar carrinho'];
-                }
+            // Procura um carrinho existente ou cria um novo
+            $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]) ?? new Carrinhos([
+                'userdata_id' => $userForm->id,
+                'total' => 0,
+                'ivatotal' => 0,
+            ]);
+
+            if ($carrinho->isNewRecord && !$carrinho->save()) {
+                return ['success' => false, 'message' => 'Erro ao criar carrinho'];
             }
 
             // Verifica se já existe uma linha para este produto
@@ -96,22 +147,15 @@ class CarrinhosController extends Controller
             }
 
             if (!$linhaCarrinho->save()) {
-                return ['success' => false, 'message' => 'Erro ao guardar linha do carrinho: ' . implode(', ', $linhaCarrinho->getErrorSummary(true))];
+                return ['success' => false, 'message' => 'Erro ao guardar linha do carrinho'];
             }
 
             // Atualiza os totais do carrinho
-            $carrinho->total = LinhasCarrinhos::find()
-                ->where(['carrinho_id' => $carrinho->id])
-                ->sum('subTotal');
-            $carrinho->ivatotal = LinhasCarrinhos::find()
-                ->where(['carrinho_id' => $carrinho->id])
-                ->sum('valorIva');
-            $carrinho->save();
+            $this->atualizarTotaisCarrinho($carrinho);
 
             return ['success' => true, 'message' => 'Produto adicionado ao carrinho com sucesso!'];
 
         } catch (\Exception $e) {
-            Yii::error('Erro ao adicionar ao carrinho: ' . $e->getMessage());
             return ['success' => false, 'message' => 'Erro ao adicionar produto: ' . $e->getMessage()];
         }
     }
@@ -123,73 +167,91 @@ class CarrinhosController extends Controller
         }
 
         $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
-        if ($userForm) {
-            $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
-            if ($carrinho) {
-                // Remove a linha do carrinho
-                $linha = LinhasCarrinhos::findOne([
-                    'carrinho_id' => $carrinho->id,
-                    'produto_id' => $id
-                ]);
-                
-                if ($linha) {
-                    $linha->delete();
+        if (!$userForm) {
+            return $this->redirect(['index']);
+        }
 
-                    // Atualiza os totais do carrinho
-                    $carrinho->total = LinhasCarrinhos::find()
-                        ->where(['carrinho_id' => $carrinho->id])
-                        ->sum('subTotal');
-                    $carrinho->ivatotal = LinhasCarrinhos::find()
-                        ->where(['carrinho_id' => $carrinho->id])
-                        ->sum('valorIva');
-                    $carrinho->save();
-                }
+        $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
+        if ($carrinho) {
+            // Remove a linha do carrinho
+            LinhasCarrinhos::deleteAll(['carrinho_id' => $carrinho->id, 'produto_id' => $id]);
+            
+            // Verifica se ainda existem produtos no carrinho
+            $temProdutos = LinhasCarrinhos::find()->where(['carrinho_id' => $carrinho->id])->exists();
+            
+            if ($temProdutos) {
+                // Atualiza os totais se ainda houver produtos
+                $this->atualizarTotaisCarrinho($carrinho);
+            } else {
+                // Remove o carrinho se estiver vazio
+                $carrinho->delete();
             }
         }
 
-        return $this->redirect(['faturas/index']);
+        return $this->redirect(['index']);
     }
 
-    // Método para obter o carrinho atual do usuário
-    public function getCarrinhoAtual()
+    public function actionUpdateQuantidade($id)
     {
         if (Yii::$app->user->isGuest) {
-            return null;
+            return $this->redirect(['site/login']);
         }
 
         $userForm = UsersForm::findOne(['user_id' => Yii::$app->user->id]);
         if (!$userForm) {
-            return null;
+            return $this->redirect(['site/index']);
         }
 
         $carrinho = Carrinhos::findOne(['userdata_id' => $userForm->id]);
         if (!$carrinho) {
-            return null;
+            Yii::$app->session->setFlash('error', 'Carrinho não encontrado.');
+            return $this->redirect(['index']);
         }
 
-        $linhasCarrinho = LinhasCarrinhos::find()
-            ->where(['carrinho_id' => $carrinho->id])
-            ->all();
+        // Obtém a nova quantidade do formulário
+        $quantidade = Yii::$app->request->post('quantidade');
 
-        $itens = [];
-        foreach ($linhasCarrinho as $linha) {
-            $produto = $linha->produto;
-            if ($produto) {
-                $itens[] = [
-                    'id' => $produto->id,
-                    'nome' => $produto->nome,
-                    'preco' => $linha->precoVenda,
-                    'quantidade' => $linha->quantidade,
-                    'subtotal' => $linha->subTotal,
-                    'valorIva' => $linha->valorIva
-                ];
+        // Verifica se a quantidade é válida
+        if ($quantidade < 1) {
+            Yii::$app->session->setFlash('error', 'A quantidade deve ser pelo menos 1.');
+            return $this->redirect(['index']);
+        }
+
+        // Busca a linha do carrinho
+        $linhaCarrinho = LinhasCarrinhos::findOne(['carrinho_id' => $carrinho->id, 'produto_id' => $id]);
+        if ($linhaCarrinho) {
+            // Atualiza a quantidade
+            $linhaCarrinho->quantidade = $quantidade;
+
+            // Atualiza os valores da linha
+            $linhaCarrinho->subTotal = $linhaCarrinho->precoVenda * $linhaCarrinho->quantidade;
+            $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($linhaCarrinho->produto->iva->percentagem / 100);
+
+            if ($linhaCarrinho->save()) {
+                // Atualiza os totais do carrinho
+                $this->atualizarTotaisCarrinho($carrinho);
+                Yii::$app->session->setFlash('success', 'Quantidade atualizada com sucesso!');
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao atualizar a quantidade.');
             }
+        } else {
+            Yii::$app->session->setFlash('error', 'Produto não encontrado no carrinho.');
         }
 
-        return [
-            'itens' => $itens,
-            'total' => $carrinho->total,
-            'ivatotal' => $carrinho->ivatotal
-        ];
+        return $this->redirect(['index']);
+    }
+
+    // Método auxiliar para atualizar totais
+    private function atualizarTotaisCarrinho($carrinho)
+    {
+        $carrinho->total = LinhasCarrinhos::find()
+            ->where(['carrinho_id' => $carrinho->id])
+            ->sum('subTotal') ?? 0;
+            
+        $carrinho->ivatotal = LinhasCarrinhos::find()
+            ->where(['carrinho_id' => $carrinho->id])
+            ->sum('valorIva') ?? 0;
+            
+        $carrinho->save();
     }
 }

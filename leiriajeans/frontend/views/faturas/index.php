@@ -1,74 +1,68 @@
 <?php
 
 use yii\helpers\Html;
+use yii\grid\GridView;
 
-$this->title = 'Carrinho de Compras';
+$this->title = 'Minhas Faturas';
 $this->params['breadcrumbs'][] = $this->title;
-
-$carrinhoAtual = Yii::$app->controller->getCarrinhoAtual();
 ?>
 
 <div class="faturas-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if ($carrinhoAtual && !empty($carrinhoAtual['itens'])): ?>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Preço Unitário</th>
-                        <th>Quantidade</th>
-                        <th>Subtotal</th>
-                        <th>IVA</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($carrinhoAtual['itens'] as $item): ?>
-                        <tr>
-                            <td><?= Html::encode($item['nome']) ?></td>
-                            <td><?= Yii::$app->formatter->asCurrency($item['preco']) ?></td>
-                            <td><?= $item['quantidade'] ?></td>
-                            <td><?= Yii::$app->formatter->asCurrency($item['subtotal']) ?></td>
-                            <td><?= Yii::$app->formatter->asCurrency($item['valorIva']) ?></td>
-                            <td>
-                                <?= Html::a('Remover', ['carrinhos/remove', 'id' => $item['id']], [
-                                    'class' => 'btn btn-danger btn-sm',
-                                    'data-method' => 'post',
-                                    'data-confirm' => 'Tem a certeza que deseja remover este artigo?'
-                                ]) ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
-                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total']) ?></strong></td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="text-right"><strong>IVA Total:</strong></td>
-                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['ivatotal']) ?></strong></td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="text-right"><strong>Total com IVA:</strong></td>
-                        <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total'] + $carrinhoAtual['ivatotal']) ?></strong></td>
-                        <td colspan="2"></td>
-                    </tr>
-                </tfoot>
-            </table>
+    <?php if (!empty($dataProvider->models)): ?>
+        <?php foreach ($dataProvider->models as $fatura): ?>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Fatura #<?= $fatura->id ?></h3>
+                    <div>Data: <?= Yii::$app->formatter->asDate($fatura->data) ?></div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço</th>
+                                <th>IVA</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($fatura->linhafaturas as $linha): ?>
+                                <tr>
+                                    <td><?= Html::encode($linha->linhacarrinho->produto->nome) ?></td>
+                                    <td><?= $linha->linhacarrinho->quantidade ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linha->preco) ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->valorIva) ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->subTotal) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-right"><strong>Total:</strong></td>
+                                <td><strong><?= Yii::$app->formatter->asCurrency($fatura->valorTotal) ?></strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-            <div class="text-right mt-3">
-                <?= Html::a('Continuar a Comprar', ['produtos/index'], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Finalizar Compra', ['checkout'], ['class' => 'btn btn-success']) ?>
+                    <div class="mt-3">
+                        <strong>Método de Pagamento:</strong> <?= $fatura->metodopagamento->nome ?>
+                        <br>
+                        <strong>Método de Expedição:</strong> <?= $fatura->metodoexpedicao->nome ?>
+                        <br>
+                        <strong>Status do Pedido:</strong> <?= $fatura->statuspedido ?>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <?= Html::a('Ver Detalhes', ['view', 'id' => $fatura->id], ['class' => 'btn btn-primary']) ?>
+                </div>
             </div>
-        </div>
+        <?php endforeach; ?>
     <?php else: ?>
         <div class="alert alert-info">
-            O seu carrinho está vazio. <?= Html::a('Continue a comprar', ['produtos/index']) ?>
+            Você ainda não tem faturas.
         </div>
     <?php endif; ?>
 </div>

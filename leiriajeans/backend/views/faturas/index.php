@@ -49,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th>Produto</th>
                 <th>Preço</th>
                 <th>IVA</th>
+                <th>Quantidade</th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td><?= Html::encode($linha->linhacarrinho->produto->nome ?? 'Produto não encontrado') ?></td>
                         <td><?= Yii::$app->formatter->asCurrency($linha->preco) ?></td>
                         <td><?= Yii::$app->formatter->asCurrency($linha->iva->percentagem ?? 0) ?></td>
+                        <td><?= Html::encode($linha->linhacarrinho->quantidade ?? 0) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>

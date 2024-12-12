@@ -16,7 +16,7 @@ use Yii;
  * @property Avaliacoes[] $avaliacaos
  * @property Faturas $fatura
  * @property Ivas $iva
- * @property Linhascarrinhos $linhacarrinho
+ * @property LinhasCarrinhos $linhacarrinho
  */
 class LinhasFaturas extends \yii\db\ActiveRecord
 {
@@ -38,7 +38,7 @@ class LinhasFaturas extends \yii\db\ActiveRecord
             [['preco'], 'number'],
             [['fatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Faturas::class, 'targetAttribute' => ['fatura_id' => 'id']],
             [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ivas::class, 'targetAttribute' => ['iva_id' => 'id']],
-            [['linhacarrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhascarrinhos::class, 'targetAttribute' => ['linhacarrinho_id' => 'id']],
+            [['linhacarrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => LinhasCarrinhos::class, 'targetAttribute' => ['linhacarrinho_id' => 'id']],
         ];
     }
 
@@ -93,6 +93,16 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getLinhacarrinho()
     {
-        return $this->hasOne(Linhascarrinhos::class, ['id' => 'linhacarrinho_id']);
+        return $this->hasOne(LinhasCarrinhos::class, ['id' => 'linhacarrinho_id']);
+    }
+
+    /**
+     * Gets query for [[Produto]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProduto()
+    {
+        return $this->linhacarrinho->produto;
     }
 }

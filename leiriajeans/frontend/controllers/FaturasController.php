@@ -41,7 +41,7 @@ class FaturasController extends Controller
     public function actionIndex()
     {
         $query = Faturas::find()
-            ->with(['linhafaturas', 'linhafaturas.linhacarrinho', 'linhafaturas.linhacarrinho.produto'])
+            ->with(['linhafaturas', 'linhafaturas.linhacarrinho', 'linhacarrinho.produto'])
             ->orderBy(['data' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([

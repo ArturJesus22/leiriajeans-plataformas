@@ -12,153 +12,49 @@ $this->title = 'Produtos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
 
-    <div class="row shop_box-top">
-        <div class="col-md-3 shop_box">
-            <a href="single.html">
-                <img src="images/pic5.jpg" class="img-responsive" alt=""/>
+<?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="reducedfrom">$66.00</span>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
+<div class="produtos-index">
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <div class="container">
+        <div class="row">
+            <?php foreach ($dataProvider->getModels() as $model): ?>
+                <div class="col-md-3 product-item">
+                    <?php
+                    $imagem = $model->imagens ? $model->imagens[0] : null;
+                    $imageUrl = $imagem ? Yii::getAlias('@web/images/produtos/' . $imagem->fileName) : Yii::getAlias('@web/images/default_product_image.jpg');
+                    ?>
+                    <div class="shop_box">
+                        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
+                            <img src="<?= $imageUrl ?>" class="img-responsive product-image" alt="Imagem do produto"/>
+                            <div class="shop_desc">
+                                <h3 class="product-name"><?= Html::encode($model->nome) ?></h3>
+                                <p class="product-description"><?= Html::encode($model->descricao) ?></p>
+                                <span class="actual product-price"><?= Html::encode($model->preco) ?></span>
+                                <ul class="buttons">
+                                    <li class="cart">
+                                        <?= Html::a('Adicionar ao Carrinho', '#', [
+                                            'class' => 'add-to-cart btn btn-primary',
+                                            'data-product-id' => $model->id
+                                        ]) ?>
+                                    </li>
+                                    <li class="shop_btn">
+                                        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja mais</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic6.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic7.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <span class="sale-box">
-						<span class="sale-label">Sale!</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="reducedfrom">$66.00</span>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic8.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="reducedfrom">$66.00</span>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic9.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic10.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <span class="sale-box">
-						<span class="sale-label">Sale!</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic11.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="reducedfrom">$66.00</span>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-        <div class="col-md-3 shop_box"><a href="single.html">
-                <img src="images/pic12.jpg" class="img-responsive" alt=""/>
-                <span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-                <span class="sale-box">
-						<span class="sale-label">Sale!</span>
-					</span>
-                <div class="shop_desc">
-                    <h3><a href="#">aliquam volutp</a></h3>
-                    <p>Lorem ipsum consectetuer adipiscing </p>
-                    <span class="reducedfrom">$66.00</span>
-                    <span class="actual">$12.00</span><br>
-                    <ul class="buttons">
-                        <li class="cart"><a href="#">Add To Cart</a></li>
-                        <li class="shop_btn"><a href="#">Read More</a></li>
-                        <div class="clear"> </div>
-                    </ul>
-                </div>
-            </a></div>
-    </div>
-
+</div>
 
 
 

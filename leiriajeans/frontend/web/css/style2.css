@@ -6,7 +6,93 @@
 }
 
 .imagem {
+    max-width: 100%;
     width: 500px; /* Ajuste do tamanho das imagens */
     height:500px; /* Mantém a proporção da imagem */
     cursor: pointer;
+}
+/*--shop--*/
+.shop_top{
+    padding:5% 0;
+}
+.new-box {
+    right:10px;
+}
+.new-box, .sale-box {
+    position: absolute;
+    top:16px;
+    overflow: hidden;
+    height: 38px;
+    min-width: 70px;
+    text-align: left;
+    z-index: 0;
+    display: inline-block;
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+.new-label {
+    font-size: 0.85em;
+    color: #FFF;
+    background:#FFAF02;
+    text-transform: uppercase;
+    padding:9px;
+    text-align: center;
+    display: block;
+    min-width: 70px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+.sale-box {
+    left:10px;
+}
+.sale-label {
+    font-size: 0.85em;
+    color: #FFF;
+    background:#E92546;
+    text-transform: uppercase;
+    padding:9px;
+    text-align: center;
+    display: block;
+    min-width: 70px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.shop_box{
+    position:relative;
+}
+.shop_desc{
+    border:1px solid #E0E0E0;
+    padding:5%;
+}
+.shop_desc h3{
+    margin-bottom:5px;
+}
+.shop_desc h3 a{
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.shop_desc h3 a:hover{
+    color:#666;
+}
+.shop_desc p{
+    color:#555;
+    font-size:0.8125em;
+    line-height:1.8em;
+    margin-bottom:10px;
+}
+.add-to-cart btn btn-primary{
+    background:#FFAF02;
+    border:1px solid #FFAF02;
+    color:#FFF;
+    font-size:0.8125em;
+    padding:5px 10px;
+    text-transform:uppercase;
+    display:inline-block;
+    margin-top:10px;
 }

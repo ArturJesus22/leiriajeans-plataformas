@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Carrinhos $model */
+/** @var common\models\Carrinho $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Carrinhos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Carrinho', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

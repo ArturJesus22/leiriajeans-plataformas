@@ -1,6 +1,6 @@
 <?php
 
-use common\models\UsersForm;
+use common\models\UserForm;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use common\models\User;
@@ -47,25 +47,25 @@ $this->title = 'LeiriaJeans - BackOffice';
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => $numProdutos,
-            'text' => 'Produtos Registados',
+            'text' => 'Produto Registados',
             'icon' => 'fas fa-tag',
-            'linkText' => 'Ver Produtos',
+            'linkText' => 'Ver Produto',
             'linkUrl' => Url::toRoute(["/produtos/index"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => $numCores,
-            'text' => 'Cores',
+            'text' => 'Cor',
             'icon' => 'fas fa-palette',
-            'linkText' => 'Ver Cores',
+            'linkText' => 'Ver Cor',
             'linkUrl' => Url::toRoute(["/cores"]),
         ]) ?>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
             'title' => '0',
-            'text' => 'Produtos em Falta',
+            'text' => 'Produto em Falta',
             'icon' => 'fas fa-box-open',
             'linkText' => 'Consultar Stocks',
             'linkUrl' => Url::toRoute(["/produtos/index"]),

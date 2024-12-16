@@ -2,9 +2,9 @@
 
 namespace backend\controllers;
 
-use common\models\Imagens;
-use common\models\Produtos;
-use backend\models\ProdutosSearch;
+use common\models\Imagem;
+use common\models\Produto;
+use backend\models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\web\UploadedFile;
 use yii;
 
 /**
- * ProdutosController implements the CRUD actions for Produtos model.
+ * ProdutosController implements the CRUD actions for Produto model.
  */
 class ProdutosController extends Controller
 {
@@ -35,13 +35,13 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Lists all Produtos models.
+     * Lists all Produto models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProdutosSearch();
+        $searchModel = new ProdutoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -51,7 +51,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Displays a single Produtos model.
+     * Displays a single Produto model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -64,14 +64,14 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Creates a new Produtos model.
+     * Creates a new Produto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Produtos();
-        $modelImagens = new Imagens();
+        $model = new Produto();
+        $modelImagens = new Imagem();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -86,7 +86,7 @@ class ProdutosController extends Controller
 
                     if ($uploadPaths !== false) {
                         foreach ($uploadPaths as $path) {
-                            $imagem = new Imagens();
+                            $imagem = new Imagem();
                             $imagem->produto_id = $model->id;
                             $imagem->fileName = basename($path);
 
@@ -118,7 +118,7 @@ class ProdutosController extends Controller
 
 
     /**
-     * Updates an existing Produtos model.
+     * Updates an existing Produto model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -127,8 +127,8 @@ class ProdutosController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelImagens = new Imagens(); // Para o upload de novos arquivos
-        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
+        $modelImagens = new Imagem(); // Para o upload de novos arquivos
+        $imagensAssociadas = Imagem::findAll(['produto_id' => $id]); // Buscar imagens existentes
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -143,7 +143,7 @@ class ProdutosController extends Controller
 
                     if ($uploadPaths !== false) {
                         foreach ($uploadPaths as $path) {
-                            $imagem = new Imagens();
+                            $imagem = new Imagem();
                             $imagem->produto_id = $model->id;
                             $imagem->fileName = basename($path);
 
@@ -173,7 +173,7 @@ class ProdutosController extends Controller
 
 
     /**
-     * Deletes an existing Produtos model.
+     * Deletes an existing Produto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -211,15 +211,15 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Finds the Produtos model based on its primary key value.
+     * Finds the Produto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Produtos the loaded model
+     * @return Produto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produtos::findOne(['id' => $id])) !== null) {
+        if (($model = Produto::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
@@ -229,7 +229,7 @@ class ProdutosController extends Controller
 
     protected function findModelImg($produtoId)
     {
-        $imagens = Imagens::findAll(['produto_id' => $produtoId]);
+        $imagens = Imagem::findAll(['produto_id' => $produtoId]);
         if ($imagens !== null && !empty($imagens)) {
             return $imagens;
         }

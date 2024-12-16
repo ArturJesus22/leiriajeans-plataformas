@@ -11,9 +11,9 @@ use Yii;
  * @property string|null $fileName
  * @property int|null $produto_id
  *
- * @property Produtos $produto
+ * @property Produto $produto
  */
-class Imagens extends \yii\db\ActiveRecord
+class Imagem extends \yii\db\ActiveRecord
 {
 
     public $imageFiles;
@@ -34,7 +34,7 @@ class Imagens extends \yii\db\ActiveRecord
         return [
             [['produto_id'], 'integer'],
             [['produto_id'], 'required', 'message' => 'Selecione um Produto!'],
-            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
+            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
         ];
     }
@@ -47,8 +47,8 @@ class Imagens extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fileName' => 'Imagens',
-            'produto_id' => 'Produtos Associados',
+            'fileName' => 'Imagem',
+            'produto_id' => 'Produto Associados',
         ];
     }
 
@@ -59,7 +59,7 @@ class Imagens extends \yii\db\ActiveRecord
      */
     public function getProduto()
     {
-        return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
+        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
     }
 
     public function upload()

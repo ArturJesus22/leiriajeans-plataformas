@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\MetodosPagamentos;
+use common\models\MetodoPagamento;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MetodosPagamentosController implements the CRUD actions for MetodosPagamentos model.
+ * MetodosPagamentosController implements the CRUD actions for MetodoPagamento model.
  */
 class MetodosPagamentosController extends Controller
 {
@@ -32,14 +32,14 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Lists all MetodosPagamentos models.
+     * Lists all MetodoPagamento models.
      *
      * @return string
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => MetodosPagamentos::find(),
+            'query' => MetodoPagamento::find(),
             /*
             'pagination' => [
                 'pageSize' => 50
@@ -58,7 +58,7 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Displays a single MetodosPagamentos model.
+     * Displays a single MetodoPagamento model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -71,13 +71,13 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Creates a new MetodosPagamentos model.
+     * Creates a new MetodoPagamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new MetodosPagamentos();
+        $model = new MetodoPagamento();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -93,7 +93,7 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Updates an existing MetodosPagamentos model.
+     * Updates an existing MetodoPagamento model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -113,7 +113,7 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Deletes an existing MetodosPagamentos model.
+     * Deletes an existing MetodoPagamento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -127,15 +127,15 @@ class MetodosPagamentosController extends Controller
     }
 
     /**
-     * Finds the MetodosPagamentos model based on its primary key value.
+     * Finds the MetodoPagamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return MetodosPagamentos the loaded model
+     * @return MetodoPagamento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MetodosPagamentos::findOne(['id' => $id])) !== null) {
+        if (($model = MetodoPagamento::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

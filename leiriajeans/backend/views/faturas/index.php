@@ -1,16 +1,16 @@
 <?php
 
-use common\models\Faturas;
+use common\models\Fatura;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\FaturasSearch $searchModel */
+/** @var backend\models\FaturaSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Faturas';
+$this->title = 'Fatura';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="faturas-index">
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'valorTotal',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Faturas $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Fatura $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],

@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-use common\models\Produtos;
+use common\models\Produto;
 
 /** @var yii\web\View $this */
-/** @var common\models\Imagens $model */
+/** @var common\models\Imagem $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -19,7 +19,7 @@ use common\models\Produtos;
     <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
 
     <?= $form->field($model, 'produto_id')->dropDownList(
-        ArrayHelper::map(Produtos::find()->all(), 'id', 'nome'),
+        ArrayHelper::map(Produto::find()->all(), 'id', 'nome'),
         ['prompt' => 'Selecione um produto']
     ) ?>
 

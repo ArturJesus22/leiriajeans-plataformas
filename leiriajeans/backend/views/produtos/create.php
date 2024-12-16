@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Produtos $model */
-/** @var common\models\Imagens $modelImagens */
+/** @var common\models\Produto $model */
+/** @var common\models\Imagem $modelImagens */
 
-$this->title = 'Create Produtos';
-$this->params['breadcrumbs'][] = ['label' => 'Produtos', 'url' => ['index']];
+$this->title = 'Create Produto';
+$this->params['breadcrumbs'][] = ['label' => 'Produto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="produtos-create">

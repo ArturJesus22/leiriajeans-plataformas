@@ -5,7 +5,7 @@ namespace backend\controllers;
 use backend\models\UsersSearch;
 use common\models\SignupForm;
 use common\models\User;
-use common\models\UsersForm;
+use common\models\UserForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -107,7 +107,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelUserData = UsersForm::findOne(['user_id' => $id]); // UsersForm relacionado
+        $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm relacionado
         $rolename = Yii::$app->authManager->getRolesByUser($id);
 
         foreach ($rolename as $role) {
@@ -115,9 +115,9 @@ class UserController extends Controller
             $model->role = $roleName;
         }
 
-        //Se não houver um UsersForm relacionado, cria um novo
+        //Se não houver um UserForm relacionado, cria um novo
         if (!$modelUserData) {
-            $modelUserData = new UsersForm();
+            $modelUserData = new UserForm();
             $modelUserData->user_id = $model->id;
         }
 

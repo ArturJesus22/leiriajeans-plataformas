@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\Tamanhos;
-use backend\models\TamanhosSearch;
+use common\models\Tamanho;
+use backend\models\TamanhoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TamanhosController implements the CRUD actions for Tamanhos model.
+ * TamanhosController implements the CRUD actions for Tamanho model.
  */
 class TamanhosController extends Controller
 {
@@ -32,13 +32,13 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Lists all Tamanhos models.
+     * Lists all Tamanho models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TamanhosSearch();
+        $searchModel = new TamanhoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Displays a single Tamanhos model.
+     * Displays a single Tamanho model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Creates a new Tamanhos model.
+     * Creates a new Tamanho model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Tamanhos();
+        $model = new Tamanho();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +83,7 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Updates an existing Tamanhos model.
+     * Updates an existing Tamanho model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +103,7 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Deletes an existing Tamanhos model.
+     * Deletes an existing Tamanho model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +117,15 @@ class TamanhosController extends Controller
     }
 
     /**
-     * Finds the Tamanhos model based on its primary key value.
+     * Finds the Tamanho model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Tamanhos the loaded model
+     * @return Tamanho the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tamanhos::findOne(['id' => $id])) !== null) {
+        if (($model = Tamanho::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

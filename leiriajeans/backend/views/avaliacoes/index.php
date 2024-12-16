@@ -1,16 +1,16 @@
 <?php
 
-use common\models\Avaliacoes;
+use common\models\Avaliacao;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\AvaliacoesSearch $searchModel */
+/** @var backend\models\AvaliacaoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Avaliacoes';
+$this->title = 'Avaliacao';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'linhafatura_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Avaliacoes $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Avaliacao $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

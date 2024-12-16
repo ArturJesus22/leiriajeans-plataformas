@@ -2,15 +2,15 @@
 
 namespace frontend\controllers;
 
-use common\models\Categorias;
-use common\Models\Produtos;
-use frontend\Models\ProdutosSearch;
+use common\models\Categoria;
+use common\models\Produto;
+use frontend\models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 /**
- * ProdutosController implements the CRUD actions for Produtos model.
+ * ProdutosController implements the CRUD actions for Produto model.
  */
 class ProdutosController extends Controller
 {
@@ -33,7 +33,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Lists all Produtos models.
+     * Lists all Produto models.
      *
      * @return string
      */
@@ -41,18 +41,18 @@ class ProdutosController extends Controller
     {
         // Se o parâmetro sexo for 'all', mostrar todos os produtos
         if ($sexo === 'All') {
-            $query = Produtos::find();
+            $query = Produto::find();
         } else {
             $sexos = is_array($sexo) ? $sexo : [$sexo];
 
             // Procurar categorias que correspondem a qualquer um dos sexos
-            $categorias = Categorias::find()
+            $categorias = Categoria::find()
                 ->select('id')
                 ->where(['sexo' => $sexos])
                 ->column();
 
             // Filtrar os produtos baseados nas categorias encontradas
-            $query = Produtos::find()
+            $query = Produto::find()
                 ->where(['categoria_id' => $categorias]);
         }
 
@@ -64,7 +64,7 @@ class ProdutosController extends Controller
         ]);
 
         // Criar o model de pesquisa
-        $searchModel = new ProdutosSearch();
+        $searchModel = new ProdutoSearch();
 
         // Renderizar a view
         return $this->render('index', [
@@ -74,7 +74,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Displays a single Produtos model.
+     * Displays a single Produto model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -87,13 +87,13 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Creates a new Produtos model.
+     * Creates a new Produto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Produtos();
+        $model = new Produto();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -109,7 +109,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Updates an existing Produtos model.
+     * Updates an existing Produto model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -129,7 +129,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Deletes an existing Produtos model.
+     * Deletes an existing Produto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -143,15 +143,15 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Finds the Produtos model based on its primary key value.
+     * Finds the Produto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Produtos the loaded model
+     * @return Produto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produtos::findOne(['id' => $id])) !== null) {
+        if (($model = Produto::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

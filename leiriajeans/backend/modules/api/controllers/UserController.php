@@ -10,7 +10,7 @@ use backend\modules\api\components\CustomAuth;
 class UserController extends ActiveController
 {
     public $modelClass = 'common\models\User'; //model default user
-    public $modelUserForm = 'common\models\UsersForm'; //model dos dados do utilizador
+    public $modelUserForm = 'common\models\UserForm'; //model dos dados do utilizador
 
     public function behaviors()
     {

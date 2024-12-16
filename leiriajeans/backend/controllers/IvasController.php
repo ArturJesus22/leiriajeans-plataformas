@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\Ivas;
-use backend\models\IvasSearch;
+use common\models\Iva;
+use backend\models\IvaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * IvasController implements the CRUD actions for Ivas model.
+ * IvasController implements the CRUD actions for Iva model.
  */
 class IvasController extends Controller
 {
@@ -32,13 +32,13 @@ class IvasController extends Controller
     }
 
     /**
-     * Lists all Ivas models.
+     * Lists all Iva models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new IvasSearch();
+        $searchModel = new IvaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class IvasController extends Controller
     }
 
     /**
-     * Displays a single Ivas model.
+     * Displays a single Iva model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class IvasController extends Controller
     }
 
     /**
-     * Creates a new Ivas model.
+     * Creates a new Iva model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Ivas();
+        $model = new Iva();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +83,7 @@ class IvasController extends Controller
     }
 
     /**
-     * Updates an existing Ivas model.
+     * Updates an existing Iva model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +103,7 @@ class IvasController extends Controller
     }
 
     /**
-     * Deletes an existing Ivas model.
+     * Deletes an existing Iva model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +117,15 @@ class IvasController extends Controller
     }
 
     /**
-     * Finds the Ivas model based on its primary key value.
+     * Finds the Iva model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Ivas the loaded model
+     * @return Iva the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Ivas::findOne(['id' => $id])) !== null) {
+        if (($model = Iva::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

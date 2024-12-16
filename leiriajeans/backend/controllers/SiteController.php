@@ -3,9 +3,9 @@
 namespace backend\controllers;
 
 use backend\models\AuthAssignment;
-use common\models\Cores;
+use common\models\Cor;
 use common\models\LoginForm;
-use common\models\Produtos;
+use common\models\Produto;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -83,10 +83,10 @@ class SiteController extends Controller
             ->column();
         $numUsersWithFuncionarioRole = count($userIdsWithFuncionarioRole);
 
-        $cores = Cores::find();
+        $cores = Cor::find();
         $numCores = $cores -> count();
 
-        $produtos = Produtos::find();
+        $produtos = Produto::find();
         $numProdutos= $produtos-> count();
 
         return $this->render('index', [

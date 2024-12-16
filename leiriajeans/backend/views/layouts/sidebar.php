@@ -43,7 +43,7 @@
 
 
                     ['label' => 'Encomendas', 'header' => true],
-                        ['label'=> 'Faturas','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
+                        ['label'=> 'Fatura','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
                         ['label'=> 'Metodo Expedicao','icon'=>'fas fa-truck','url'=>['/metodos-expedicoes/index']],
                         ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
 
@@ -54,12 +54,12 @@
                         ['label' => 'Avaliações', 'icon' => 'fa-solid fa-star', 'url' => ['avaliacoes/index']],
 
 
-                    ['label' => 'Produtos', 'header' => true],
-                        ['label'=>'Categorias','icon'=>'fa-regular fa-folder', 'url'=>['categorias/index']],
-                        ['label' => 'Produtos', 'icon' => 'fa-solid fa-box', 'url' => ['produtos/index']],
-                        ['label' => 'Tamanhos', 'icon' => 'fa-regular fa-ruler combined', 'url' => ['tamanhos/index']],
-                        ['label' => 'Cores', 'icon' => 'fa-solid fa-tag', 'url' => ['cores/index']],
-                        ['label'=>'Imagens','icon'=>'fa-regular fa-image', 'url'=>['imagens/index']],
+                    ['label' => 'Produto', 'header' => true],
+                        ['label'=>'Categoria','icon'=>'fa-regular fa-folder', 'url'=>['categorias/index']],
+                        ['label' => 'Produto', 'icon' => 'fa-solid fa-box', 'url' => ['produtos/index']],
+                        ['label' => 'Tamanho', 'icon' => 'fa-regular fa-ruler combined', 'url' => ['tamanhos/index']],
+                        ['label' => 'Cor', 'icon' => 'fa-solid fa-tag', 'url' => ['cores/index']],
+                        ['label'=>'Imagem','icon'=>'fa-regular fa-image', 'url'=>['imagens/index']],
 
 
                     /*['label' => 'Debug Tools', 'header' => true, 'visible' => ($userRole == 'admin')],

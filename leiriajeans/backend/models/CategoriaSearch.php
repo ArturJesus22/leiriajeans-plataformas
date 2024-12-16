@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Produtos;
+use common\models\Categoria;
 
 /**
- * ProdutosSearch represents the model behind the search form of `common\models\Produtos`.
+ * CategoriaSearch represents the model behind the search form of `common\models\Categoria`.
  */
-class ProdutosSearch extends Produtos
+class CategoriaSearch extends Categoria
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class ProdutosSearch extends Produtos
     public function rules()
     {
         return [
-            [['id', 'stock', 'cor_id', 'iva_id', 'categoria_id'], 'integer'],
-            [['nome', 'descricao', 'tamanho_id'], 'safe'],
-            [['preco'], 'number'],
+            [['id'], 'integer'],
+            [['sexo', 'tipo'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class ProdutosSearch extends Produtos
      */
     public function search($params)
     {
-        $query = Produtos::find();
+        $query = Categoria::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +59,10 @@ class ProdutosSearch extends Produtos
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'preco' => $this->preco,
-            'stock' => $this->stock,
-            'cor_id' => $this->cor_id,
-            'iva_id' => $this->iva_id,
-            'categoria_id' => $this->categoria_id,
         ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'descricao', $this->descricao])
-            ->andFilterWhere(['like', 'tamanho_id', $this->tamanho_id]);
+        $query->andFilterWhere(['like', 'sexo', $this->sexo])
+            ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
         return $dataProvider;
     }

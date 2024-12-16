@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Ivas $model */
+/** @var common\models\Iva $model */
 
-$this->title = 'Create Ivas';
-$this->params['breadcrumbs'][] = ['label' => 'Ivas', 'url' => ['index']];
+$this->title = 'Create Iva';
+$this->params['breadcrumbs'][] = ['label' => 'Iva', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ivas-create">

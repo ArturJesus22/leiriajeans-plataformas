@@ -17,11 +17,11 @@ use Yii;
  * @property string|null $telefone
  * @property int|null $user_id
  *
- * @property Avaliacoes[] $avaliacaos
- * @property Carrinhos[] $carrinhos
+ * @property Avaliacao[] $avaliacaos
+ * @property Carrinho[] $carrinhos
  * @property User $user
  */
-class UsersForm extends \yii\db\ActiveRecord
+class UserForm extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -93,17 +93,17 @@ class UsersForm extends \yii\db\ActiveRecord
      */
     public function getAvaliacaos()
     {
-        return $this->hasMany(Avaliacoes::class, ['userdata_id' => 'id']);
+        return $this->hasMany(Avaliacao::class, ['userdata_id' => 'id']);
     }
 
     /**
-     * Gets query for [[Carrinhos]].
+     * Gets query for [[Carrinho]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getCarrinhos()
     {
-        return $this->hasMany(Carrinhos::class, ['userdata_id' => 'id']);
+        return $this->hasMany(Carrinho::class, ['userdata_id' => 'id']);
     }
 
     /**
@@ -124,7 +124,7 @@ class UsersForm extends \yii\db\ActiveRecord
     public function atualizarUser()
     {
 
-        //$userData= UsersForm::findOne(['id' => $this->id]);
+        //$userData= UserForm::findOne(['id' => $this->id]);
 
         // $userData->nome = $this->nome;
         // $userData->codpostal = $this->codpostal;

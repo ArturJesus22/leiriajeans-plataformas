@@ -1,14 +1,14 @@
 <?php
 
-use common\Models\Produtos;
+use common\Models\Produto;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
-/** @var frontend\Models\ProdutosSearch $searchModel */
+/** @var frontend\Models\ProdutoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Produtos';
+$this->title = 'Produto';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="produtos-index">
@@ -66,7 +66,7 @@ $this->registerJs("
         var productId = $(this).data('product-id');
 
         $.ajax({
-            url: '" . Yii::$app->urlManager->createUrl(['/carrinhos/add']) . "',
+            url: '" . Yii::$app->urlManager->createUrl(['/carrinho/add']) . "',
             method: 'POST',
             data: { 
                 id: productId,

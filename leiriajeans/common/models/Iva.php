@@ -12,10 +12,10 @@ use Yii;
  * @property string|null $descricao
  * @property int|null $status
  *
- * @property LinhasFaturas[] $linhafaturas
- * @property Produtos[] $produtos
+ * @property LinhaFatura[] $linhafatura
+ * @property Produto[] $produto
  */
-class Ivas extends \yii\db\ActiveRecord
+class Iva extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -57,16 +57,16 @@ class Ivas extends \yii\db\ActiveRecord
      */
     public function getLinhafaturas()
     {
-        return $this->hasMany(LinhasFaturas::class, ['iva_id' => 'id']);
+        return $this->hasMany(LinhaFatura::class, ['iva_id' => 'id']);
     }
 
     /**
-     * Gets query for [[Produtos]].
+     * Gets query for [[Produto]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getProdutos()
     {
-        return $this->hasMany(Produtos::class, ['iva_id' => 'id']);
+        return $this->hasMany(Produto::class, ['iva_id' => 'id']);
     }
 }

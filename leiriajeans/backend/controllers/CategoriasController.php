@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\Categorias;
-use backend\models\CategoriasSearch;
+use common\models\Categoria;
+use backend\models\CategoriaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CategoriasController implements the CRUD actions for Categorias model.
+ * CategoriasController implements the CRUD actions for Categoria model.
  */
 class CategoriasController extends Controller
 {
@@ -32,13 +32,13 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Lists all Categorias models.
+     * Lists all Categoria models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new CategoriasSearch();
+        $searchModel = new CategoriaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Displays a single Categorias model.
+     * Displays a single Categoria model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Creates a new Categorias model.
+     * Creates a new Categoria model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Categorias();
+        $model = new Categoria();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +83,7 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Updates an existing Categorias model.
+     * Updates an existing Categoria model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +103,7 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Deletes an existing Categorias model.
+     * Deletes an existing Categoria model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +117,15 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Finds the Categorias model based on its primary key value.
+     * Finds the Categoria model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Categorias the loaded model
+     * @return Categoria the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Categorias::findOne(['id' => $id])) !== null) {
+        if (($model = Categoria::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

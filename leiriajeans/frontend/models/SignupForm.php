@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use common\models\UsersForm;
+use common\models\UserForm;
 use Yii;
 use yii\base\Model;
 use common\models\User;
@@ -89,7 +89,7 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $userData = new UsersForm();
+        $userData = new UserForm();
 
         //User
         $user->username = $this->username;

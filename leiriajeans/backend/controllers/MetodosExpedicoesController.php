@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\MetodosExpedicoes;
+use common\models\MetodoExpedicao;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MetodosExpedicoesController implements the CRUD actions for MetodosExpedicoes model.
+ * MetodosExpedicoesController implements the CRUD actions for MetodoExpedicao model.
  */
 class MetodosExpedicoesController extends Controller
 {
@@ -32,14 +32,14 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Lists all MetodosExpedicoes models.
+     * Lists all MetodoExpedicao models.
      *
      * @return string
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => MetodosExpedicoes::find(),
+            'query' => MetodoExpedicao::find(),
             /*
             'pagination' => [
                 'pageSize' => 50
@@ -58,7 +58,7 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Displays a single MetodosExpedicoes model.
+     * Displays a single MetodoExpedicao model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -71,13 +71,13 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Creates a new MetodosExpedicoes model.
+     * Creates a new MetodoExpedicao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new MetodosExpedicoes();
+        $model = new MetodoExpedicao();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -93,7 +93,7 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Updates an existing MetodosExpedicoes model.
+     * Updates an existing MetodoExpedicao model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -113,7 +113,7 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Deletes an existing MetodosExpedicoes model.
+     * Deletes an existing MetodoExpedicao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -127,15 +127,15 @@ class MetodosExpedicoesController extends Controller
     }
 
     /**
-     * Finds the MetodosExpedicoes model based on its primary key value.
+     * Finds the MetodoExpedicao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return MetodosExpedicoes the loaded model
+     * @return MetodoExpedicao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MetodosExpedicoes::findOne(['id' => $id])) !== null) {
+        if (($model = MetodoExpedicao::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

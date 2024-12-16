@@ -2,14 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use common\models\Tamanhos;
-use common\models\Cores;
+use common\models\Tamanho;
+use common\models\Cor;
 
 /** @var yii\web\View $this */
-/** @var common\Models\Produtos $model */
+/** @var common\Models\Produto $model */
 
 $this->title = $model->nome;
-$this->params['breadcrumbs'][] = ['label' => 'Produtos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Produto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <p class="m_10"><?= $model->descricao ?></p>
                             <h4 class="m_12">Tamanho</h4>
                             <ul class="list-unstyled d-flex flex-wrap">
-                                <?php foreach (Tamanhos::find()->all() as $tamanho): ?>
+                                <?php foreach (Tamanho::find()->all() as $tamanho): ?>
                                     <li class="mr-2 mb-2">
                                         <button class="btn btn-outline-primary tamanho-btn" data-tamanho-id="<?= $tamanho->id ?>">
                                             <?= Html::encode($tamanho->nome) ?>
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <ul class="product-colors">
                                 <h3>Cores</h3>
                                 <ul class="list-unstyled d-flex flex-wrap">
-                                    <?php foreach (Cores::find()->all() as $cor): ?>
+                                    <?php foreach (Cor::find()->all() as $cor): ?>
                                         <li class="mr-2 mb-2">
                                             <button class="btn btn-outline-primary tamanho-btn" data-cor-id="<?= $cor->id ?>">
                                                 <?= Html::encode($cor->nome) ?>

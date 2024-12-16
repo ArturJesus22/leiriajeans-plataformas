@@ -225,7 +225,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getUserform()
     {
-        return $this->hasOne(UsersForm::class, ['user_id' => 'id']);
+        return $this->hasOne(UserForm::class, ['user_id' => 'id']);
     }
 
     public function getAuthAssignment()
@@ -237,14 +237,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         try {
             // Encontrar o userdata_id correspondente
-            $userForm = UsersForm::findOne(['user_id' => $this->id]);
+            $userForm = UserForm::findOne(['user_id' => $this->id]);
             if (!$userForm) {
                 Yii::error('UserForm não encontrado para user_id: ' . $this->id);
                 return;
             }
 
             // Verifica se existem itens no carrinho
-            $carrinhoItems = Carrinhos::find()
+            $carrinhoItems = Carrinho::find()
                 ->where(['userdata_id' => $userForm->id])
                 ->all();
 

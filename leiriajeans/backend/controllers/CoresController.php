@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\Cores;
-use backend\models\CoresSearch;
+use common\models\Cor;
+use backend\models\CorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CoresController implements the CRUD actions for Cores model.
+ * CoresController implements the CRUD actions for Cor model.
  */
 class CoresController extends Controller
 {
@@ -32,13 +32,13 @@ class CoresController extends Controller
     }
 
     /**
-     * Lists all Cores models.
+     * Lists all Cor models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new CoresSearch();
+        $searchModel = new CorSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class CoresController extends Controller
     }
 
     /**
-     * Displays a single Cores model.
+     * Displays a single Cor model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class CoresController extends Controller
     }
 
     /**
-     * Creates a new Cores model.
+     * Creates a new Cor model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Cores();
+        $model = new Cor();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,7 +83,7 @@ class CoresController extends Controller
     }
 
     /**
-     * Updates an existing Cores model.
+     * Updates an existing Cor model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -103,7 +103,7 @@ class CoresController extends Controller
     }
 
     /**
-     * Deletes an existing Cores model.
+     * Deletes an existing Cor model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -117,15 +117,15 @@ class CoresController extends Controller
     }
 
     /**
-     * Finds the Cores model based on its primary key value.
+     * Finds the Cor model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Cores the loaded model
+     * @return Cor the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Cores::findOne(['id' => $id])) !== null) {
+        if (($model = Cor::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

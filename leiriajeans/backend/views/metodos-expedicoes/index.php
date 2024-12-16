@@ -1,6 +1,6 @@
 <?php
 
-use common\models\MetodosExpedicoes;
+use common\models\MetodoExpedicao;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Carrinhos $model */
+/** @var common\models\Carrinho $model */
 
-$this->title = 'Create Carrinhos';
-$this->params['breadcrumbs'][] = ['label' => 'Carrinhos', 'url' => ['index']];
+$this->title = 'Create Carrinho';
+$this->params['breadcrumbs'][] = ['label' => 'Carrinho', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="carrinhos-create">

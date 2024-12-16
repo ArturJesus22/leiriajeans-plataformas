@@ -5,21 +5,19 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "cor".
+ * This is the model class for table "tamanho".
  *
  * @property int $id
  * @property string $nome
- *
- * @property Produtos[] $produtos
  */
-class Cores extends \yii\db\ActiveRecord
+class Tamanho extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'cor';
+        return 'tamanho';
     }
 
     /**
@@ -29,7 +27,7 @@ class Cores extends \yii\db\ActiveRecord
     {
         return [
             [['nome'], 'required'],
-            [['nome'], 'string', 'max' => 50],
+            [['nome'], 'string', 'max' => 5],
         ];
     }
 
@@ -44,13 +42,10 @@ class Cores extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Produtos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getProdutos()
     {
-        return $this->hasMany(Produtos::class, ['cor_id' => 'id']);
+        return $this->hasMany(Produto::class, ['id' => 'produto_id'])
+            ->viaTable('produto_tamanho', ['tamanho_id' => 'id']);
     }
+
 }

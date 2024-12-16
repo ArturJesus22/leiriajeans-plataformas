@@ -2,17 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use common\models\Ivas;
-use common\models\Cores;
-use common\models\Categorias;
+use common\models\Iva;
+use common\models\Cor;
+use common\models\Categoria;
 use yii\helpers\ArrayHelper;
-use common\models\Tamanhos;
-use common\models\Produtos;
+use common\models\Tamanho;
+use common\models\Produto;
 
 /** @var yii\web\View $this */
-/** @var common\models\Produtos $model */
+/** @var common\models\Produto $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var common\models\Imagens $modelImagens */
+/** @var common\models\Imagem $modelImagens */
 ?>
 
 <div class="produtos-form">
@@ -27,21 +27,21 @@ use common\models\Produtos;
 
     <?= $form->field($model, 'stock')->textInput() ?>
 
-    <?= $form->field($model, 'tamanho_id')->dropDownList(ArrayHelper::map(Tamanhos::find()->all(),
+    <?= $form->field($model, 'tamanho_id')->dropDownList(ArrayHelper::map(Tamanho::find()->all(),
         'id', 'nome'),
         ['prompt'=>'Selecione o Tamanho']) ?>
 
-    <?= $form->field($model, 'cor_id')->dropDownList(ArrayHelper::map(Cores::find()->all(),
+    <?= $form->field($model, 'cor_id')->dropDownList(ArrayHelper::map(Cor::find()->all(),
         'id', 'nome'),
         ['prompt'=>'Selecione a Cor']) ?>
 
-    <?= $form->field($model, 'iva_id')->dropDownList(ArrayHelper::map(Ivas::find()->where(['status' => 1])->all(),
+    <?= $form->field($model, 'iva_id')->dropDownList(ArrayHelper::map(Iva::find()->where(['status' => 1])->all(),
         'id', 'percentagem'),
         ['prompt' => 'Selecione o IVA']
     )?>
 
     <?= $form->field($model, 'categoria_id')->dropDownList(
-        ArrayHelper::map(Categorias::find()->all(), 'id', function($model) {
+        ArrayHelper::map(Categoria::find()->all(), 'id', function($model) {
             return $model->sexo . ' - ' . $model->tipo;
         }),
         ['prompt'=>'Selecione a Categoria']
@@ -64,7 +64,7 @@ use common\models\Produtos;
         </div>
     </div>
 
-    <?= $form->field($modelImagens, 'imageFiles[]')->fileInput(['multiple' => true])->label('Associar Imagens:') ?>
+    <?= $form->field($modelImagens, 'imageFiles[]')->fileInput(['multiple' => true])->label('Associar Imagem:') ?>
 
 
 

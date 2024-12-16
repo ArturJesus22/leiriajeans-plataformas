@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Ivas;
+use common\models\Iva;
 
 /**
- * IvasSearch represents the model behind the search form of `common\models\Ivas`.
+ * IvaSearch represents the model behind the search form of `common\models\Iva`.
  */
-class IvasSearch extends Ivas
+class IvaSearch extends Iva
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class IvasSearch extends Ivas
      */
     public function search($params)
     {
-        $query = Ivas::find();
+        $query = Iva::find();
 
         // add conditions that should always apply here
 

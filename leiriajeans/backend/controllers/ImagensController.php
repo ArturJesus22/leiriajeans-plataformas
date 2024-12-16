@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use common\models\Imagens;
-use backend\models\ImagensSearch;
+use common\models\Imagem;
+use backend\models\ImagemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -11,7 +11,7 @@ use yii\web\UploadedFile;
 use yii;
 
 /**
- * ImagensController implements the CRUD actions for Imagens model.
+ * ImagensController implements the CRUD actions for Imagem model.
  */
 class ImagensController extends Controller
 {
@@ -34,13 +34,13 @@ class ImagensController extends Controller
     }
 
     /**
-     * Lists all Imagens models.
+     * Lists all Imagem models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ImagensSearch();
+        $searchModel = new ImagemSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +50,7 @@ class ImagensController extends Controller
     }
 
     /**
-     * Displays a single Imagens model.
+     * Displays a single Imagem model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,13 +63,13 @@ class ImagensController extends Controller
     }
 
     /**
-     * Creates a new Imagens model.
+     * Creates a new Imagem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Imagens();
+        $model = new Imagem();
 
         return $this->render('index', [
             'model' => $model,
@@ -77,7 +77,7 @@ class ImagensController extends Controller
     }
 
     /**
-     * Updates an existing Imagens model.
+     * Updates an existing Imagem model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -97,7 +97,7 @@ class ImagensController extends Controller
     }
 
     /**
-     * Deletes an existing Imagens model.
+     * Deletes an existing Imagem model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -127,15 +127,15 @@ class ImagensController extends Controller
     }
 
     /**
-     * Finds the Imagens model based on its primary key value.
+     * Finds the Imagem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Imagens the loaded model
+     * @return Imagem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Imagens::findOne(['id' => $id])) !== null) {
+        if (($model = Imagem::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

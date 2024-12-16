@@ -1,14 +1,14 @@
 <?php
 
-use common\models\Imagens;
+use common\models\Imagem;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
-/** @var backend\models\ImagensSearch $searchModel */
+/** @var backend\models\ImagemSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Imagens';
+$this->title = 'Imagem';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

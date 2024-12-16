@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property string|null $nome
  *
- * @property Faturas[] $faturas
+ * @property Fatura[] $faturas
  */
-class MetodosPagamentos extends \yii\db\ActiveRecord
+class MetodoPagamento extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -44,12 +44,12 @@ class MetodosPagamentos extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Faturas]].
+     * Gets query for [[Fatura]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getFaturas()
     {
-        return $this->hasMany(Faturas::class, ['metodopagamento_id' => 'id']);
+        return $this->hasMany(Fatura::class, ['metodopagamento_id' => 'id']);
     }
 }

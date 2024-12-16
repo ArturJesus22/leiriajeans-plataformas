@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Carrinhos extends ActiveRecord
+class Carrinho extends ActiveRecord
 {
     public static function tableName()
     {
@@ -18,17 +18,17 @@ class Carrinhos extends ActiveRecord
             [['userdata_id', 'total', 'ivatotal'], 'required'],
             [['userdata_id'], 'integer'],
             [['ivatotal', 'total'], 'number'],
-            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
+            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
 
     public function getProduto()
     {
-        return $this->hasOne(Produtos::class, ['id' => 'produto_id']);
+        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
     }
 
     public function getUserdata()
     {
-        return $this->hasOne(UsersForm::class, ['id' => 'userdata_id']);
+        return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 }

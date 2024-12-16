@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Cores;
+use common\models\Fatura;
 
 /**
- * CoresSearch represents the model behind the search form of `common\models\Cores`.
+ * FaturaSearch represents the model behind the search form of `common\models\Fatura`.
  */
-class CoresSearch extends Cores
+class FaturaSearch extends Fatura
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,9 @@ class CoresSearch extends Cores
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['nome'], 'safe'],
+            [['id', 'metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
+            [['data'], 'safe'],
+            [['valorTotal'], 'number'],
         ];
     }
 
@@ -40,7 +41,7 @@ class CoresSearch extends Cores
      */
     public function search($params)
     {
-        $query = Cores::find();
+        $query = Fatura::find();
 
         // add conditions that should always apply here
 
@@ -59,9 +60,12 @@ class CoresSearch extends Cores
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'metodopagamento_id' => $this->metodopagamento_id,
+            'metodoexpedicao_id' => $this->metodoexpedicao_id,
+            'data' => $this->data,
+            'valorTotal' => $this->valorTotal,
+            'statuspedido' => $this->statuspedido,
         ]);
-
-        $query->andFilterWhere(['like', 'nome', $this->nome]);
 
         return $dataProvider;
     }

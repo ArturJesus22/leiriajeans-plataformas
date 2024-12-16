@@ -125,12 +125,12 @@ class m241021_154839_initial_rbac extends Migration
         $auth->addChild($role_funcionario, $permission_editarUsers);
         $auth->addChild($role_funcionario, $permission_criarUsers);
         $auth->addChild($role_funcionario, $permission_apagarUsers);
-        //Produtos
+        //Produto
         $auth->addChild($role_funcionario, $permission_verProdutos);
         $auth->addChild($role_funcionario, $permission_editarProdutos);
         $auth->addChild($role_funcionario, $permission_criarProdutos);
         $auth->addChild($role_funcionario, $permission_apagarProdutos);
-        //Categorias
+        //Categoria
         $auth->addChild($role_funcionario, $permission_verCategorias);
         $auth->addChild($role_funcionario, $permission_editarCategorias);
         $auth->addChild($role_funcionario, $permission_criarCategorias);
@@ -138,14 +138,14 @@ class m241021_154839_initial_rbac extends Migration
         //Avaliações
         $auth->addChild($role_funcionario, $permission_verAvaliacoes);
         $auth->addChild($role_funcionario, $permission_apagarAvaliacoes);
-        //Ivas
+        //Iva
         $auth->addChild($role_funcionario, $permission_verIvas);
         $auth->addChild($role_funcionario, $permission_editarIvas);
         $auth->addChild($role_funcionario, $permission_criarIvas);
         $auth->addChild($role_funcionario, $permission_apagarIvas);
         //Encomendas
         $auth->addChild($role_funcionario, $permission_verEncomendas);
-        //Faturas
+        //Fatura
         $auth->addChild($role_funcionario, $permission_verFaturas);
         $auth->addChild($role_funcionario, $permission_editarFaturas);
         //BackEnd

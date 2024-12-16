@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Minhas Faturas';
+$this->title = 'Minhas Fatura';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td><?= Yii::$app->formatter->asCurrency($linha->preco) ?></td>
                                     <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->valorIva) ?></td>
                                     <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->subTotal) ?></td>
+
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

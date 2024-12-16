@@ -1,6 +1,6 @@
 <?php
 
-use common\models\LinhasCarrinhos;
+use common\models\LinhaCarrinho;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Linhas Carrinhos';
+$this->title = 'Linhas Carrinho';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="linhas-carrinhos-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Linhas Carrinhos', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Linhas Carrinho', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'produto_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, LinhasCarrinhos $model, $key, $index, $column) {
+                'urlCreator' => function ($action, LinhaCarrinho $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

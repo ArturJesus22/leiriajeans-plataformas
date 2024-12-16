@@ -14,11 +14,11 @@ use Yii;
  * @property float|null $valorTotal
  * @property int|null $statuspedido
  *
- * @property LinhasFaturas[] $linhafaturas
- * @property MetodosExpedicoes $metodoexpedicao
- * @property MetodosPagamentos $metodopagamento
+ * @property LinhaFatura[] $linhafatura
+ * @property MetodoExpedicao $metodoexpedicao
+ * @property MetodoPagamento $metodopagamento
  */
-class Faturas extends \yii\db\ActiveRecord
+class Fatura extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -38,8 +38,8 @@ class Faturas extends \yii\db\ActiveRecord
             [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
             [['data'], 'safe'],
             [['valorTotal'], 'number'],
-            [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodosExpedicoes::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
-            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodosPagamentos::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
+            [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoExpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
+            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoPagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
         ];
     }
 
@@ -65,7 +65,7 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getLinhafaturas()
     {
-        return $this->hasMany(LinhasFaturas::class, ['fatura_id' => 'id']);
+        return $this->hasMany(LinhaFatura::class, ['fatura_id' => 'id']);
     }
 
     /**
@@ -75,7 +75,7 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getMetodoexpedicao()
     {
-        return $this->hasOne(MetodosExpedicoes::class, ['id' => 'metodoexpedicao_id']);
+        return $this->hasOne(MetodoExpedicao::class, ['id' => 'metodoexpedicao_id']);
     }
 
     /**
@@ -85,11 +85,11 @@ class Faturas extends \yii\db\ActiveRecord
      */
     public function getMetodopagamento()
     {
-        return $this->hasOne(MetodosPagamentos::class, ['id' => 'metodopagamento_id']);
+        return $this->hasOne(MetodoPagamento::class, ['id' => 'metodopagamento_id']);
     }
 
     public function getUser()
     {
-        return $this->hasOne(UsersForm::class, ['id' => 'user_id']);
+        return $this->hasOne(UserForm::class, ['id' => 'user_id']);
     }
 }

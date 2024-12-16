@@ -14,10 +14,10 @@ use Yii;
  * @property int|null $userdata_id
  * @property int|null $linhafatura_id
  *
- * @property Linhasfaturas $linhafatura
- * @property UsersForm $userdata
+ * @property LinhaFatura $linhafatura
+ * @property UserForm $userdata
  */
-class Avaliacoes extends \yii\db\ActiveRecord
+class Avaliacao extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,8 +36,8 @@ class Avaliacoes extends \yii\db\ActiveRecord
             [['comentario'], 'string'],
             [['data'], 'safe'],
             [['rating', 'userdata_id', 'linhafatura_id'], 'integer'],
-            [['linhafatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhasfaturas::class, 'targetAttribute' => ['linhafatura_id' => 'id']],
-            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsersForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
+            [['linhafatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => LinhaFatura::class, 'targetAttribute' => ['linhafatura_id' => 'id']],
+            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
 
@@ -52,18 +52,18 @@ class Avaliacoes extends \yii\db\ActiveRecord
             'data' => 'Data',
             'rating' => 'Rating',
             'userdata_id' => 'Userdata ID',
-            'linhafatura_id' => 'Linhafatura ID',
+            'linhafatura_id' => 'LinhaFatura ID',
         ];
     }
 
     /**
-     * Gets query for [[Linhafatura]].
+     * Gets query for [[LinhaFatura]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getLinhafatura()
     {
-        return $this->hasOne(Linhafatura::class, ['id' => 'linhafatura_id']);
+        return $this->hasOne(LinhaFatura::class, ['id' => 'linhafatura_id']);
     }
 
     /**

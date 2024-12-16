@@ -11,7 +11,7 @@ use Yii;
  * @property string|null $sexo
  * @property string|null $tipo
  */
-class Categorias extends \yii\db\ActiveRecord
+class Categoria extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

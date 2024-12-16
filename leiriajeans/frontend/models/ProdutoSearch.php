@@ -4,12 +4,12 @@ namespace frontend\Models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\Models\Produtos;
+use common\Models\Produto;
 
 /**
- * ProdutosSearch represents the model behind the search form of `common\Models\Produtos`.
+ * ProdutoSearch represents the model behind the search form of `common\Models\Produto`.
  */
-class ProdutosSearch extends Produtos
+class ProdutoSearch extends Produto
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class ProdutosSearch extends Produtos
      */
     public function search($params)
     {
-        $query = Produtos::find();
+        $query = Produto::find();
 
         // add conditions that should always apply here
 

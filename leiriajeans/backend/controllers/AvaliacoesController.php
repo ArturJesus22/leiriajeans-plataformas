@@ -2,15 +2,15 @@
 
 namespace backend\controllers;
 
-use common\models\Avaliacoes;
-use backend\models\AvaliacoesSearch;
+use common\models\Avaliacao;
+use backend\models\AvaliacaoSearch;
 use http\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AvaliacoesController implements the CRUD actions for Avaliacoes model.
+ * AvaliacoesController implements the CRUD actions for Avaliacao model.
  */
 class AvaliacoesController extends Controller
 {
@@ -33,13 +33,13 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Lists all Avaliacoes models.
+     * Lists all Avaliacao models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new AvaliacoesSearch();
+        $searchModel = new AvaliacaoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +49,7 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Displays a single Avaliacoes model.
+     * Displays a single Avaliacao model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,14 +62,14 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Creates a new Avaliacoes model.
+     * Creates a new Avaliacao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
 
     public function actionCreate()
     {
-        $model = new Avaliacoes();
+        $model = new Avaliacao();
 
         return $this->render('create', [
             'model' => $model,
@@ -87,7 +87,7 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Updates an existing Avaliacoes model.
+     * Updates an existing Avaliacao model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -107,7 +107,7 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Deletes an existing Avaliacoes model.
+     * Deletes an existing Avaliacao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -121,15 +121,15 @@ class AvaliacoesController extends Controller
     }
 
     /**
-     * Finds the Avaliacoes model based on its primary key value.
+     * Finds the Avaliacao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Avaliacoes the loaded model
+     * @return Avaliacao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Avaliacoes::findOne(['id' => $id])) !== null) {
+        if (($model = Avaliacao::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

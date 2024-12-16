@@ -11,14 +11,16 @@ use Yii;
  * @property int|null $fatura_id
  * @property int|null $iva_id
  * @property int|null $linhacarrinho_id
+ * @property int|null $produto_id
  * @property float|null $preco
  *
- * @property Avaliacoes[] $avaliacaos
- * @property Faturas $fatura
- * @property Ivas $iva
- * @property LinhasCarrinhos $linhacarrinho
+ * @property Avaliacao[] $avaliacaos
+ * @property Fatura $fatura
+ * @property Iva $iva
+ * @property Linhacarrinho $linhacarrinho
+ * @property Produto $produto
  */
-class LinhasFaturas extends \yii\db\ActiveRecord
+class LinhaFatura extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -34,11 +36,12 @@ class LinhasFaturas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fatura_id', 'iva_id', 'linhacarrinho_id'], 'integer'],
+            [['fatura_id', 'iva_id', 'linhacarrinho_id', 'produto_id'], 'integer'],
             [['preco'], 'number'],
-            [['fatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Faturas::class, 'targetAttribute' => ['fatura_id' => 'id']],
-            [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ivas::class, 'targetAttribute' => ['iva_id' => 'id']],
-            [['linhacarrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => LinhasCarrinhos::class, 'targetAttribute' => ['linhacarrinho_id' => 'id']],
+            [['fatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fatura::class, 'targetAttribute' => ['fatura_id' => 'id']],
+            [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Iva::class, 'targetAttribute' => ['iva_id' => 'id']],
+            [['linhacarrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhacarrinho::class, 'targetAttribute' => ['linhacarrinho_id' => 'id']],
+            [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
         ];
     }
 
@@ -52,7 +55,9 @@ class LinhasFaturas extends \yii\db\ActiveRecord
             'fatura_id' => 'Fatura ID',
             'iva_id' => 'Iva ID',
             'linhacarrinho_id' => 'Linhacarrinho ID',
+            'produto_id' => 'Produto ID',
             'preco' => 'Preco',
+
         ];
     }
 
@@ -63,7 +68,7 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getAvaliacaos()
     {
-        return $this->hasMany(Avaliacoes::class, ['linhafatura_id' => 'id']);
+        return $this->hasMany(Avaliacao::class, ['linhafatura_id' => 'id']);
     }
 
     /**
@@ -73,7 +78,7 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getFatura()
     {
-        return $this->hasOne(Faturas::class, ['id' => 'fatura_id']);
+        return $this->hasOne(Fatura::class, ['id' => 'fatura_id']);
     }
 
     /**
@@ -83,7 +88,7 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getIva()
     {
-        return $this->hasOne(Ivas::class, ['id' => 'iva_id']);
+        return $this->hasOne(Iva::class, ['id' => 'iva_id']);
     }
 
     /**
@@ -93,7 +98,7 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getLinhacarrinho()
     {
-        return $this->hasOne(LinhasCarrinhos::class, ['id' => 'linhacarrinho_id']);
+        return $this->hasOne(Linhacarrinho::class, ['id' => 'linhacarrinho_id']);
     }
 
     /**
@@ -103,6 +108,6 @@ class LinhasFaturas extends \yii\db\ActiveRecord
      */
     public function getProduto()
     {
-        return $this->linhacarrinho->produto;
+        return $this->hasOne(Produto::class, ['id' => 'produto_id']);
     }
 }

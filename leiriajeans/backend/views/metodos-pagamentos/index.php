@@ -1,6 +1,6 @@
 <?php
 
-use common\models\MetodosPagamentos;
+use common\models\MetodoPagamento;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

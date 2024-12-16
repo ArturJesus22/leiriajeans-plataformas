@@ -2,9 +2,9 @@
 
 namespace backend\controllers;
 
-use common\models\Imagem;
-use common\models\Produto;
-use backend\models\ProdutoSearch;
+use common\models\Imagens;
+use common\models\Produtos;
+use backend\models\ProdutosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\web\UploadedFile;
 use yii;
 
 /**
- * ProdutosController implements the CRUD actions for Produto model.
+ * ProdutosController implements the CRUD actions for Produtos model.
  */
 class ProdutosController extends Controller
 {
@@ -35,13 +35,13 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Lists all Produto models.
+     * Lists all Produtos models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProdutoSearch();
+        $searchModel = new ProdutosSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -51,7 +51,7 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Displays a single Produto model.
+     * Displays a single Produtos model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -64,43 +64,36 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Creates a new Produto model.
+     * Creates a new Produtos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Produto();
-        $modelImagens = new Imagem();
+        $model = new Produtos();
+        $modelImagens = new Imagens();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                // Carregar os arquivos
+
                 $modelImagens->imageFiles = UploadedFile::getInstances($modelImagens, 'imageFiles');
                 $modelImagens->produto_id = $model->id;
-
-                if (!empty($modelImagens->imageFiles)) {
-                    // Realizar o upload
+                if ($modelImagens->imageFiles) {
+                    // Chama o método de upload
                     $uploadPaths = $modelImagens->upload();
-
-
                     if ($uploadPaths !== false) {
-                        foreach ($uploadPaths as $path) {
-                            $imagem = new Imagem();
+                        foreach ($modelImagens->imageFiles as $index => $file) {
+                            $imagem = new Imagens();
                             $imagem->produto_id = $model->id;
-                            $imagem->fileName = basename($path);
-
+                            $imagem->fileName = basename($uploadPaths[$index]);
                             if (!$imagem->save()) {
-                                Yii::error("Erro ao salvar imagem no banco: {$path}");
+                                Yii::error("Erro ao guardar imagem: ");
                             }
                         }
                     } else {
-                        Yii::error("Erro no upload de imagens.");
+                        Yii::error("Erro na validação das imagens.");
                     }
-                } else {
-                    Yii::warning("Nenhuma imagem foi enviada.");
                 }
-
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -117,8 +110,12 @@ class ProdutosController extends Controller
 
 
 
+
+
+
+
     /**
-     * Updates an existing Produto model.
+     * Updates an existing Produtos model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -127,8 +124,8 @@ class ProdutosController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelImagens = new Imagem(); // Para o upload de novos arquivos
-        $imagensAssociadas = Imagem::findAll(['produto_id' => $id]); // Buscar imagens existentes
+        $modelImagens = new Imagens(); // Para o upload de novos arquivos
+        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -143,7 +140,7 @@ class ProdutosController extends Controller
 
                     if ($uploadPaths !== false) {
                         foreach ($uploadPaths as $path) {
-                            $imagem = new Imagem();
+                            $imagem = new Imagens();
                             $imagem->produto_id = $model->id;
                             $imagem->fileName = basename($path);
 
@@ -173,7 +170,7 @@ class ProdutosController extends Controller
 
 
     /**
-     * Deletes an existing Produto model.
+     * Deletes an existing Produtos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -211,15 +208,15 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Finds the Produto model based on its primary key value.
+     * Finds the Produtos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Produto the loaded model
+     * @return Produtos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produto::findOne(['id' => $id])) !== null) {
+        if (($model = Produtos::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
@@ -229,7 +226,7 @@ class ProdutosController extends Controller
 
     protected function findModelImg($produtoId)
     {
-        $imagens = Imagem::findAll(['produto_id' => $produtoId]);
+        $imagens = Imagens::findAll(['produto_id' => $produtoId]);
         if ($imagens !== null && !empty($imagens)) {
             return $imagens;
         }

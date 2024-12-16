@@ -11,52 +11,44 @@ use yii\helpers\Url;
 $this->title = 'Produto';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
+<h1><?= Html::encode($this->title) ?></h1>
+
+<?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
 <div class="produtos-index">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <div class="row">
-        <?php foreach ($dataProvider->getModels() as $model): ?>
-            <div class="main">
-                <div class="shop_top">
-                    <div class="container">
-                        <div class="row shop_box-top">
-                            <div class="col-md-3 shop_box">
-                                <?php
-                                // Obter a primeira imagem associada ao produto
-                                $imagem = $model->imagens ? $model->imagens[0] : null;
-                                // Verifique se a imagem existe e tenha um caminho válido
-                                $imageUrl = $imagem ? Yii::getAlias('@web/images/produtos/' . $imagem->fileName) : Yii::getAlias('@web/images/default_product_image.jpg');
-                                ?>
-                                <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
-                                    <img src="<?= $imageUrl ?>" class="img-responsive" alt="Imagem do produto"/>
-                                    <div class="shop_desc">
-                                        <h3><?= Html::encode($model->nome) ?></h3>
-                                        <p><?= Html::encode($model->descricao) ?></p>
-                                        <span class="actual"><?= Html::encode($model->preco) ?></span>
-                                        <ul class="buttons">
-                                            <li class="cart">
-                                                <?= Html::a('Adicionar ao Carrinho', '#', [
-                                                    'class' => 'add-to-cart btn btn-primary',
-                                                    'data-product-id' => $model->id,
-                                                    'onclick' => 'console.log("ID do produto clicado:", $(this).data("product-id"));'
-                                                ]) ?>
-                                            </li>
-                                            <li class="shop_btn">
-                                                <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja mais</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </a>
+    <div class="container">
+        <div class="row">
+            <?php foreach ($dataProvider->getModels() as $model): ?>
+                <div class="col-md-3 product-item">
+                    <?php
+                    $imagem = $model->imagens ? $model->imagens[0] : null;
+                    $imageUrl = $imagem ? Yii::getAlias('@web/images/produtos/' . $imagem->fileName) : Yii::getAlias('@web/images/default_product_image.jpg');
+                    ?>
+                    <div class="shop_box">
+                        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
+                            <img src="<?= $imageUrl ?>" class="img-responsive product-image" alt="Imagem do produto"/>
+                            <div class="shop_desc">
+                                <h3 class="product-name"><?= Html::encode($model->nome) ?></h3>
+                                <p class="product-description"><?= Html::encode($model->descricao) ?></p>
+                                <span class="actual product-price"><?= Html::encode($model->preco) . '€' ?></span>
+                                <ul class="buttons">
+                                    <li class="shop_btn"><a href="/cart/add?id=<?= $model->id; ?>">Add To Cart</a></li>
+                                    |
+                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Read More</a></li>
+                                    <div class="clear"> </div>
+                                </ul>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
 </div>
+
 
 
 <?php

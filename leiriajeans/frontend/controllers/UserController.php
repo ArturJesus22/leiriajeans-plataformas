@@ -2,18 +2,18 @@
 
 namespace frontend\controllers;
 
-use common\models\Categorias;
-use common\models\Imagens;
-use common\Models\Produtos;
-use frontend\Models\ProdutosSearch;
+use common\models\User;
+use common\models\UsersForm;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
+use Yii;
+
 /**
- * ProdutosController implements the CRUD actions for Produtos model.
+ * UserController implements the CRUD actions for User model.
  */
-class ProdutosController extends Controller
+class UserController extends Controller
 {
     /**
      * @inheritDoc
@@ -34,70 +34,58 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Lists all Produtos models.
+     * Lists all User models.
      *
      * @return string
      */
-    public function actionIndex($sexo)
+    public function actionIndex()
     {
-        // Se o parâmetro sexo for 'all', mostrar todos os produtos
-        if ($sexo === 'All') {
-            $query = Produtos::find();
-        } else {
-            $sexos = is_array($sexo) ? $sexo : [$sexo];
-
-            // Procurar categorias que correspondem a qualquer um dos sexos
-            $categorias = Categorias::find()
-                ->select('id')
-                ->where(['sexo' => $sexos])
-                ->column();
-
-            // Filtrar os produtos baseados nas categorias encontradas
-            $query = Produtos::find()
-                ->where(['categoria_id' => $categorias]);
-        }
-
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $query,
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find(),
+            /*
             'pagination' => [
-                'pageSize' => 12, // Número de produtos por página
+                'pageSize' => 50
             ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
         ]);
 
-        // Criar o model de pesquisa
-        $searchModel = new ProdutosSearch();
-
-        // Renderizar a view
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Produtos model.
-     * @param int $id ID
+     * Displays a single User model.
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
+        $userid = Yii::$app->user->id;
+
+        if($userid != $id){
+            return $this->redirect(['index']);
+        }
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'imagensAssociadas' => $imagensAssociadas, // Passar as imagens associadas
         ]);
     }
 
     /**
-     * Creates a new Produtos model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Produtos();
+        $model = new User();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -113,29 +101,46 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Updates an existing Produtos model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
+     * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelUserData = UsersForm::findOne(['user_id' => $id]); // UsersForm relacionado
+        $authManager = Yii::$app->authManager;
+
+        // Obter a role atual do usuário
+        $roles = $authManager->getRolesByUser($id);
+        if (!empty($roles)) {
+            $model->role = reset($roles)->name; // Atribuir a role no model
+        } else {
+            $model->role = '(Nenhuma role atribuída)'; // Valor padrão se não houver role
+        }
+
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $modelUserData->load($this->request->post());
+
+            if ($modelUserData->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelUserData' => $modelUserData,
         ]);
     }
 
+
     /**
-     * Deletes an existing Produtos model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -147,15 +152,15 @@ class ProdutosController extends Controller
     }
 
     /**
-     * Finds the Produtos model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Produtos the loaded model
+     * @param int $id
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produtos::findOne(['id' => $id])) !== null) {
+        if (($model = User::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

@@ -63,37 +63,55 @@ class UserController extends ActiveController
 
     //Criar perfil actionCriarperfil($id)
 
-    public function actionCriarPerfil($id) {
-        $nome  = Yii::$app->request->post('nome');
-        $codpostal  = Yii::$app->request->post('codpostal');
-        $localidade  = Yii::$app->request->post('localidade');
+
+
+    public function actionSignup() {
+        // Obter os dados da requisição
+        $username = Yii::$app->request->post('username');
+        $email = Yii::$app->request->post('email');
+        $password = Yii::$app->request->post('password_hash');
+        $nome = Yii::$app->request->post('nome');
+        $codpostal = Yii::$app->request->post('codpostal');
+        $localidade = Yii::$app->request->post('localidade');
         $rua = Yii::$app->request->post('rua');
         $nif = Yii::$app->request->post('nif');
         $telefone = Yii::$app->request->post('telefone');
 
-        $userFormModel = new $this->modelUserForm;
-        $userFormExists = $userFormModel::find()->where(['user_id' => $id])->one();
+        // Validar dados de entrada
+        if (empty($nome) || empty($username) || empty($password) ||empty($email)  || empty($codpostal) || empty($localidade) || empty($rua) || empty($nif) || empty($telefone)) {
+            return ['message' => 'Todos os campos são obrigatórios.'];
+        }
 
-        if($userFormExists) {
-            $userFormExists->nome = $nome;
-            $userFormExists->codpostal = $codpostal;
-            $userFormExists->localidade = $localidade;
-            $userFormExists->rua = $rua;
-            $userFormExists->nif = $nif;
-            $userFormExists->telefone = $telefone;
-            $userFormExists->save();
+        // Criar o novo utilizador
+        $userModel = new $this->modelClass;
+        $userModel->username = $username;
+        $userModel->email = $email;
+        $userModel->setPassword($password);
+        $userModel->generateAuthKey();
+        $userModel->generateEmailVerificationToken();
+
+
+
+        // guardar o utilizador
+        if ($userModel->save()) {
+            // Após guardar o utilizador, criar o perfil associado
+            $userFormModel = new $this->modelUserForm;
+            $userFormModel->user_id = $userModel->id; // associar o perfil ao utilizador
+            $userFormModel->nome = $nome;
+            $userFormModel->codpostal = $codpostal;
+            $userFormModel->localidade = $localidade;
+            $userFormModel->rua = $rua;
+            $userFormModel->nif = $nif;
+            $userFormModel->telefone = $telefone;
+
+            // guardar o perfil do utilizador
+            if ($userFormModel->save()) {
+                return ['message' => 'Utilizador e perfil criados com sucesso'];
+            } else {
+                return ['message' => 'Erro ao criar o perfil do Utilizador'];
+            }
+        } else {
+            return ['message' => 'Erro ao criar o utilizador'];
         }
-        else {
-            $userForm = new $this->modelUserForm;
-            $userForm->nome = $nome;
-            $userForm->codpostal = $codpostal;
-            $userForm->localidade = $localidade;
-            $userForm->rua = $rua;
-            $userForm->nif = $nif;
-            $userForm->telefone = $telefone;
-            $userForm->user_id = $id;
-            $userForm->save();
-        }
-        return $userFormExists? ['message' => 'Perfil criado com sucesso'] : ['message' => 'Erro ao criar o Perfil'];
     }
 }

@@ -40,31 +40,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <h2>Linhas de Fatura</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fatura ID</th>
-                <th>Produto</th>
-                <th>Preço</th>
-                <th>IVA</th>
-                <th>Quantidade</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($dataProvider->models as $fatura): ?>
-                <?php foreach ($fatura->linhafaturas as $linha): ?>
-                    <tr>
-                        <td><?= Html::encode($linha->id) ?></td>
-                        <td><?= Html::encode($linha->fatura_id) ?></td>
-                        <td><?= Html::encode($linha->linhacarrinho->produto->nome ?? 'Produto não encontrado') ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->preco) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->iva->percentagem ?? 0) ?></td>
-                        <td><?= Html::encode($linha->linhacarrinho->quantidade ?? 0) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
 </div>

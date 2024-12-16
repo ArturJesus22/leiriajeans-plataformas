@@ -46,7 +46,6 @@ use common\models\Produtos;
         }),
         ['prompt'=>'Selecione a Categoria']
     ) ?>
-
     <div class="imagens-associadas">
         <h3>Imagens Associadas</h3>
         <div class="lista-imagens">

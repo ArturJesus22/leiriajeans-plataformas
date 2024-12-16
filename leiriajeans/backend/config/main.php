@@ -52,10 +52,10 @@ return [
                 ['class' => 'yii\rest\UrlRule',
                 'controller' => 'api/user',
                 'extraPatterns' => [
-                    'GET nomes'=> 'nomes',// 'nomes' refers to 'actionNomes' action
+                    'GET nomes'=> 'nomes',
                     'GET {username}/dados' => 'dados',
                     'GET {id}' => 'getuserbyid',
-                    'POST {id}/criar' => 'criarperfil',
+                    'POST signup' => 'Signup',
                 ],
                 'tokens' => [
                     '{id}' => '<id:\d+>',

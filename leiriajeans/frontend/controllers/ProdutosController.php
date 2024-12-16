@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Categorias;
+use common\models\Imagens;
 use common\Models\Produtos;
 use frontend\Models\ProdutosSearch;
 use yii\web\Controller;
@@ -81,8 +82,11 @@ class ProdutosController extends Controller
      */
     public function actionView($id)
     {
+        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'imagensAssociadas' => $imagensAssociadas, // Passar as imagens associadas
         ]);
     }
 

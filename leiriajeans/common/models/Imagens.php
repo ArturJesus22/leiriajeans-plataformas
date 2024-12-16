@@ -35,7 +35,7 @@ class Imagens extends \yii\db\ActiveRecord
             [['produto_id'], 'integer'],
             [['produto_id'], 'required', 'message' => 'Selecione um Produto!'],
             [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produtos::class, 'targetAttribute' => ['produto_id' => 'id']],
-            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
+            [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
         ];
     }
 

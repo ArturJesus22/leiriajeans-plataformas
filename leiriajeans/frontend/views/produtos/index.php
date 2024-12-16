@@ -13,13 +13,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
+<h1><?= Html::encode($this->title) ?></h1>
 
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <div class="produtos-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="container">
         <div class="row">
@@ -35,17 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="shop_desc">
                                 <h3 class="product-name"><?= Html::encode($model->nome) ?></h3>
                                 <p class="product-description"><?= Html::encode($model->descricao) ?></p>
-                                <span class="actual product-price"><?= Html::encode($model->preco) ?></span>
+                                <span class="actual product-price"><?= Html::encode($model->preco) . '€' ?></span>
                                 <ul class="buttons">
-                                    <li class="cart">
-                                        <?= Html::a('Adicionar ao Carrinho', '#', [
-                                            'class' => 'add-to-cart btn btn-primary',
-                                            'data-product-id' => $model->id
-                                        ]) ?>
-                                    </li>
-                                    <li class="shop_btn">
-                                        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja mais</a>
-                                    </li>
+                                    <li class="shop_btn"><a href="/cart/add?id=<?= $model->id; ?>">Add To Cart</a></li>
+                                    |
+                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Read More</a></li>
+                                    <div class="clear"> </div>
                                 </ul>
                             </div>
                         </a>

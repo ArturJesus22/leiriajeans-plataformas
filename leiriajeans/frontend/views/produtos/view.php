@@ -21,11 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-9 single_left">
                         <div class="single_image">
                             <ul id="etalage">
-                                <li>
-                                    <a href="optionallink.html">
-                                        <img class="etalage_thumb_image" src="images/3.jpg" />
-                                    </a>
-                                </li>
+                                <?php foreach ($imagensAssociadas as $imagem): ?>
+                                    <li>
+                                        <a href="<?= Yii::getAlias('@web/images/produtos/' . $imagem->fileName) ?>">
+                                            <img class="etalage_thumb_image"
+                                                 src="<?= Yii::getAlias('@web/images/produtos/' . $imagem->fileName) ?>"
+                                                 alt="Imagem do produto"/>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
 
@@ -91,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
-<!--    --><?php /*= DetailView::widget([
+    <!--    --><?php /*= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',

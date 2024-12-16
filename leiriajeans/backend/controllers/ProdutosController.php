@@ -75,32 +75,25 @@ class ProdutosController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                // Carregar os arquivos
+
                 $modelImagens->imageFiles = UploadedFile::getInstances($modelImagens, 'imageFiles');
                 $modelImagens->produto_id = $model->id;
-
-                if (!empty($modelImagens->imageFiles)) {
-                    // Realizar o upload
+                if ($modelImagens->imageFiles) {
+                    // Chama o método de upload
                     $uploadPaths = $modelImagens->upload();
-
-
                     if ($uploadPaths !== false) {
-                        foreach ($uploadPaths as $path) {
+                        foreach ($modelImagens->imageFiles as $index => $file) {
                             $imagem = new Imagens();
                             $imagem->produto_id = $model->id;
-                            $imagem->fileName = basename($path);
-
+                            $imagem->fileName = basename($uploadPaths[$index]);
                             if (!$imagem->save()) {
-                                Yii::error("Erro ao salvar imagem no banco: {$path}");
+                                Yii::error("Erro ao guardar imagem: ");
                             }
                         }
                     } else {
-                        Yii::error("Erro no upload de imagens.");
+                        Yii::error("Erro na validação das imagens.");
                     }
-                } else {
-                    Yii::warning("Nenhuma imagem foi enviada.");
                 }
-
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -112,6 +105,10 @@ class ProdutosController extends Controller
             'modelImagens' => $modelImagens,
         ]);
     }
+
+
+
+
 
 
 

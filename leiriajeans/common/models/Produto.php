@@ -17,12 +17,12 @@ use Yii;
  * @property int|null $iva_id
  * @property int|null $categoria_id
  *
- * @property Carrinho[] $carrinhos
+ * @property Carrinho[] $carrinho
  * @property Categoria $categoria
  * @property Cor $cor
  * @property Imagem[] $imagems
  * @property Iva $iva
- * @property LinhaCarrinho[] $linhacarrinhos
+ * @property LinhaCarrinho[] $linhacarrinho
  */
 class Produto extends \yii\db\ActiveRecord
 {

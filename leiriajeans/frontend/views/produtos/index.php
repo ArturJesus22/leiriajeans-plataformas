@@ -35,8 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <p class="product-description"><?= Html::encode($model->descricao) ?></p>
                                 <span class="actual product-price"><?= Html::encode($model->preco) . '€' ?></span>
                                 <ul class="buttons">
-                                    <li class="shop_btn"><a href="/cart/add?id=<?= $model->id; ?>">Add To Cart</a></li>
-                                    |
+
+                                    <li class="shop_btn">
+                                        <form action="<?= Yii::$app->urlManager->createUrl(['/carrinho/add']) ?>" method="post">
+                                            <input type="hidden" name="id" value="<?= $model->id; ?>">
+                                            <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken; ?>">
+                                            <button type="submit" class="btn">Add To Cart</button>
+                                        </form>
+                                    </li>
                                     <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Read More</a></li>
                                     <div class="clear"> </div>
                                 </ul>
@@ -49,29 +55,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
-
-
-<?php
-$this->registerJs("
-    $('.add-to-cart').on('click', function(e) {
-        e.preventDefault();
-        var productId = $(this).data('product-id');
-
-        $.ajax({
-            url: '" . Yii::$app->urlManager->createUrl(['/carrinho/add']) . "',
-            method: 'POST',
-            data: { 
-                id: productId,
-                _csrf: '" . Yii::$app->request->csrfToken . "'
-            },
-            dataType: 'json',
-            success: function(response) {
-                alert(response.success ? response.message : 'Erro: ' + response.message);
-            },
-            error: function() {
-                alert('Erro ao adicionar o produto ao carrinho. Por favor, tente novamente.');
-            }
-        });
-    });
-");
-?>

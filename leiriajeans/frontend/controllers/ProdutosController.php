@@ -2,10 +2,10 @@
 
 namespace frontend\controllers;
 
-use common\models\Categorias;
-use common\models\Imagens;
-use common\Models\Produtos;
-use frontend\Models\ProdutosSearch;
+use common\models\Categoria;
+use common\models\Imagem;
+use common\Models\Produto;
+use frontend\Models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,18 +42,18 @@ class ProdutosController extends Controller
     {
         // Se o parâmetro sexo for 'all', mostrar todos os produtos
         if ($sexo === 'All') {
-            $query = Produtos::find();
+            $query = Produto::find();
         } else {
             $sexos = is_array($sexo) ? $sexo : [$sexo];
 
             // Procurar categorias que correspondem a qualquer um dos sexos
-            $categorias = Categorias::find()
+            $categorias = Categoria::find()
                 ->select('id')
                 ->where(['sexo' => $sexos])
                 ->column();
 
             // Filtrar os produtos baseados nas categorias encontradas
-            $query = Produtos::find()
+            $query = Produto::find()
                 ->where(['categoria_id' => $categorias]);
         }
 
@@ -65,7 +65,7 @@ class ProdutosController extends Controller
         ]);
 
         // Criar o model de pesquisa
-        $searchModel = new ProdutosSearch();
+        $searchModel = new ProdutoSearch();
 
         // Renderizar a view
         return $this->render('index', [
@@ -82,7 +82,7 @@ class ProdutosController extends Controller
      */
     public function actionView($id)
     {
-        $imagensAssociadas = Imagens::findAll(['produto_id' => $id]); // Buscar imagens existentes
+        $imagensAssociadas = Imagem::findAll(['produto_id' => $id]); // Buscar imagens existentes
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -97,7 +97,7 @@ class ProdutosController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Produtos();
+        $model = new Produto();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -150,12 +150,12 @@ class ProdutosController extends Controller
      * Finds the Produtos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Produtos the loaded model
+     * @return Produto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Produtos::findOne(['id' => $id])) !== null) {
+        if (($model = Produto::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

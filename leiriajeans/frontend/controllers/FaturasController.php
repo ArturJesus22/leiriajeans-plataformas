@@ -75,12 +75,26 @@ class FaturasController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+        public function actionView($id)
+        {
+            // Carregar a fatura
+            $model = $this->findModel($id);
+        
+            // Buscar as linhas da fatura
+            $linhasFatura = LinhaFatura::find()
+                ->with('produto') // Carrega o relacionamento com o produto
+                ->where(['fatura_id' => $id])
+                ->all();
+        
+            return $this->render('view', [
+                'model' => $model,
+                'linhasFatura' => $linhasFatura, // Passa as linhas para a view
+            ]);
+        }
+    
+
+
+
 
     /**
      * Creates a new Fatura model.
@@ -182,9 +196,6 @@ class FaturasController extends Controller
                     'id' => $produto->id,
                     'nome' => $produto->nome,
                     'preco' => $linha->precoVenda,
-                    'quantidade' => $linha->quantidade,
-                    'subtotal' => $linha->subTotal,
-                    'valorIva' => $linha->valorIva
                 ];
             }
         }
@@ -214,29 +225,42 @@ class FaturasController extends Controller
             return $this->redirect(['carrinhos/index']);
         }
 
+        // Busca as linhas do carrinho
+        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
+
+        // Verifica se o carrinho está vazio
+        if (empty($linhasCarrinho)) {
+            Yii::$app->session->setFlash('error', 'O carrinho está vazio.');
+            return $this->redirect(['carrinhos/index']);
+        }
+
         // Cria uma nova fatura
         $fatura = new Fatura();
+        $fatura->userdata_id = $userForm->id; // Associa a fatura ao usuário logado
         $fatura->metodopagamento_id = 1; // Defina o método de pagamento conforme necessário
         $fatura->metodoexpedicao_id = 1; // Defina o método de expedição conforme necessário
         $fatura->data = date('Y-m-d H:i:s');
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal; // Total da fatura
 
         if ($fatura->save()) {
-            // Busca as linhas do carrinho
-            $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
-
-            foreach ($linhasCarrinho as $linha) {
-                // Cria uma nova linha de fatura
+            // Agora, criar as linhas da fatura a partir das linhas do carrinho
+            foreach ($linhasCarrinho as $linhaCarrinho) {
+                // Criar uma nova linha de fatura
                 $linhaFatura = new LinhaFatura();
-                $linhaFatura->fatura_id = $fatura->id;
-                $linhaFatura->linhacarrinho_id = $linha->id; // Associa a linha do carrinho
-                $linhaFatura->iva_id = $linha->produto->iva_id; // Assumindo que o produto tem um campo iva_id
-                $linhaFatura->preco = $linha->precoVenda; // Preço da linha
+                $linhaFatura->fatura_id = $fatura->id; // Associa a linha da fatura à fatura criada
 
-                $linhaFatura->save(); // Salva a linha de fatura
+                // Associar o produto
+                $linhaFatura->produto_id = $linhaCarrinho->produto_id; // ID do produto da linha do carrinho
+                $linhaFatura->preco = $linhaCarrinho->precoVenda; // Preço da linha de venda
+
+                // Salva a linha da fatura
+                if (!$linhaFatura->save()) {
+                    Yii::$app->session->setFlash('error', 'Erro ao salvar linha de fatura: ' . json_encode($linhaFatura->getErrors()));
+                    return $this->redirect(['carrinhos/index']);
+                }
             }
 
-            // Limpa o carrinho após a criação da fatura
+            // Agora que a fatura e suas linhas foram salvas, podemos apagar o carrinho e suas linhas
             LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id]);
             $carrinho->delete();
 
@@ -247,4 +271,9 @@ class FaturasController extends Controller
             return $this->redirect(['carrinhos/index']);
         }
     }
+
+
+
+
+
 }

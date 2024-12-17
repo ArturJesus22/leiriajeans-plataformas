@@ -50,7 +50,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'carrinhos/add' => 'carrinhos/add',
+                'carrinho/add' => 'carrinho/add',
             ],
         ],
     ],

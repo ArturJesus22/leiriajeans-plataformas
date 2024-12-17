@@ -12,7 +12,7 @@ $this->title = 'Carrinho de Compras';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="carrinhos-index">
+<div class="carrinho-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php if ($carrinhoAtual && !empty($carrinhoAtual['itens'])): ?>

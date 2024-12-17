@@ -34,12 +34,13 @@ class Fatura extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['metodopagamento_id', 'metodoexpedicao_id'], 'required'],
-            [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido'], 'integer'],
+            [['metodopagamento_id', 'metodoexpedicao_id', 'userdata_id'], 'required'],
+            [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido', 'userdata_id'], 'integer'],
             [['data'], 'safe'],
             [['valorTotal'], 'number'],
             [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoExpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
             [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoPagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
+            [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
 
@@ -88,8 +89,8 @@ class Fatura extends \yii\db\ActiveRecord
         return $this->hasOne(MetodoPagamento::class, ['id' => 'metodopagamento_id']);
     }
 
-    public function getUser()
+    public function getUserdata()
     {
-        return $this->hasOne(UserForm::class, ['id' => 'user_id']);
+        return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 }

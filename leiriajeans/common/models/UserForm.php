@@ -17,8 +17,8 @@ use Yii;
  * @property string|null $telefone
  * @property int|null $user_id
  *
- * @property Avaliacao[] $avaliacaos
- * @property Carrinho[] $carrinhos
+ * @property Avaliacao[] $avaliacao
+ * @property Carrinho[] $carrinho
  * @property User $user
  */
 class UserForm extends \yii\db\ActiveRecord

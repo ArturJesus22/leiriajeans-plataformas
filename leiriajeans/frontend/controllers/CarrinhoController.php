@@ -93,72 +93,64 @@ class CarrinhoController extends Controller
 
     public function actionAdd()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        
-        try {
-            if (Yii::$app->user->isGuest) {
-                return ['success' => false, 'message' => 'Faça login primeiro.'];
-            }
-
-            $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
-            if (!$userForm) {
-                return ['success' => false, 'message' => 'Utilizador não encontrado.'];
-            }
-
-            $id = Yii::$app->request->post('id');
-            $produto = Produto::findOne($id);
-
-            if (!$produto) {
-                return ['success' => false, 'message' => 'Produto não encontrado.'];
-            }
-
-            // Procura um carrinho existente ou cria um novo
-            $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
-                'userdata_id' => $userForm->id,
-                'total' => 0,
-                'ivatotal' => 0,
-            ]);
-
-            if ($carrinho->isNewRecord && !$carrinho->save()) {
-                return ['success' => false, 'message' => 'Erro ao criar carrinho'];
-            }
-
-            // Verifica se já existe uma linha para este produto
-            $linhaCarrinho = LinhaCarrinho::findOne([
-                'carrinho_id' => $carrinho->id,
-                'produto_id' => $id
-            ]);
-
-            if ($linhaCarrinho) {
-                // Se já existe, atualiza a quantidade e totais
-                $linhaCarrinho->quantidade++;
-                $linhaCarrinho->precoVenda = $produto->preco;
-                $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
-                $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
-            } else {
-                // Se não existe, cria nova linha
-                $linhaCarrinho = new LinhaCarrinho([
-                    'carrinho_id' => $carrinho->id,
-                    'produto_id' => $id,
-                    'quantidade' => 1,
-                    'precoVenda' => $produto->preco,
-                    'subTotal' => $produto->preco,
-                    'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
-                ]);
-            }
-
-            if (!$linhaCarrinho->save()) {
-                return ['success' => false, 'message' => 'Erro ao guardar linha do carrinho: ' . implode(', ', $linhaCarrinho->getFirstErrors())];
-            }
-
-            // Atualiza os totais do carrinho
-            $this->atualizarTotaisCarrinho($carrinho);
-
-            return ['success' => true, 'message' => 'Produto adicionado ao carrinho com sucesso!'];
-
-        } catch (\Exception $e) {
-            return ['success' => false, 'message' => 'Erro ao adicionar produto: ' . $e->getMessage()];
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
         }
+
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
+
+        $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
+            'userdata_id' => $userForm->id,
+            'total' => 0,
+            'ivatotal' => 0,
+        ]);
+
+        if ($carrinho->isNewRecord && !$carrinho->save()) {
+            return $this->redirect(['index']); // Redireciona se houver erro ao criar o carrinho
+        }
+
+        $id = Yii::$app->request->post('id');
+        $produto = Produto::findOne($id);
+
+        if (!$produto) {
+            return $this->redirect(['index']); // Redireciona se o produto não for encontrado
+        }
+
+        // Verifica se já existe uma linha para este produto
+        $linhaCarrinho = LinhaCarrinho::findOne([
+            'carrinho_id' => $carrinho->id,
+            'produto_id' => $id
+        ]);
+
+        if ($linhaCarrinho) {
+            // Se já existe, atualiza a quantidade e totais
+            $linhaCarrinho->quantidade++;
+            $linhaCarrinho->precoVenda = $produto->preco;
+            $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
+            $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
+        } else {
+            // Se não existe, cria nova linha
+            $linhaCarrinho = new LinhaCarrinho([
+                'carrinho_id' => $carrinho->id,
+                'produto_id' => $id,
+                'quantidade' => 1,
+                'precoVenda' => $produto->preco,
+                'subTotal' => $produto->preco,
+                'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
+            ]);
+        }
+
+        if (!$linhaCarrinho->save()) {
+            return $this->redirect(['index']); // Redireciona se houver erro ao salvar a linha do carrinho
+        }
+
+        // Atualiza os totais do carrinho
+        $this->atualizarTotaisCarrinho($carrinho);
+
+        return $this->redirect(['index']); // Redireciona para a página de produtos
     }
 
     public function actionRemove($id)
@@ -254,5 +246,82 @@ class CarrinhoController extends Controller
             ->sum('valorIva') ?? 0;
             
         $carrinho->save();
+    }
+
+    public function actionAddToCart()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
+
+        $id = Yii::$app->request->post('id');
+        $produto = Produto::findOne($id);
+
+        if (!$produto) {
+            return $this->redirect(['index']); // Redireciona se o produto não for encontrado
+        }
+
+        // Procura um carrinho existente ou cria um novo
+        $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
+            'userdata_id' => $userForm->id,
+            'total' => 0,
+            'ivatotal' => 0,
+        ]);
+
+        if ($carrinho->isNewRecord && !$carrinho->save()) {
+            return $this->redirect(['index']); // Redireciona se houver erro ao criar o carrinho
+        }
+
+        // Verifica se já existe uma linha para este produto
+        $linhaCarrinho = LinhaCarrinho::findOne([
+            'carrinho_id' => $carrinho->id,
+            'produto_id' => $id
+        ]);
+
+        if ($linhaCarrinho) {
+            // Se já existe, atualiza a quantidade e totais
+            $linhaCarrinho->quantidade++;
+            $linhaCarrinho->precoVenda = $produto->preco;
+            $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
+            $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
+        } else {
+            // Se não existe, cria nova linha
+            $linhaCarrinho = new LinhaCarrinho([
+                'carrinho_id' => $carrinho->id,
+                'produto_id' => $id,
+                'quantidade' => 1,
+                'precoVenda' => $produto->preco,
+                'subTotal' => $produto->preco,
+                'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
+            ]);
+        }
+
+        if (!$linhaCarrinho->save()) {
+            return $this->redirect(['index']); // Redireciona se houver erro ao salvar a linha do carrinho
+        }
+
+        // Atualiza os totais do carrinho
+        $this->atualizarTotaisCarrinho($carrinho);
+
+        return $this->redirect(['index']); // Redireciona para a página de produtos
+    }
+
+    public function actionView($id)
+    {
+        // Encontra a fatura com o ID fornecido
+        $model = $this->findModel($id);
+
+        // Busca as linhas da fatura associadas
+        $linhasFatura = $model->getLinhafaturas()->all();
+
+        return $this->render('view', [
+            'model' => $model,
+            'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
+        ]);
     }
 }

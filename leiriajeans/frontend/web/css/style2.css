@@ -96,3 +96,21 @@
     display:inline-block;
     margin-top:10px;
 }
+
+
+
+.carousel-indicators button {
+    background-color: #555; /* Cor dos indicadores */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1); /* Torna os ícones brancos */
+}
+.carousel-item img {
+    max-width: 400px;    /* Define a largura máxima da imagem */
+    max-height: 300px;   /* Define a altura máxima da imagem */
+    object-fit: contain; /* Mantém a proporção da imagem sem cortar */
+    margin: 0 auto;      /* Centraliza a imagem no carrossel */
+    border-radius: 10px; /* Bordas arredondadas para um efeito visual agradável */
+}

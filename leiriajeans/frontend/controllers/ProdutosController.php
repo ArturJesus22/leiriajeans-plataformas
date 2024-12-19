@@ -38,23 +38,34 @@ class ProdutosController extends Controller
      *
      * @return string
      */
-    public function actionIndex($sexo)
+
+    public function actionIndex($sexo = null, $tipo = null)
     {
-        // Se o parâmetro sexo for 'all', mostrar todos os produtos
-        if ($sexo === 'All') {
-            $query = Produto::find();
-        } else {
+        // Iniciar a query de produtos
+        $query = Produto::find();
+
+        // Se o parâmetro tipo for fornecido, filtrar pelo tipo
+        if ($tipo) {
+            // Encontrar categorias que correspondem ao tipo especificado
+            $categoriaIds = Categoria::find()
+                ->select('id')
+                ->where(['tipo' => $tipo])
+                ->column();
+
+            // Aplicar filtro de categoria à query de produtos
+            $query->andWhere(['categoria_id' => $categoriaIds]);
+        }
+
+        // Se o parâmetro sexo for fornecido, filtrar pelo sexo
+        if ($sexo) {
             $sexos = is_array($sexo) ? $sexo : [$sexo];
 
-            // Procurar categorias que correspondem a qualquer um dos sexos
-            $categorias = Categoria::find()
+            $categoriaIds = Categoria::find()
                 ->select('id')
                 ->where(['sexo' => $sexos])
                 ->column();
 
-            // Filtrar os produtos baseados nas categorias encontradas
-            $query = Produto::find()
-                ->where(['categoria_id' => $categorias]);
+            $query->andWhere(['categoria_id' => $categoriaIds]);
         }
 
         $dataProvider = new \yii\data\ActiveDataProvider([
@@ -72,7 +83,17 @@ class ProdutosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+
+        // Criar o model de pesquisa
+        $searchModel = new ProdutoSearch();
+
+        // Renderizar a view
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
+
 
     /**
      * Displays a single Produtos model.

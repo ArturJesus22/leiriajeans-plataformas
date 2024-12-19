@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <button type="submit" class="btn">Add To Cart</button>
                                         </form>
                                     </li>
-                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Read More</a></li>
+                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja Mais</a></li>
                                     <div class="clear"> </div>
                                 </ul>
                             </div>

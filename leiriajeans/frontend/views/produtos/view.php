@@ -68,6 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endforeach; ?>
                         </ul>
 
+
+                        <h4 class="mt-4">Sexo</h4>
+                        <p>
+                            <?= Html::encode($model->categoria ? $model->categoria->sexo : 'Não especificado') ?>
+                        </p>
+
                         <h4 class="mt-4">Cores</h4>
                         <ul class="list-unstyled d-flex flex-wrap">
                             <?php foreach (Cor::find()->all() as $cor): ?>

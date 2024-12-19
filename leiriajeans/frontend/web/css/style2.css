@@ -7,10 +7,15 @@
 
 .imagem {
     max-width: 100%;
-    width: 500px; /* Ajuste do tamanho das imagens */
-    height:500px; /* Mantém a proporção da imagem */
+    width: 600px;        /* Aumenta a largura das imagens */
+    height: 600px;       /* Define a altura proporcional à largura */
+    object-fit: contain; /* Mostra a imagem inteira sem cortes e mantém a proporção */
     cursor: pointer;
+
+
 }
+
+
 /*--shop--*/
 .shop_top{
     padding:5% 0;

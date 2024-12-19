@@ -63,11 +63,11 @@ $this->title = 'LeiriaJeans';
 
     <div class="imagens">
         <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'sexo' => 'Mulher']) ?>">
-            <img src="<?= Yii::getAlias('@web/images/roupamulher.jpg') ?>" alt="Imagem Mulher" class="imagem"/>
+            <img src="<?= Yii::getAlias('@web/images/loira.webp') ?>" alt="Imagem Mulher" class="imagem"/>
         </a>
 
         <a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'sexo' => 'Homem']) ?>">
-            <img src="<?= Yii::getAlias('@web/images/polo1.webp') ?>" alt="Imagem Homem" class="imagem"/>
+            <img src="<?= Yii::getAlias('@web/images/loiro.webp') ?>" alt="Imagem Homem" class="imagem"/>
         </a>
 
     </div>
@@ -78,7 +78,7 @@ $this->title = 'LeiriaJeans';
             <div class="close_but"><i class="close1"> </i></div>
             <div class="row">
                 <div class="col-md-3 top_box">
-                    <div class="view view-ninth"><a href="">
+                    <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'Sapatilhas']) ?>">
                             <img src="<?= Yii::getAlias('@web/images/jordancactus.webp') ?>" class="img-responsive" alt=""/>
                             <div class="mask mask-1"> </div>
                             <div class="mask mask-2"> </div>

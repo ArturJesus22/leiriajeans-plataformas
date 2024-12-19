@@ -226,7 +226,7 @@ class FaturasController extends Controller
         }
 
         // Busca as linhas do carrinho
-        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
+        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id, 'status' => 1])->all(); // Filtra apenas linhas ativas
 
         // Verifica se o carrinho está vazio
         if (empty($linhasCarrinho)) {
@@ -242,14 +242,16 @@ class FaturasController extends Controller
         $fatura->data = date('Y-m-d H:i:s');
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal; // Total da fatura
 
+        Yii::info('Iniciando a criação da fatura', __METHOD__);
+
         if ($fatura->save()) {
+            Yii::info('Fatura criada com ID: ' . $fatura->id, __METHOD__);
             // Agora, criar as linhas da fatura a partir das linhas do carrinho
             foreach ($linhasCarrinho as $linhaCarrinho) {
                 // Criar uma nova linha de fatura
                 $linhaFatura = new LinhaFatura();
                 $linhaFatura->fatura_id = $fatura->id; // Associa a linha da fatura à fatura criada
-
-                // Associar o produto
+                $linhaFatura->linhacarrinho_id = $linhaCarrinho->id; // Associa a linha do carrinho
                 $linhaFatura->produto_id = $linhaCarrinho->produto_id; // ID do produto da linha do carrinho
                 $linhaFatura->preco = $linhaCarrinho->precoVenda; // Preço da linha de venda
 
@@ -258,11 +260,17 @@ class FaturasController extends Controller
                     Yii::$app->session->setFlash('error', 'Erro ao salvar linha de fatura: ' . json_encode($linhaFatura->getErrors()));
                     return $this->redirect(['carrinhos/index']);
                 }
+
+                // Marque a linha do carrinho como inativa
+                $linhaCarrinho->status = 0; // Defina como inativa
+                $linhaCarrinho->save(); // Isso deve apenas atualizar o status, não excluir
             }
 
-            // Agora que a fatura e suas linhas foram salvas, podemos apagar o carrinho e suas linhas
-            LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id]);
-            $carrinho->delete();
+            // Não exclua as linhas do carrinho, apenas atualize o status
+            // LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id, 'status' => 0]); // Remova esta linha
+
+            // Apague o carrinho se necessário
+            // $carrinho->delete(); // Remova esta linha se você não quiser apagar o carrinho
 
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
             return $this->redirect(['view', 'id' => $fatura->id]);

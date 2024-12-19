@@ -98,7 +98,7 @@ class LinhaFatura extends \yii\db\ActiveRecord
      */
     public function getLinhacarrinho()
     {
-        return $this->hasOne(Linhacarrinho::class, ['id' => 'linhacarrinho_id']);
+        return $this->hasOne(LinhaCarrinho::class, ['id' => 'linhacarrinho_id']);
     }
 
     /**

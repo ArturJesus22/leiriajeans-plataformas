@@ -29,7 +29,7 @@ class LinhaCarrinho extends \yii\db\ActiveRecord
     {
         return [
             [['carrinho_id', 'produto_id', 'quantidade'], 'required'],
-            [['carrinho_id', 'produto_id', 'quantidade'], 'integer'],
+            [['carrinho_id', 'produto_id', 'quantidade', 'status'], 'integer'],
             [['precoVenda', 'subTotal', 'valorIva'], 'number'],
         ];
     }

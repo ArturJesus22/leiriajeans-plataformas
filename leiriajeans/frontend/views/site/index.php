@@ -92,7 +92,7 @@ $this->title = 'LeiriaJeans';
                 <p class="m_5">Junta-te a nós!</p>
             </div>
             <div class="col-md-3 top_box">
-                <div class="view view-ninth"><a href="single.html">
+                <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'T-shirt']) ?>">
                         <img src="<?= Yii::getAlias('@web/images/nudeproject.webp') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
@@ -105,7 +105,7 @@ $this->title = 'LeiriaJeans';
 
             </div>
             <div class="col-md-3 top_box">
-                <div class="view view-ninth"><a href="single.html">
+                <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'calças']) ?>">
                         <img src="<?= Yii::getAlias('@web/images/calçacarhart.jpg') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>

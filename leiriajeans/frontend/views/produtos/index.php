@@ -11,15 +11,40 @@ use yii\helpers\Url;
 $this->title = 'Produto';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<link href="<?= Yii::getAlias('@web/css/style2.css') ?>" rel='stylesheet' type='text/css' />
 <link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel='stylesheet' type='text/css' />
 <h1><?= Html::encode($this->title) ?></h1>
 
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+<<div class="filter-container">
+    <form method="get" action="<?= Url::to(['produtos/index']) ?>">
+        <h4>Filtrar por Gênero:</h4>
+        <input type="hidden" name="tipo" value="<?= Yii::$app->request->get('tipo') ?>">
+        <div class="form-group">
+            <select name="sexo" class="form-control" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="Homem" <?= Yii::$app->request->get('sexo') === 'Homem' ? 'selected' : '' ?>>Homem</option>
+                <option value="Mulher" <?= Yii::$app->request->get('sexo') === 'Mulher' ? 'selected' : '' ?>>Mulher</option>
+            </select>
+        </div>
+    </form>
 
-<div class="produtos-index">
+    <form method="get" action="<?= Url::to(['produtos/index']) ?>">
+        <h4>Filtrar por Tipo:</h4>
+        <input type="hidden" name="sexo" value="<?= Yii::$app->request->get('sexo') ?>">
+        <div class="form-group">
+            <select name="tipo" class="form-control" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="calças" <?= Yii::$app->request->get('tipo') === 'calças' ? 'selected' : '' ?>>Calças</option>
+                <option value="T-shirt" <?= Yii::$app->request->get('tipo') === 'T-shirt' ? 'selected' : '' ?>>T-Shirts</option>
+                <option value="Sapatilhas" <?= Yii::$app->request->get('tipo') === 'Sapatilhas' ? 'selected' : '' ?>>Sapatilhas</option>
+            </select>
+        </div>
+    </form>
+</div>
 
-    <div class="container">
+
+<div class="container">
         <div class="row">
             <?php foreach ($dataProvider->getModels() as $model): ?>
                 <div class="col-md-3 product-item">

@@ -71,7 +71,7 @@ class ProdutosController extends Controller
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 12,
+                'pageSize' => 12, // Número de produtos por página
             ],
         ]);
 

@@ -47,7 +47,7 @@ class CarrinhoController extends Controller
         }
 
         $linhasCarrinho = LinhaCarrinho::find()
-            ->where(['carrinho_id' => $carrinho->id, 'status' => 1])
+            ->where(['carrinho_id' => $carrinho->id])
             ->with(['produto']) // Carrega os produtos relacionados
             ->all();
 
@@ -121,7 +121,7 @@ class CarrinhoController extends Controller
 
         // Verifica se já existe uma linha para este produto
         $linhaCarrinho = LinhaCarrinho::find()
-            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $id, 'status' => 1]) // Verifique apenas linhas ativas
+            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $id]) // Verifique apenas linhas ativas
             ->one();
 
         if ($linhaCarrinho) {
@@ -139,7 +139,6 @@ class CarrinhoController extends Controller
                 'precoVenda' => $produto->preco,
                 'subTotal' => $produto->preco,
                 'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
-                'status' => 1, // Defina como ativo
             ]);
         }
 

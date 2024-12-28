@@ -75,26 +75,34 @@ class FaturasController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-        public function actionView($id)
-        {
-            // Carregar a fatura
-            $model = $this->findModel($id);
+    public function actionView($id)
+    {
+        // Carregar a fatura
+        $model = $this->findModel($id);
         
-            // Buscar as linhas da fatura
-            $linhasFatura = LinhaFatura::find()
-                ->with('produto') // Carrega o relacionamento com o produto
-                ->where(['fatura_id' => $id])
-                ->all();
-        
-            return $this->render('view', [
-                'model' => $model,
-                'linhasFatura' => $linhasFatura, // Passa as linhas para a view
-            ]);
+        // Buscar as linhas da fatura
+        $linhasFatura = LinhaFatura::find()
+            ->with('produto', 'linhacarrinho') // Carrega o relacionamento com o produto e a linha do carrinho
+            ->where(['fatura_id' => $id])
+            ->all();
+
+        // Remover as linhas do carrinho e o carrinho após a visualização
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if ($userForm) {
+            $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
+            if ($carrinho) {
+                // Apague as linhas do carrinho
+                LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id]);
+                // Apague o carrinho
+                $carrinho->delete();
+            }
         }
-    
 
-
-
+        return $this->render('view', [
+            'model' => $model,
+            'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
+        ]);
+    }
 
     /**
      * Creates a new Fatura model.
@@ -226,7 +234,7 @@ class FaturasController extends Controller
         }
 
         // Busca as linhas do carrinho
-        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id, 'status' => 1])->all(); // Filtra apenas linhas ativas
+        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
         // Verifica se o carrinho está vazio
         if (empty($linhasCarrinho)) {
@@ -242,10 +250,7 @@ class FaturasController extends Controller
         $fatura->data = date('Y-m-d H:i:s');
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal; // Total da fatura
 
-        Yii::info('Iniciando a criação da fatura', __METHOD__);
-
         if ($fatura->save()) {
-            Yii::info('Fatura criada com ID: ' . $fatura->id, __METHOD__);
             // Agora, criar as linhas da fatura a partir das linhas do carrinho
             foreach ($linhasCarrinho as $linhaCarrinho) {
                 // Criar uma nova linha de fatura
@@ -260,28 +265,14 @@ class FaturasController extends Controller
                     Yii::$app->session->setFlash('error', 'Erro ao salvar linha de fatura: ' . json_encode($linhaFatura->getErrors()));
                     return $this->redirect(['carrinhos/index']);
                 }
-
-                // Marque a linha do carrinho como inativa
-                $linhaCarrinho->status = 0; // Defina como inativa
-                $linhaCarrinho->save(); // Isso deve apenas atualizar o status, não excluir
             }
 
-            // Não exclua as linhas do carrinho, apenas atualize o status
-            // LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id, 'status' => 0]); // Remova esta linha
-
-            // Apague o carrinho se necessário
-            // $carrinho->delete(); // Remova esta linha se você não quiser apagar o carrinho
-
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
-            return $this->redirect(['view', 'id' => $fatura->id]);
+            return $this->redirect(['view', 'id' => $fatura->id]); // Redireciona para a visualização da fatura
         } else {
             Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
             return $this->redirect(['carrinhos/index']);
         }
     }
-
-
-
-
 
 }

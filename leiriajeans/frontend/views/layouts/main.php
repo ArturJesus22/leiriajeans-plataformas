@@ -130,7 +130,8 @@ AppAsset::register($this);
         <p class="float-start">&copy; <?php /*= Html::encode(Yii::$app->name) */?> <?php /*= date('Y') */?></p>
         <p class="float-end"><?php /*= Yii::powered() */?></p>
     </div>
-</footer>-->
+    </footer>-->
+
     <footer>
         <div class="footer">
             <div class="container">

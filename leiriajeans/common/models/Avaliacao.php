@@ -73,6 +73,6 @@ class Avaliacao extends \yii\db\ActiveRecord
      */
     public function getUserdata()
     {
-        return $this->hasOne(Userdata::class, ['id' => 'userdata_id']);
+        return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 }

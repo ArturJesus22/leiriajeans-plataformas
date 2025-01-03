@@ -100,12 +100,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span class="actual product-price"><?= Html::encode($model->preco) . '€' ?></span>
                                 <ul class="buttons">
 
-                                    <li class="shop_btn">
-                                        <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn btn-primary">
-                                            Adicionar ao carrinho
-                                        </a>
-                                    </li>
-                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja Mais</a></li>
+                                    <?php if ($model->stock > 0): ?>
+                                        <li class="shop_btn">
+                                            <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>">
+                                                Add to Cart
+                                            </a>
+                                        </li>
+                                    <?php else: ?>
+                                        <li class="shop_btn" style="background-color: grey;">
+                                            <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
+                                                Esgotado
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+                                    |
+                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Read More</a></li>
                                     <div class="clear"> </div>
                                 </ul>
                             </div>

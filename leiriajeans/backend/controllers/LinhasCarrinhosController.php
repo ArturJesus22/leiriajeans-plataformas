@@ -9,7 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CarrinhoController implements the CRUD actions for LinhaCarrinho model.
+ * CarrinhosController implements the CRUD actions for LinhaCarrinho model.
  */
 class LinhasCarrinhosController extends Controller
 {

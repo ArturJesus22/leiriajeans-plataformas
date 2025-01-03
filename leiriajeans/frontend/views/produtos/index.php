@@ -37,11 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <ul class="buttons">
 
                                     <li class="shop_btn">
-                                        <form action="<?= Yii::$app->urlManager->createUrl(['/carrinho/add']) ?>" method="post">
-                                            <input type="hidden" name="id" value="<?= $model->id; ?>">
-                                            <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken; ?>">
-                                            <button type="submit" class="btn">Add To Cart</button>
-                                        </form>
+                                        <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn btn-primary">
+                                            Adicionar ao carrinho
+                                        </a>
                                     </li>
                                     <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja Mais</a></li>
                                     <div class="clear"> </div>

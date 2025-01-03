@@ -10,17 +10,18 @@ use Yii;
  * @property int $id
  * @property int|null $fatura_id
  * @property int|null $iva_id
- * @property int|null $linhacarrinho_id
  * @property int|null $produto_id
- * @property float|null $preco
+ * @property float|null $precoVenda
+ * @property float|null $valorIva
+ * @property float|null $subTotal
+ * @property int|null $quantidade
  *
  * @property Avaliacao[] $avaliacaos
  * @property Fatura $fatura
  * @property Iva $iva
- * @property Linhacarrinho $linhacarrinho
  * @property Produto $produto
  */
-class LinhaFatura extends \yii\db\ActiveRecord
+class Linhafatura extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,11 +37,10 @@ class LinhaFatura extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fatura_id', 'iva_id', 'linhacarrinho_id', 'produto_id'], 'integer'],
-            [['preco'], 'number'],
+            [['fatura_id', 'iva_id', 'produto_id', 'quantidade'], 'integer'],
+            [['precoVenda', 'valorIva', 'subTotal'], 'number'],
             [['fatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fatura::class, 'targetAttribute' => ['fatura_id' => 'id']],
             [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Iva::class, 'targetAttribute' => ['iva_id' => 'id']],
-            [['linhacarrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => Linhacarrinho::class, 'targetAttribute' => ['linhacarrinho_id' => 'id']],
             [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
         ];
     }
@@ -54,10 +54,11 @@ class LinhaFatura extends \yii\db\ActiveRecord
             'id' => 'ID',
             'fatura_id' => 'Fatura ID',
             'iva_id' => 'Iva ID',
-            'linhacarrinho_id' => 'Linhacarrinho ID',
             'produto_id' => 'Produto ID',
-            'preco' => 'Preco',
-
+            'precoVenda' => 'Preco Venda',
+            'valorIva' => 'Valor Iva',
+            'subTotal' => 'Sub Total',
+            'quantidade' => 'Quantidade',
         ];
     }
 
@@ -89,16 +90,6 @@ class LinhaFatura extends \yii\db\ActiveRecord
     public function getIva()
     {
         return $this->hasOne(Iva::class, ['id' => 'iva_id']);
-    }
-
-    /**
-     * Gets query for [[Linhacarrinho]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLinhacarrinho()
-    {
-        return $this->hasOne(LinhaCarrinho::class, ['id' => 'linhacarrinho_id']);
     }
 
     /**

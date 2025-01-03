@@ -12,9 +12,9 @@ use yii\filters\VerbFilter;
 use common\models\UserForm;
 
 /**
- * CarrinhoController implements the CRUD actions for Carrinho model.
+ * CarrinhosController implements the CRUD actions for Carrinho model.
  */
-class CarrinhoController extends Controller
+class CarrinhosController extends Controller
 {
     public function behaviors()
     {
@@ -22,7 +22,6 @@ class CarrinhoController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'add' => ['post'],
                 ],
             ],
         ];
@@ -91,8 +90,10 @@ class CarrinhoController extends Controller
         return parent::beforeAction($action);
     }
 
-    public function actionAdd()
+    public function actionAdd($produtos_id)
     {
+        $produto = Produto::findOne($produtos_id);
+
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
@@ -103,6 +104,7 @@ class CarrinhoController extends Controller
         }
 
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
+            'produto_id' => $produto->id,
             'userdata_id' => $userForm->id,
             'total' => 0,
             'ivatotal' => 0,
@@ -113,7 +115,7 @@ class CarrinhoController extends Controller
         }
 
         $id = Yii::$app->request->post('id');
-        $produto = Produto::findOne($id);
+
 
         if (!$produto) {
             return $this->redirect(['index']); // Redireciona se o produto não for encontrado
@@ -121,7 +123,7 @@ class CarrinhoController extends Controller
 
         // Verifica se já existe uma linha para este produto
         $linhaCarrinho = LinhaCarrinho::find()
-            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $id]) // Verifique apenas linhas ativas
+            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtos_id]) // Verifique apenas linhas ativas
             ->one();
 
         if ($linhaCarrinho) {
@@ -134,7 +136,7 @@ class CarrinhoController extends Controller
             // Se não existe, cria nova linha
             $linhaCarrinho = new LinhaCarrinho([
                 'carrinho_id' => $carrinho->id,
-                'produto_id' => $id,
+                'produto_id' => $produtos_id,
                 'quantidade' => 1,
                 'precoVenda' => $produto->preco,
                 'subTotal' => $produto->preco,

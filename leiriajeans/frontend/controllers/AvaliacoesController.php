@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\Avaliacao;
+use common\models\Fatura;
+use common\models\LinhaFatura;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -79,23 +81,30 @@ class AvaliacoesController extends Controller
 
     public function actionCreate()
     {
-        $model = new Avaliacao();
+        $avaliacao = new Avaliacao();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                if ($model->save()) {
-                    // Mensagem de sucesso
-                    Yii::$app->session->setFlash('success', 'Sua avaliação foi registada com sucesso!');
-                    // Redireciona para a página de visualização do produto
-                    return $this->redirect(['produto/view', 'id' => $model->linhafatura_id]);
-                } else {
-                    Yii::$app->session->setFlash('error', 'Ocorreu um erro ao guardar sua avaliação. Tente novamente.');
-                }
+        if ($avaliacao->load(Yii::$app->request->post()) && $avaliacao->validate()) {
+            $linhaFatura = LinhaFatura::findOne($avaliacao->linhafatura_id);
+
+            if (!$linhaFatura) {
+                throw new \yii\web\ForbiddenHttpException('Linha de fatura inválida.');
+            }
+
+            $fatura = Fatura::findOne($linhaFatura->fatura_id);
+
+            if (!$fatura || $fatura->userdata_id !== Yii::$app->user->id) {
+                throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
+            }
+
+            // Salvar a avaliação
+            if ($avaliacao->save()) {
+                Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
+                return $this->redirect(['produtos/view', 'id' => $linhaFatura->produto_id]);
             }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $avaliacao,
         ]);
     }
 

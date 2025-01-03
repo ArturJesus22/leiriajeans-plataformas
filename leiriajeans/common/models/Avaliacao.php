@@ -37,6 +37,7 @@ class Avaliacao extends \yii\db\ActiveRecord
             [['data'], 'safe'],
             [['rating', 'userdata_id', 'linhafatura_id'], 'integer'],
             [['linhafatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => LinhaFatura::class, 'targetAttribute' => ['linhafatura_id' => 'id']],
+            [['linhafatura_id'], 'validateLinhaFatura'],
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
         ];
     }
@@ -74,5 +75,27 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function getUserdata()
     {
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
+    }
+
+    public function getUsername()
+    {
+        return $this->hasOne(User::class, ['id' => 'userdata_id']);
+    }
+
+    public function validateLinhaFatura($attribute, $params)
+    {
+        $linhaFatura = LinhaFatura::findOne($this->$attribute);
+
+        if (!$linhaFatura) {
+            $this->addError($attribute, 'Linha de fatura inválida.');
+            return;
+        }
+
+        // Verificar se a linha de fatura pertence a uma fatura do utilizador
+        $fatura = Fatura::findOne($linhaFatura->fatura_id);
+
+        if (!$fatura || $fatura->userdata_id !== Yii::$app->user->id) {
+            $this->addError($attribute, 'Não tem permissão para avaliar esta linha fatura.');
+        }
     }
 }

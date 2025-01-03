@@ -18,11 +18,10 @@ class ProdutosController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::className(),
-        ];
+
         return $behaviors;
     }
+
 
     //checkAccess
 
@@ -30,14 +29,12 @@ class ProdutosController extends ActiveController
      * Renders the index view for the module
      * @return string
      */
-    public
-    function actionIndex()
+    public function actionIndex()
     {
-        return $this->render('index');
+        throw new \yii\web\NotFoundHttpException('Ação não permitida.');
     }
 
-    public
-    function actionProdutosAll()
+    public function actionProdutosAll()
     {
         $produtoModel = new $this->modelClass;
         $categoriaModel = new $this->categoriaModelClass;

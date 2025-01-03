@@ -3,14 +3,21 @@
 use yii\helpers\Html;
 use common\models\Tamanho;
 use common\models\Cor;
+use common\models\Avaliacao;
+use yii\widgets\ActiveForm;
+use Carbon\Carbon;
+use common\models\LinhaFatura;
+use common\models\Fatura;
 
 /** @var yii\web\View $this */
 /** @var common\Models\Produto $model */
+
 
 $this->title = $model->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Produto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -101,25 +108,144 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                 </div> <!-- Fim da row -->
+
+
+                <?php
+                $linhasFatura = LinhaFatura::find()->select('id')->where(['produto_id' => $model->id])->column();
+                $avaliacoes = Avaliacao::find()->where(['linhafatura_id' => $linhasFatura])->all();
+
+                ?>
+                <!-- Seção de Avaliações -->
+                <div class="produto-avaliacoes mt-4">
+                    <h4>Avaliações do Produto</h4>
+                    <div class="list-group mb-4">
+                        <?php if ($avaliacoes): ?>
+                            <?php foreach ($avaliacoes as $avaliacao): ?>
+                                <div class="list-group-item">
+                                    <h5>Avaliação de <?= Html::encode($avaliacao->username ? $avaliacao->username->username : 'Utilizador Desconhecido') ?></h5>
+                                    <p>Comentário: <?= Html::encode($avaliacao->comentario) ?></p>
+                                    <div class="rating">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <span class="<?= $i <= $avaliacao->rating ? 'text-warning' : 'text-muted' ?>">&#9733;</span>
+                                        <?php endfor; ?>
+                                    </div>
+                                    <p>Data da Avaliação: <?= Html::encode($avaliacao->data) ?></p>
+
+                                    <hr>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p class="text-muted">Ainda não há avaliações para este produto.</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Verificar se o utilizador pode avaliar -->
+                    <?php if (!Yii::$app->user->isGuest): ?>
+                        <?php
+                        // Verificar se o utilizador comprou o produto
+                        $userId = Yii::$app->user->identity->id;
+                        // Obter todas as faturas do utilizador
+                        $faturas = Fatura::find()->where(['userdata_id' => $userId])->all();
+
+                        $linhaFatura = null;
+
+                        // Verificar se o produto está em alguma linha de fatura
+                        foreach ($faturas as $fatura) {
+                            $linhaFatura = LinhaFatura::find()
+                                ->where(['produto_id' => $model->id, 'fatura_id' => $fatura->id])
+                                ->one();
+
+                            if ($linhaFatura) {
+                                break; // Produto encontrado, parar a procura.
+                            }
+                        }
+
+
+                        $avaliacaoModel = new Avaliacao();
+
+                        ?>
+
+                        <?php if ($linhaFatura): ?>
+                            <?php $form = ActiveForm::begin(['action' => ['avaliacoes/create'], 'method' => 'post']); ?>
+                            <div class="mt-4">
+                                <h5>Deixe sua Avaliação</h5>
+
+                                <?= $form->field($avaliacaoModel, 'comentario')->textarea([
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Escreva sua avaliação aqui...',
+                                    'rows' => 4
+                                ])->label(false); ?>
+
+                                <div class="mt-3">
+                                    <label>Classificação:</label>
+                                    <div class="rating" id="starRating">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <span class="star" data-value="<?= $i ?>">&#9733;</span>
+                                        <?php endfor; ?>
+                                    </div>
+                                    <?= $form->field($avaliacaoModel, 'rating')->hiddenInput(['id' => 'ratingInput'])->label(false); ?>
+                                </div>
+                                <?= $form->field($avaliacaoModel, 'userdata_id')->hiddenInput(['value' => Yii::$app->user->identity->userform->id])->label(false); ?>
+
+                                <?= $form->field($avaliacaoModel, 'data')->hiddenInput(['value' => Carbon::now()->toDateTimeString()])->label(false); ?>
+
+                                <?= $form->field($avaliacaoModel, 'linhafatura_id')->hiddenInput(['value' => $linhaFatura->id])->label(false); ?>
+
+                                <?= Html::submitButton('Enviar Avaliação', ['class' => 'btn btn-primary mt-3']); ?>
+
+                            </div>
+                            <?php ActiveForm::end(); ?>
+                        <?php else: ?>
+                            <p class="text-danger">Você precisa comprar este produto antes de avaliá-lo.</p>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <p class="text-muted">Faça login para deixar uma avaliação.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+
+            <!-- Estilo para as estrelas -->
+            <style>
+                .rating .star {
+                    font-size: 24px;
+                    color: #ccc;
+                    cursor: pointer;
+                    transition: color 0.3s;
+                }
+
+                .rating .star.selected,
+                .rating .star:hover {
+                    color: #f39c12;
+                }
+            </style>
+
+            <!-- Script para interatividade das estrelas -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const stars = document.querySelectorAll('#starRating .star');
+                    const ratingInput = document.getElementById('ratingInput');
+
+                    stars.forEach((star) => {
+                        star.addEventListener('click', function () {
+                            const value = this.getAttribute('data-value');
+                            ratingInput.value = value;
+
+                            // Atualiza a aparência das estrelas
+                            stars.forEach(s => s.classList.remove('selected'));
+                            for (let i = 0; i < value; i++) {
+                                stars[i].classList.add('selected');
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+
             </div>
         </div>
     </div>
-</div>
-
-
-
-<!--    --><?php /*= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'nome',
-            'descricao:ntext',
-            'preco',
-            'sexo',
-            'tamanho_id',
-            'cor_id',
-            'iva_id',
-        ],
-    ]) */?>
-
+  </div>
 </div>

@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($fatura->linhafaturas as $linha): ?>
+                            <?php foreach ($fatura->linhafaturas as $linhafatura): ?>
                                 <tr>
-                                    <td><?= Html::encode($linha->linhacarrinho->produto->nome) ?></td>
-                                    <td><?= $linha->linhacarrinho->quantidade ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linha->preco) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->valorIva) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linha->linhacarrinho->subTotal) ?></td>
+                                    <td><?= Html::encode($linhafatura->produto->nome) ?></td>
+                                    <td><?= $linhafatura->quantidade ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->precoVenda) ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->valorIva) ?></td>
+                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->subTotal) ?></td>
 
                                 </tr>
                             <?php endforeach; ?>

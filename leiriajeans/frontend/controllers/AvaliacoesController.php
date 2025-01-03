@@ -1,17 +1,20 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
-use common\models\LinhaCarrinho;
+use common\models\Avaliacao;
+use common\models\Fatura;
+use common\models\LinhaFatura;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii;
 
 /**
- * CarrinhosController implements the CRUD actions for LinhaCarrinho model.
+ * AvaliacoesController implements the CRUD actions for Avaliacao model.
  */
-class LinhasCarrinhosController extends Controller
+class AvaliacoesController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,14 +35,14 @@ class LinhasCarrinhosController extends Controller
     }
 
     /**
-     * Lists all LinhaCarrinho models.
+     * Lists all Avaliacao models.
      *
      * @return string
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => LinhaCarrinho::find(),
+            'query' => Avaliacao::find(),
             /*
             'pagination' => [
                 'pageSize' => 50
@@ -58,7 +61,7 @@ class LinhasCarrinhosController extends Controller
     }
 
     /**
-     * Displays a single LinhaCarrinho model.
+     * Displays a single Avaliacao model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -71,29 +74,42 @@ class LinhasCarrinhosController extends Controller
     }
 
     /**
-     * Creates a new LinhaCarrinho model.
+     * Creates a new Avaliacao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+
     public function actionCreate()
     {
-        $model = new LinhaCarrinho();
+        $avaliacao = new Avaliacao();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($avaliacao->load(Yii::$app->request->post()) && $avaliacao->validate()) {
+            $linhaFatura = LinhaFatura::findOne($avaliacao->linhafatura_id);
+
+            if (!$linhaFatura) {
+                throw new \yii\web\ForbiddenHttpException('Linha de fatura inválida.');
             }
-        } else {
-            $model->loadDefaultValues();
+
+            $fatura = Fatura::findOne($linhaFatura->fatura_id);
+
+            if (!$fatura || $fatura->userdata_id !== Yii::$app->user->id) {
+                throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
+            }
+
+            // Salvar a avaliação
+            if ($avaliacao->save()) {
+                Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
+                return $this->redirect(['produtos/view', 'id' => $linhaFatura->produto_id]);
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $avaliacao,
         ]);
     }
 
     /**
-     * Updates an existing LinhaCarrinho model.
+     * Updates an existing Avaliacao model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -113,7 +129,7 @@ class LinhasCarrinhosController extends Controller
     }
 
     /**
-     * Deletes an existing LinhaCarrinho model.
+     * Deletes an existing Avaliacao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -127,15 +143,15 @@ class LinhasCarrinhosController extends Controller
     }
 
     /**
-     * Finds the LinhaCarrinho model based on its primary key value.
+     * Finds the Avaliacao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return LinhaCarrinho the loaded model
+     * @return Avaliacao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = LinhaCarrinho::findOne(['id' => $id])) !== null) {
+        if (($model = Avaliacao::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

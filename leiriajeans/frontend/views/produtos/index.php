@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-<<div class="filter-container">
+<div class="filter-container">
     <form method="get" action="<?= Url::to(['produtos/index']) ?>">
         <h4>Filtrar por Gênero:</h4>
         <input type="hidden" name="tipo" value="<?= Yii::$app->request->get('tipo') ?>">
@@ -62,11 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <ul class="buttons">
 
                                     <li class="shop_btn">
-                                        <form action="<?= Yii::$app->urlManager->createUrl(['/carrinho/add']) ?>" method="post">
-                                            <input type="hidden" name="id" value="<?= $model->id; ?>">
-                                            <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken; ?>">
-                                            <button type="submit" class="btn">Add To Cart</button>
-                                        </form>
+                                        <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn btn-primary">
+                                            Adicionar ao carrinho
+                                        </a>
                                     </li>
                                     <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">Veja Mais</a></li>
                                     <div class="clear"> </div>

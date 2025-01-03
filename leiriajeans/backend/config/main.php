@@ -1,4 +1,7 @@
 <?php
+
+use yii\log\FileTarget;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -17,6 +20,9 @@ return [
         ],
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
             'parsers' => [
@@ -31,13 +37,17 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
+            'cookieParams' => ['httponly' => true],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => \yii\log\FileTarget::class,
-                    'levels' => ['error', 'warning'],
+                    'class' => FileTarget::class,
+                    'levels' => ['error', 'warning', 'info'],
+                    'logVars' => [],
+                    'categories' => ['debug'],
+                    'logFile' => '@runtime/logs/app.log',
                 ],
             ],
         ],
@@ -46,6 +56,7 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
                 //USERS
@@ -56,12 +67,21 @@ return [
                     'GET {username}/dados' => 'dados',
                     'GET {id}' => 'getuserbyid',
                     'POST signup' => 'Signup',
+
                 ],
                 'tokens' => [
                     '{id}' => '<id:\d+>',
                     '{username}' => '<username:\w+>',
                 ],
-            ],
+                ],
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/produtos',
+                    'extraPatterns' => [
+                        'GET all'=> 'produtosall',
+                        'GET index'=> 'index',
+                    ],
+                ],
+
             ],
         ],
     ],

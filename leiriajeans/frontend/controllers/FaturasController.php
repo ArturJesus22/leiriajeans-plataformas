@@ -40,8 +40,10 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
+        $user_id = Yii::$app->user->identity->id;
+
         $query = Fatura::find()
-            ->with(['linhafaturas', 'linhafaturas.linhacarrinho', 'linhafaturas.linhacarrinho.produto'])
+            ->where(['userdata_id' => $user_id])
             ->orderBy(['data' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
@@ -75,26 +77,24 @@ class FaturasController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-        public function actionView($id)
-        {
-            // Carregar a fatura
-            $model = $this->findModel($id);
+    public function actionView($id)
+    {
+        // Carregar a fatura
+        $model = $this->findModel($id);
         
-            // Buscar as linhas da fatura
-            $linhasFatura = LinhaFatura::find()
-                ->with('produto') // Carrega o relacionamento com o produto
-                ->where(['fatura_id' => $id])
-                ->all();
-        
-            return $this->render('view', [
-                'model' => $model,
-                'linhasFatura' => $linhasFatura, // Passa as linhas para a view
-            ]);
-        }
-    
+        // Buscar as linhas da fatura
+        $linhasFatura = LinhaFatura::find()
+            ->with('produto') // Carrega o relacionamento com o produto e a linha do carrinho
+            ->where(['fatura_id' => $id])
+            ->all();
 
 
 
+        return $this->render('view', [
+            'model' => $model,
+            'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
+        ]);
+    }
 
     /**
      * Creates a new Fatura model.
@@ -209,70 +209,76 @@ class FaturasController extends Controller
 
     public function actionCreateFromCart()
     {
+        // Verifica se o usuário está autenticado
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
 
+        // Obtém o formulário do usuário (assumindo que há um formulário do usuário associado ao usuário atual)
         $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
         if (!$userForm) {
             return $this->redirect(['site/index']);
         }
 
-        // Busca o carrinho do usuário
+        // Obtém o carrinho associado ao usuário
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
         if (!$carrinho) {
             Yii::$app->session->setFlash('error', 'Carrinho não encontrado.');
             return $this->redirect(['carrinhos/index']);
         }
 
-        // Busca as linhas do carrinho
+        // Obtém as linhas do carrinho
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
-        // Verifica se o carrinho está vazio
+        // Se o carrinho estiver vazio, exibe uma mensagem de erro
         if (empty($linhasCarrinho)) {
             Yii::$app->session->setFlash('error', 'O carrinho está vazio.');
             return $this->redirect(['carrinhos/index']);
         }
 
-        // Cria uma nova fatura
+        // Cria a fatura com os dados do carrinho
         $fatura = new Fatura();
-        $fatura->userdata_id = $userForm->id; // Associa a fatura ao usuário logado
-        $fatura->metodopagamento_id = 1; // Defina o método de pagamento conforme necessário
-        $fatura->metodoexpedicao_id = 1; // Defina o método de expedição conforme necessário
-        $fatura->data = date('Y-m-d H:i:s');
-        $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal; // Total da fatura
+        $fatura->userdata_id = $userForm->id;
+        $fatura->metodopagamento_id = 1; // Ajuste conforme necessário
+        $fatura->metodoexpedicao_id = 1; // Ajuste conforme necessário
+        $fatura->data = date('Y-m-d');
+        $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal;
 
+        // Salva a fatura
         if ($fatura->save()) {
-            // Agora, criar as linhas da fatura a partir das linhas do carrinho
+            // Cria as linhas de fatura com base nas linhas do carrinho
             foreach ($linhasCarrinho as $linhaCarrinho) {
-                // Criar uma nova linha de fatura
                 $linhaFatura = new LinhaFatura();
-                $linhaFatura->fatura_id = $fatura->id; // Associa a linha da fatura à fatura criada
+                $linhaFatura->fatura_id = $fatura->id;
+                $linhaFatura->quantidade = $linhaCarrinho->quantidade;
+                $linhaFatura->precoVenda = $linhaCarrinho->precoVenda;
+                $linhaFatura->valorIva = $linhaCarrinho->valorIva;
+                $linhaFatura->subTotal = $linhaCarrinho->subTotal;
+                $linhaFatura->produto_id = $linhaCarrinho->produto_id;
+                $linhaFatura->save();
+                //var_dump($linhaFatura);
 
-                // Associar o produto
-                $linhaFatura->produto_id = $linhaCarrinho->produto_id; // ID do produto da linha do carrinho
-                $linhaFatura->preco = $linhaCarrinho->precoVenda; // Preço da linha de venda
-
-                // Salva a linha da fatura
-                if (!$linhaFatura->save()) {
-                    Yii::$app->session->setFlash('error', 'Erro ao salvar linha de fatura: ' . json_encode($linhaFatura->getErrors()));
-                    return $this->redirect(['carrinhos/index']);
+                foreach ($linhasCarrinho as $linhaCarrinho) {
+                    $linhaCarrinho->delete();
                 }
+
+                $carrinho->delete();
+
+//                // Se houver erro ao salvar a linha de fatura, exibe uma mensagem de erro e redireciona
+//                if (!$linhaFatura->save()) {
+//                    return $this->redirect(['carrinhos/index']);
+//                }
             }
 
-            // Agora que a fatura e suas linhas foram salvas, podemos apagar o carrinho e suas linhas
-            LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id]);
-            $carrinho->delete();
-
+            // Define uma mensagem de sucesso e redireciona para a página de visualização da fatura
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
             return $this->redirect(['view', 'id' => $fatura->id]);
         } else {
+            // Se houver erro ao salvar a fatura, exibe uma mensagem de erro e redireciona
             Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
             return $this->redirect(['carrinhos/index']);
         }
     }
-
-
 
 
 

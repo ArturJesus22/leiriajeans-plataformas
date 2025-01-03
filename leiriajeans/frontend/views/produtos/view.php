@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-6">
                         <h3><?= Html::encode($model->nome) ?></h3>
                         <p class="m-3"><?= Html::encode($model->descricao) ?></p>
-
+                        <hr>
                         <h4 class="mt-4">Tamanho</h4>
                         <ul class="list-unstyled d-flex flex-wrap">
                             <?php foreach (Tamanho::find()->all() as $tamanho): ?>
@@ -75,12 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endforeach; ?>
                         </ul>
 
-
+                        <hr>
                         <h4 class="mt-4">Sexo</h4>
                         <p>
                             <?= Html::encode($model->categoria ? $model->categoria->sexo : 'Não especificado') ?>
                         </p>
-
+                        <hr>
                         <h4 class="mt-4">Cores</h4>
                         <ul class="list-unstyled d-flex flex-wrap">
                             <?php foreach (Cor::find()->all() as $cor): ?>
@@ -92,22 +92,38 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endforeach; ?>
                         </ul>
 
+                        <hr>
                         <div class="mt-4">
-                            <p class="fw-bold fs-4">Preço: $130.25</p>
+                            <p class="fw-bold fs-4"><?= Html::encode($model->preco) . ' €'?></p>
                             <div class="d-flex align-items-center mb-3">
                                 <span class="me-2">Quantidade:</span>
                                 <select class="form-select w-auto">
-                                    <?php for ($i = 1; $i <= 6; $i++): ?>
-                                        <option><?= $i ?></option>
+                                    <?php for ($i = 1; $i <= min(1000, $model->stock); $i++): ?>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
                                     <?php endfor; ?>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-success">
-                                <span>Adicionar ao carrinho</span>
-                            </button>
+
+                            <p>Quantidade disponível: <?= Html::encode($model->stock) ?></p>
+                            <hr>
+                            <?php if ($model->stock > 0): ?>
+                                <button class="shop_btn">
+                                    <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn btn-primary">
+                                        Adicionar ao carrinho
+                                    </a>
+                                </>
+                            <?php else: ?>
+                                <li class="shop_btn">
+                                    <span class="btn btn-secondary">Esgotado</span>
+                                </li>
+                            <?php endif; ?>
                         </div>
                     </div>
-                </div> <!-- Fim da row -->
+                </div>
+
+
+
+                <!-- Fim da row -->
 
 
                 <?php

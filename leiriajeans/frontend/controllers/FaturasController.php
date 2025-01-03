@@ -258,6 +258,18 @@ class FaturasController extends Controller
                 $linhaFatura->save();
                 //var_dump($linhaFatura);
 
+                if ($linhaFatura->save()) {
+                    // Atualiza a quantidade do produto após a compra
+                    $produto = $linhaCarrinho->produto;
+                    if ($produto) {
+                        $produto->stock -= $linhaCarrinho->quantidade; // Retirar a quantidade comprada
+                        if ($produto->stock < 0) {
+                            $produto->stock = 0;
+                        }
+                        $produto->save();
+                    }// Guardar a atualização do produto
+                }
+
                 foreach ($linhasCarrinho as $linhaCarrinho) {
                     $linhaCarrinho->delete();
                 }

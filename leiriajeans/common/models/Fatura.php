@@ -7,6 +7,8 @@ use stdClass;
 use yii\db\ActiveQuery;
 use app\mosquitto\phpMQTT;
 
+require_once('../../mosquitto/phpMQTT.php');
+
 /**
  * This is the model class for table "fatura".
  *
@@ -117,30 +119,27 @@ class Fatura extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $id = $this->id;
-        $data = $this->data;
-        $valortotal = $this->valorTotal;
-        //$status = $this->statuspedido;
-        $metodoexpedicao_id = $this->metodoexpedicao_id;
-        $metodopagamento_id = $this->metodopagamento_id;
-        //$user_id = $this->user_id;
+        // Obter dados do utilizador
+        $utilizador = $this->userdata;
+        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
 
-
-        $myObj = new stdClass();
-        $myObj->id = $id;
-        $myObj->data = $data;
-        $myObj->valorTotal = $valortotal;
-        //$myObj->statuspedido = $status;
-        $myObj->metodoexpedicao_id = $metodoexpedicao_id;
-        $myObj->metodopagamento_id = $metodopagamento_id;
-        //$myObj->user_id = $user_id;
-        $myJSON = json_encode($myObj);
-
-
-        if ($insert) {
-            $this->FazPublishNoMosquitto("INSERT_FATURAS", $myJSON);
-        } else {
-            $this->FazPublishNoMosquitto("UPDATE_FATURAS", $myJSON);
+        // Obter os nomes dos produtos associados à fatura
+        $linhasFatura = $this->linhafaturas;
+        $nomesProdutos = [];
+        foreach ($linhasFatura as $linha) {
+            $produto = $linha->produto;
+            if ($produto) {
+                $nomesProdutos[] = $produto->nome;
+            }
         }
+
+        // Construir a mensagem
+        $mensagemProdutos = implode(', ', $nomesProdutos);
+        $mensagem = "O utilizador {$nomeUtilizador} comprou o produto {$mensagemProdutos}";
+
+        // Publicar no Mosquitto
+        $canal = $insert ? "INSERT_FATURAS" : "UPDATE_FATURAS";
+        $this->FazPublishNoMosquitto($canal, $mensagem);
     }
+
 }

@@ -292,6 +292,4 @@ class FaturasController extends Controller
         }
     }
 
-
-
 }

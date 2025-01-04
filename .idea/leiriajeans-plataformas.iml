@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/frontend/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/frontend/tests" isTestSource="true" packagePrefix="frontend\tests\" />
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/frontend/tests/_support" isTestSource="true" packagePrefix="frontend\tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/leiriajeans/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/leiriajeans/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
@@ -109,6 +110,13 @@
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-faker" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-gii" />
       <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/yiisoft/yii2-symfonymailer" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/psr/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/symfony/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/symfony/polyfill-php83" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/symfony/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/leiriajeans/vendor/symfony/translation-contracts" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

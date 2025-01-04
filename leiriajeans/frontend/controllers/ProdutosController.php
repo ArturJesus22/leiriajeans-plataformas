@@ -44,7 +44,18 @@ class ProdutosController extends Controller
         // Iniciar a query de produtos
         $query = Produto::find();
 
-        // Se o parâmetro tipo for fornecido, filtrar pelo tipo
+        // Carregar os tipos e sexos de categorias distintas da base de dados
+        $tiposDisponiveis = Categoria::find()
+            ->select('tipo')
+            ->distinct() // Para evitar duplicações de tipos
+            ->all();
+
+        $sexosDisponiveis = Categoria::find()
+            ->select('sexo')
+            ->distinct() // Para evitar duplicações de sexos
+            ->all();
+
+        // Se o parâmetro tipo for fornecido, filtrar os produtos por tipo
         if ($tipo) {
             // Encontrar categorias que correspondem ao tipo especificado
             $categoriaIds = Categoria::find()
@@ -56,43 +67,38 @@ class ProdutosController extends Controller
             $query->andWhere(['categoria_id' => $categoriaIds]);
         }
 
-        // Se o parâmetro sexo for fornecido, filtrar pelo sexo
+        // Se o parâmetro sexo for fornecido, filtrar os produtos por sexo
         if ($sexo) {
-            $sexos = is_array($sexo) ? $sexo : [$sexo];
-
+            // Encontrar categorias que correspondem ao sexo especificado
             $categoriaIds = Categoria::find()
                 ->select('id')
-                ->where(['sexo' => $sexos])
+                ->where(['sexo' => $sexo])
                 ->column();
 
+            // Aplicar filtro de categoria à query de produtos
             $query->andWhere(['categoria_id' => $categoriaIds]);
         }
 
+        // Criar o dataProvider para paginação dos produtos
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 12,
+                'pageSize' => 12, // Número de produtos por página
             ],
         ]);
 
         // Criar o model de pesquisa
         $searchModel = new ProdutoSearch();
 
-        // Renderizar a view
+        // Passar os tipos e sexos para a view
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-
-        // Criar o model de pesquisa
-        $searchModel = new ProdutoSearch();
-
-        // Renderizar a view
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'tiposDisponiveis' => $tiposDisponiveis,
+            'sexosDisponiveis' => $sexosDisponiveis,
         ]);
     }
+
 
 
     /**

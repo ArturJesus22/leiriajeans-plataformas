@@ -1,5 +1,6 @@
 <?php
 namespace backend\modules\api\controllers;
+use app\mosquitto\phpMQTT;
 use yii\base\Behavior;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
@@ -99,6 +100,22 @@ class FaturasController extends ActiveController
 
 
         return $fatura;
+    }
+
+    public function FazPublishNoMosquitto($canal, $msg)
+    {
+        $server = "localhost";
+        $port = 1883;
+        $username = "";
+        $password = "";
+        $client_id = "phpMQTT-publisher";
+        $mqtt = new phpMQTT($server, $port, $client_id);
+        if ($mqtt->connect(true, NULL, $username, $password)) {
+            $mqtt->publish($canal, $msg, 0);
+            $mqtt->close();
+        } else {
+            file_put_contents("debug . output", "Time out!");
+        }
     }
 
     public function actionDadosbyuser($user_id)

@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use stdClass;
+use yii\db\ActiveQuery;
+use app\mosquitto\phpMQTT;
 
 /**
  * This is the model class for table "fatura".
@@ -92,5 +95,52 @@ class Fatura extends \yii\db\ActiveRecord
     public function getUserdata()
     {
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
+    }
+
+    public function FazPublishNoMosquitto($canal, $msg)
+    {
+        $server = "localhost";
+        $port = 1883;
+        $username = "";
+        $password = "";
+        $client_id = "phpMQTT-publisher";
+        $mqtt = new phpMQTT($server, $port, $client_id);
+        if ($mqtt->connect(true, NULL, $username, $password)) {
+            $mqtt->publish($canal, $msg, 0);
+            $mqtt->close();
+        } else {
+            file_put_contents("debug . output", "Time out!");
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $id = $this->id;
+        $data = $this->data;
+        $valortotal = $this->valorTotal;
+        //$status = $this->statuspedido;
+        $metodoexpedicao_id = $this->metodoexpedicao_id;
+        $metodopagamento_id = $this->metodopagamento_id;
+        //$user_id = $this->user_id;
+
+
+        $myObj = new stdClass();
+        $myObj->id = $id;
+        $myObj->data = $data;
+        $myObj->valorTotal = $valortotal;
+        //$myObj->statuspedido = $status;
+        $myObj->metodoexpedicao_id = $metodoexpedicao_id;
+        $myObj->metodopagamento_id = $metodopagamento_id;
+        //$myObj->user_id = $user_id;
+        $myJSON = json_encode($myObj);
+
+
+        if ($insert) {
+            $this->FazPublishNoMosquitto("INSERT_FATURAS", $myJSON);
+        } else {
+            $this->FazPublishNoMosquitto("UPDATE_FATURAS", $myJSON);
+        }
     }
 }

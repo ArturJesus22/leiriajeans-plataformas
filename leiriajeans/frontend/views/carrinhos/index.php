@@ -50,7 +50,7 @@ $this->title = 'Carrinho de Compras';
                 <tfoot>
                 <tr>
                     <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
-                    <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total']) ?></strong></td>
+                    <td><strong><?= Html::encode($carrinhoAtual['total']) . '€' ?></strong></td>
                     <td colspan="2"></td>
                 </tr>
                 <tr>

@@ -99,6 +99,12 @@ class Fatura extends \yii\db\ActiveRecord
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 
+    public function getCarrinho()
+    {
+        return $this->hasOne(Carrinho::class, ['id' => 'carrinho_id']);
+    }
+
+
     public function FazPublishNoMosquitto($canal, $msg)
     {
         $server = "localhost";

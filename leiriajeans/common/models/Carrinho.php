@@ -31,4 +31,49 @@ class Carrinho extends ActiveRecord
     {
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
+
+    public function getLinhasCarrinho()
+    {
+        return $this->hasMany(LinhaCarrinho::class, ['carrinho_id' => 'id']);
+    }
+
+
+    public function getCarrinhoAtual()
+    {
+        if (Yii::$app->user->isGuest) {
+            return null;
+        }
+
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return null;
+        }
+
+        $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
+        if (!$carrinho) {
+            return null;
+        }
+
+        $linhasCarrinho = LinhaCarrinho::find()
+            ->where(['carrinho_id' => $carrinho->id])
+            ->all();
+
+        $itens = [];
+        foreach ($linhasCarrinho as $linha) {
+            $produto = $linha->produto;
+            if ($produto) {
+                $itens[] = [
+                    'id' => $produto->id,
+                    'nome' => $produto->nome,
+                    'preco' => $linha->precoVenda,
+                ];
+            }
+        }
+
+        return [
+            'itens' => $itens,
+            'total' => $carrinho->total,
+            'ivatotal' => $carrinho->ivatotal
+        ];
+    }
 }

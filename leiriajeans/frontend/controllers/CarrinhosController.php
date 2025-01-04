@@ -2,8 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\models\Fatura;
 use common\models\LinhaCarrinho;
+use common\models\Linhafatura;
+use common\models\MetodoExpedicao;
+use common\models\MetodoPagamento;
+use common\models\User;
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use common\models\Produto;
 use common\models\Carrinho;
@@ -169,10 +175,10 @@ class CarrinhosController extends Controller
         if ($carrinho) {
             // Remove a linha do carrinho
             LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id, 'produto_id' => $id]);
-            
+
             // Verifica se ainda existem produtos no carrinho
             $temProdutos = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->exists();
-            
+
             if ($temProdutos) {
                 // Atualiza os totais se ainda houver produtos
                 $this->atualizarTotaisCarrinho($carrinho);
@@ -241,11 +247,11 @@ class CarrinhosController extends Controller
         $carrinho->total = LinhaCarrinho::find()
             ->where(['carrinho_id' => $carrinho->id])
             ->sum('subTotal') ?? 0;
-            
+
         $carrinho->ivatotal = LinhaCarrinho::find()
             ->where(['carrinho_id' => $carrinho->id])
             ->sum('valorIva') ?? 0;
-            
+
         $carrinho->save();
     }
 
@@ -325,4 +331,48 @@ class CarrinhosController extends Controller
             'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
         ]);
     }
+
+    public function actionCheckout()
+    {
+        // Obter o ID do usuário logado
+        $userId = Yii::$app->user->id;
+
+        // Buscar o UserForm relacionado ao usuário logado
+        $userdata = UserForm::findOne(['user_id' => $userId]);
+        if ($userdata === null) {
+            throw new NotFoundHttpException('UserData não encontrado para o usuário.');
+        }
+
+        // Obter o userdata_id a partir do UserForm
+        $userdataId = $userdata->id;
+
+        // Buscar o carrinho associado ao userdata_id
+        $carrinho = Carrinho::findOne(['userdata_id' => $userdataId]);
+
+        // Se não encontrou o carrinho, lançar erro
+        if ($carrinho === null) {
+            throw new NotFoundHttpException('Carrinho não encontrado para o usuário.');
+        }
+
+
+        // Buscar as linhas do carrinho usando apenas o carrinho_id
+        $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
+
+
+
+        // Buscar métodos de pagamento e expedição
+        $metodosPagamento = MetodoPagamento::find()->all();
+        $metodosExpedicao = MetodoExpedicao::find()->all();
+
+        // Renderizar a view
+        return $this->render('checkout', [
+            'linhasCarrinho' => $linhasCarrinho,
+            'metodosPagamento' => $metodosPagamento,
+            'metodosExpedicao' => $metodosExpedicao,
+        ]);
+    }
+
+
+
+
 }

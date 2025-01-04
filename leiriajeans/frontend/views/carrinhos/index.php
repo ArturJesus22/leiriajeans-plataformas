@@ -68,8 +68,7 @@ $this->title = 'Carrinho de Compras';
 
             <div class="text-right mt-3">
                 <?= Html::a('Continuar a Comprar', ['produtos/index'], ['class' => 'btn btn-primary']) ?>
-
-                <?= Html::a('Criar Fatura', ['faturas/create-from-cart'], ['class' => 'btn btn-success', 'data-method' => 'post', 'data-confirm' => 'Tem certeza que deseja criar uma fatura a partir do carrinho?']) ?>
+                <?= Html::a('Proceder', ['carrinhos/checkout'], ['class' => 'btn btn-success', 'data-method' => 'post', 'data-confirm' => 'Tem certeza que deseja proceder para o checkout?']) ?>
             </div>
         </div>
     <?php else: ?>

@@ -80,7 +80,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </li>
                                     <?php endif; ?>
                                     |
-                                    <li class="shop_btn"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
+                                    <li class="shop_btn">
+                                        <a href="<?= Yii::$app->urlManager->createUrl(['produtos/view', 'id' => $model->id]) ?>">
                                             Ver
                                         </a>
                                     </li>

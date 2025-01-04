@@ -57,13 +57,15 @@ class CarrinhosController extends Controller
         foreach ($linhasCarrinho as $linha) {
             $produto = $linha->produto;
             if ($produto) {
+                // Adiciona as informações de cada item do carrinho
                 $itens[] = [
                     'id' => $produto->id,
                     'nome' => $produto->nome,
                     'preco' => $linha->precoVenda,
                     'quantidade' => $linha->quantidade,
                     'subtotal' => $linha->subTotal,
-                    'valorIva' => $linha->valorIva
+                    'valorIva' => $linha->valorIva,
+                    'stock' => $produto->stock // Aqui, você já adiciona o stock
                 ];
                 $total += $linha->subTotal;
                 $ivatotal += $linha->valorIva;
@@ -81,6 +83,7 @@ class CarrinhosController extends Controller
             'linhasCarrinho' => $linhasCarrinho // Passa as linhas do carrinho para a view
         ]);
     }
+
 
     public function beforeAction($action)
     {

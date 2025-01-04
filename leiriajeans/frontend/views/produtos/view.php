@@ -94,16 +94,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <hr>
                         <div class="mt-4">
-                            <p class="fw-bold fs-4"><?= Html::encode($model->preco) . ' €'?></p>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="me-2">Quantidade:</span>
-                                <select class="form-select w-auto">
-                                    <?php for ($i = 1; $i <= min(1000, $model->stock); $i++): ?>
-                                        <option value="<?= $i ?>"><?= $i ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-
+                            <p class="fw-bold fs-4">Preço: <?= Html::encode($model->preco) . ' €'?></p>
+                            <br>
+                            <hr>
                             <p>Quantidade disponível: <?= Html::encode($model->stock) ?></p>
                             <hr>
                             <?php if ($model->stock > 0): ?>

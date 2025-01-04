@@ -99,36 +99,5 @@ class Fatura extends \yii\db\ActiveRecord
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 
-    public function FazPublishNoMosquitto($canal, $msg)
-    {
-        $server = "localhost";
-        $port = 1883;
-        $username = "";
-        $password = "";
-        $client_id = "phpMQTT-publisher";
-        $mqtt = new phpMQTT($server, $port, $client_id);
-        if ($mqtt->connect(true, NULL, $username, $password)) {
-            $mqtt->publish($canal, $msg, 0);
-            $mqtt->close();
-        } else {
-            file_put_contents("debug . output", "Time out!");
-        }
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        // dados do user
-        $utilizador = $this->userdata;
-        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
-
-        // mensagem
-        $mensagem = "O utilizador {$nomeUtilizador} fez uma compra.";
-
-        // publicar mqtt
-        $canal = $insert ? "INSERT_FATURAS" : "UPDATE_FATURAS";
-        $this->FazPublishNoMosquitto($canal, $mensagem);
-    }
 
 }

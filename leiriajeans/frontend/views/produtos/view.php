@@ -138,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php if ($avaliacoes): ?>
                             <?php foreach ($avaliacoes as $avaliacao): ?>
                                 <div class="list-group-item">
-                                    <h5>Avaliação de <?= Html::encode($avaliacao->username ? $avaliacao->username->username : 'Utilizador Desconhecido') ?></h5>
+                                    <h5>Avaliação de <?= Html::encode($avaliacao->user ? $avaliacao->user->username : 'Utilizador Desconhecido') ?></h5>
                                     <p>Comentário: <?= Html::encode($avaliacao->comentario) ?></p>
                                     <div class="rating">
                                         <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -146,7 +146,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php endfor; ?>
                                     </div>
                                     <p>Data da Avaliação: <?= Html::encode($avaliacao->data) ?></p>
-
                                     <hr>
                                 </div>
                             <?php endforeach; ?>
@@ -155,11 +154,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endif; ?>
                     </div>
 
+
                     <!-- Verificar se o utilizador pode avaliar -->
                     <?php if (!Yii::$app->user->isGuest): ?>
                         <?php
                         // Verificar se o utilizador comprou o produto
-                        $userId = Yii::$app->user->identity->id;
+                        $userId = Yii::$app->user->identity->userform->id;
                         // Obter todas as faturas do utilizador
                         $faturas = Fatura::find()->where(['userdata_id' => $userId])->all();
 
@@ -260,8 +260,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-            </div>
         </div>
     </div>
-  </div>
+</div>
+</div>
 </div>

@@ -92,7 +92,7 @@ class AvaliacoesController extends Controller
 
             $fatura = Fatura::findOne($linhaFatura->fatura_id);
 
-            if (!$fatura || $fatura->userdata_id !== Yii::$app->user->id) {
+            if (!$fatura || $fatura->userdata_id !== Yii::$app->user->identity->userform->id) {
                 throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
             }
 

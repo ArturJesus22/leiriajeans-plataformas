@@ -28,15 +28,15 @@ $this->title = 'Carrinho de Compras';
                 <?php foreach ($carrinhoAtual['itens'] as $item): ?>
                     <tr>
                         <td><?= Html::encode($item['nome']) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($item['preco']) ?></td>
+                        <td><?= Html::encode($item['preco']) . '€' ?></td>
                         <td>
                             <?= Html::beginForm(['carrinhos/update-quantidade', 'id' => $item['id']], 'post') ?>
                             <?= Html::input('number', 'quantidade', $item['quantidade'], ['min' => 1, 'class' => 'form-control', 'style' => 'width: 80px; display: inline;']) ?>
                             <?= Html::submitButton('Atualizar', ['class' => 'btn btn-primary btn-sm']) ?>
                             <?= Html::endForm() ?>
                         </td>
-                        <td><?= Yii::$app->formatter->asCurrency($item['subtotal']) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($item['valorIva']) ?></td>
+                        <td><?= Html::encode($item['subtotal']) . '€' ?></td>
+                        <td><?= Html::encode($item['valorIva']) . '€' ?></td>
                         <td>
                             <?= Html::a('Remover', ['carrinhos/remove', 'id' => $item['id']], [
                                 'class' => 'btn btn-danger btn-sm',
@@ -55,12 +55,12 @@ $this->title = 'Carrinho de Compras';
                 </tr>
                 <tr>
                     <td colspan="3" class="text-right"><strong>IVA Total:</strong></td>
-                    <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['ivatotal']) ?></strong></td>
+                    <td><strong><?= Html::encode($carrinhoAtual['ivatotal']) . '€' ?></strong></td>
                     <td colspan="2"></td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="text-right"><strong>Total com IVA:</strong></td>
-                    <td><strong><?= Yii::$app->formatter->asCurrency($carrinhoAtual['total'] + $carrinhoAtual['ivatotal']) ?></strong></td>
+                    <td colspan="3" class="text-right"><strong>Total c/Iva:</strong></td>
+                    <td><strong><?= Html::encode($carrinhoAtual['total'] + $carrinhoAtual['ivatotal'] . '€') ?></strong></td>
                     <td colspan="2"></td>
                 </tr>
                 </tfoot>

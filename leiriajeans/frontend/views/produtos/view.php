@@ -113,9 +113,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </a>
                                 </>
                             <?php else: ?>
-                                <li class="shop_btn">
+                                <h5 class="shop_btn">
                                     <span class="btn btn-secondary">Esgotado</span>
-                                </li>
+                                </h5>
                             <?php endif; ?>
                         </div>
                     </div>

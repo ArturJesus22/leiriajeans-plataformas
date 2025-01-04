@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var common\models\Fatura $model */
 /** @var common\models\LinhaFatura[] $linhasFatura */
 
-$this->title = 'Fatura #' . $model->id;
+$this->title = 'Número do pedido: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Faturas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,35 +16,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+<!--    <p>-->
+<!--        --><?php //= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<!--        --><?php //= Html::a('Delete', ['delete', 'id' => $model->id], [
+//            'class' => 'btn btn-danger',
+//            'data' => [
+//                'confirm' => 'Are you sure you want to delete this item?',
+//                'method' => 'post',
+//            ],
+//        ]) ?>
+<!--    </p>-->
+<!---->
+<!--    --><?php //= DetailView::widget([
+//        'model' => $model,
+//        'attributes' => [
+//            'id',
+//            'metodopagamento_id',
+//            'metodoexpedicao_id',
+//            'data',
+//            'valorTotal',
+//            'statuspedido',
+//        ],
+//    ]) ?>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'metodopagamento_id',
-            'metodoexpedicao_id',
-            'data',
-            'valorTotal',
-            'statuspedido',
-        ],
-    ]) ?>
-
-    <h2>Linhas da Fatura</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
+<!--                <th>ID</th>-->
                 <th>Produto</th>
                 <th>Preço</th>
                 <th>Quantidade</th>
@@ -59,15 +58,16 @@ $this->params['breadcrumbs'][] = $this->title;
             } else {
                 foreach ($linhasFatura as $linha): ?>
                     <tr>
-                        <td><?= Html::encode($linha->id) ?></td>
+<!--                        <td>--><?php //= Html::encode($linha->id) ?><!--</td>-->
                         <td>
 
                             <?= Html::encode($linha->produto ? $linha->produto->nome : 'Produto não encontrado') ?>
                         </td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->precoVenda) ?></td>
+                        <td><?= Html::encode($linha['precoVenda']) . '€' ?></td>
                         <td><?= Html::encode($linha->quantidade) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->subTotal) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->valorIva) ?></td>
+                        <td><?= Html::encode($linha['subTotal']) . '€' ?></td>
+                        <td><?= Html::encode($linha['valorIva']) . '€' ?></td>
+
                     </tr>
                 <?php endforeach;
             }

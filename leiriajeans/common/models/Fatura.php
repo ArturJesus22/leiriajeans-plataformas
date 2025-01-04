@@ -119,25 +119,14 @@ class Fatura extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        // Obter dados do utilizador
+        // dados do user
         $utilizador = $this->userdata;
         $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
 
-        // Obter os nomes dos produtos associados à fatura
-        $linhasFatura = $this->linhafaturas;
-        $nomesProdutos = [];
-        foreach ($linhasFatura as $linha) {
-            $produto = $linha->produto;
-            if ($produto) {
-                $nomesProdutos[] = $produto->nome;
-            }
-        }
+        // mensagem
+        $mensagem = "O utilizador {$nomeUtilizador} fez uma compra.";
 
-        // Construir a mensagem
-        $mensagemProdutos = implode(', ', $nomesProdutos);
-        $mensagem = "O utilizador {$nomeUtilizador} comprou o produto {$mensagemProdutos}";
-
-        // Publicar no Mosquitto
+        // publicar mqtt
         $canal = $insert ? "INSERT_FATURAS" : "UPDATE_FATURAS";
         $this->FazPublishNoMosquitto($canal, $mensagem);
     }

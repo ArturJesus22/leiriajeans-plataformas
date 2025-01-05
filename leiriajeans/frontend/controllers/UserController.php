@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\User;
-use common\models\UsersForm;
+use common\models\UserForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -110,7 +110,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelUserData = UsersForm::findOne(['user_id' => $id]); // UsersForm relacionado
+        $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm relacionado
         $authManager = Yii::$app->authManager;
 
         // Obter a role atual do usuário

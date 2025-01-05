@@ -16,6 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <!-- Exibir métodos de pagamento e expedição -->
+    <h3>Método de Pagamento</h3>
+    <p><?= Html::encode($metodoPagamento ? $metodoPagamento->nome : 'Método de pagamento não encontrado') ?></p> <!-- Exibe o nome do método de pagamento -->
+
+    <h3>Método de Expedição</h3>
+    <p><?= Html::encode($metodoExpedicao ? $metodoExpedicao->nome : 'Método de expedição não encontrado') ?></p> <!-- Exibe o nome do método de expedição -->
+
 <!--    <p>-->
 <!--        --><?php //= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 <!--        --><?php //= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -67,7 +74,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td><?= Html::encode($linha->quantidade) ?></td>
                         <td><?= Html::encode($linha['subTotal']) . '€' ?></td>
                         <td><?= Html::encode($linha['valorIva']) . '€' ?></td>
-
+                        <!--metodo pagamento-->
+                        <!--metodo expedicao-->
                     </tr>
                 <?php endforeach;
             }

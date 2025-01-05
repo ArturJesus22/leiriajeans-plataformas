@@ -12,6 +12,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use common\models\MetodoPagamento;
+use common\models\MetodoExpedicao;
 
 /**
  * FaturasController implements the CRUD actions for Fatura model.
@@ -88,11 +90,15 @@ class FaturasController extends Controller
             ->where(['fatura_id' => $id])
             ->all();
 
-
+        // Busca os métodos de pagamento e expedição
+        $metodoPagamento = MetodoPagamento::findOne($model->metodopagamento_id);
+        $metodoExpedicao = MetodoExpedicao::findOne($model->metodoexpedicao_id);
 
         return $this->render('view', [
             'model' => $model,
             'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
+            'metodoPagamento' => $metodoPagamento, // Passa o modelo do método de pagamento
+            'metodoExpedicao' => $metodoExpedicao, // Passa o modelo do método de expedição
         ]);
     }
 
@@ -197,11 +203,19 @@ class FaturasController extends Controller
             return $this->redirect(['carrinhos/index']);
         }
 
+        // Captura os métodos de pagamento e expedição do formulário
+        $metodoPagamentoId = Yii::$app->request->post('metodopagamento_id');
+        $metodoExpedicaoId = Yii::$app->request->post('metodoexpedicao_id');
+
+        // Busca os métodos de pagamento e expedição
+        $metodoPagamento = MetodoPagamento::findOne($metodoPagamentoId);
+        $metodoExpedicao = MetodoExpedicao::findOne($metodoExpedicaoId);
+
         // Cria a fatura com os dados do carrinho
         $fatura = new Fatura();
         $fatura->userdata_id = $userForm->id;
-        $fatura->metodopagamento_id = 1; // Ajuste conforme necessário
-        $fatura->metodoexpedicao_id = 1; // Ajuste conforme necessário
+        $fatura->metodopagamento_id = $metodoPagamentoId;
+        $fatura->metodoexpedicao_id = $metodoExpedicaoId;
         $fatura->data = date('Y-m-d');
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal;
 

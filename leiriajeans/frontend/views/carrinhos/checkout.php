@@ -63,7 +63,7 @@ use yii\widgets\ActiveForm;
     )->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Confirmar', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Confirmar', ['faturas/create-from-cart'], ['class' => 'btn btn-success', 'data-method' => 'post', 'data-confirm' => 'Tem certeza que deseja criar uma fatura a partir do carrinho?']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

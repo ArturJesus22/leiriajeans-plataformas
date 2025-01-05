@@ -81,16 +81,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Html::encode($model->categoria ? $model->categoria->sexo : 'Não especificado') ?>
                         </p>
                         <hr>
-                        <h4 class="mt-4">Cores</h4>
-                        <ul class="list-unstyled d-flex flex-wrap">
-                            <?php foreach (Cor::find()->all() as $cor): ?>
-                                <li class="me-2 mb-2">
-                                    <button class="btn btn-outline-primary" data-cor-id="<?= $cor->id ?>">
-                                        <?= Html::encode($cor->nome) ?>
-                                    </button>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+
+                        <h4 class="mt-4">Cor</h4>
+                        <p>
+                            <?= $model->cor ? Html::encode($model->cor->nome) : 'Não especificada' ?>
+                        </p>
+
 
                         <hr>
                         <div class="mt-4">

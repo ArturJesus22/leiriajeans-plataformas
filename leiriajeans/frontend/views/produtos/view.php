@@ -94,16 +94,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <hr>
                         <div class="mt-4">
-                            <p class="fw-bold fs-4"><?= Html::encode($model->preco) . ' €'?></p>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="me-2">Quantidade:</span>
-                                <select class="form-select w-auto">
-                                    <?php for ($i = 1; $i <= min(1000, $model->stock); $i++): ?>
-                                        <option value="<?= $i ?>"><?= $i ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-
+                            <p class="fw-bold fs-4">Preço: <?= Html::encode($model->preco) . ' €'?></p>
+                            <br>
+                            <hr>
                             <p>Quantidade disponível: <?= Html::encode($model->stock) ?></p>
                             <hr>
                             <?php if ($model->stock > 0): ?>
@@ -138,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php if ($avaliacoes): ?>
                             <?php foreach ($avaliacoes as $avaliacao): ?>
                                 <div class="list-group-item">
-                                    <h5>Avaliação de <?= Html::encode($avaliacao->username ? $avaliacao->username->username : 'Utilizador Desconhecido') ?></h5>
+                                    <h5>Avaliação de <?= Html::encode($avaliacao->user ? $avaliacao->user->username : 'Utilizador Desconhecido') ?></h5>
                                     <p>Comentário: <?= Html::encode($avaliacao->comentario) ?></p>
                                     <div class="rating">
                                         <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -146,7 +139,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php endfor; ?>
                                     </div>
                                     <p>Data da Avaliação: <?= Html::encode($avaliacao->data) ?></p>
-
                                     <hr>
                                 </div>
                             <?php endforeach; ?>
@@ -155,11 +147,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php endif; ?>
                     </div>
 
+
                     <!-- Verificar se o utilizador pode avaliar -->
                     <?php if (!Yii::$app->user->isGuest): ?>
                         <?php
                         // Verificar se o utilizador comprou o produto
-                        $userId = Yii::$app->user->identity->id;
+                        $userId = Yii::$app->user->identity->userform->id;
                         // Obter todas as faturas do utilizador
                         $faturas = Fatura::find()->where(['userdata_id' => $userId])->all();
 
@@ -260,8 +253,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-            </div>
         </div>
     </div>
-  </div>
+</div>
+</div>
 </div>

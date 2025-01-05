@@ -81,7 +81,12 @@ return [
                         'GET index'=> 'index',
                     ],
                 ],
-
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/avaliacoes',
+                    'extraPatterns' => [
+                        'GET avaliacoes'=> 'avaliacoes',
+                    ],
+                ],
             ],
         ],
     ],

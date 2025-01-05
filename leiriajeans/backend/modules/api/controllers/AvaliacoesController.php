@@ -56,4 +56,40 @@ class AvaliacoesController extends ActiveController
     }
 
 
+    public function actionUpdateavaliacao($id)
+    {
+        $requestPostAvaliacao = \Yii::$app->request->post();
+
+        $avaliacoesModel = new $this->modelClass;
+        $avaliacao = $avaliacoesModel::find()->where(['id' => $id])->one();
+        if ($avaliacao) {
+            $avaliacao->comentario = $requestPostAvaliacao['comentario'];
+            $avaliacao->rating = $requestPostAvaliacao['rating'];
+            $avaliacao->dtarating = Carbon::now();
+
+            $avaliacao->save();
+        } else {
+            throw new \yii\web\NotFoundHttpException("Avaliação não existe");
+        }
+        return [$avaliacao];
+
+    }
+
+    //function to delete a avaliacao
+    public function actionDeleteavaliacao($id)
+    {
+        $avaliacoesModel = new $this->modelClass;
+        $avaliacao = $avaliacoesModel::find()->where(['id' => $id])->one();
+        if ($avaliacao == null) {
+            throw new \yii\web\NotFoundHttpException("Avaliação não existe");
+        } else {
+            $avaliacao->delete();
+            return [
+                'avaliacao' => $avaliacao,
+                'mensagem' => 'Avaliação eliminada com sucesso'
+            ];
+
+        }
+    }
+
 }

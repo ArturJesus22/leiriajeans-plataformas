@@ -113,7 +113,7 @@ class UserController extends Controller
         $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm relacionado
         $authManager = Yii::$app->authManager;
 
-        // Obter a role atual do usuário
+        // Obter a role atual do utilizador
         $roles = $authManager->getRolesByUser($id);
         if (!empty($roles)) {
             $model->role = reset($roles)->name; // Atribuir a role no model

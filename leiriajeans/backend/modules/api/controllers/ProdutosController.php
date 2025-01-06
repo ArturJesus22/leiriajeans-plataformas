@@ -50,31 +50,31 @@ class ProdutosController extends ActiveController
         $resultArray = [];
 
         foreach ($produtos as $produto) {
-            // Procurar a categoria e IVA relacionados ao produto
+            //procurar a categoria e IVA relacionados ao produto
             $categoria = $categoriaModel::find()->where(['id' => $produto->categoria_id])->one();
             $iva = $ivaModel::find()->where(['id' => $produto->iva_id])->one();
 
-            // Obter a primeira imagem associada ao produto
+            //obter a primeira imagem associada ao produto
             $imagem = $imagensModel::find()->where(['produto_id' => $produto->id])->one();
 
-            // Caso o produto não tenha imagem, atribui uma imagem padrão
+            //caso o produto não tenha imagem, atribui uma imagem default
             if ($imagem == null) {
                 $imagem = new $this->imagensModelClass;
-                $imagem->fileName = "sem_imagem.jpg";  // Colocar uma imagem padrão
+                $imagem->fileName = "sem_imagem.jpg";
             }
 
-            // Criar um array com as informações do produto
+            //criar um array com as informações do produto
             $productInfo = [
                 'id' => $produto->id,
                 'nome' => $produto->nome,
                 'preco' => $produto->preco,
                 'descricao' => $produto->descricao,
-                'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja retornado, se existir
-                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja retornada
-                'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
+                'iva' => $iva ? $iva->percentagem : null,  //garantir que o IVA seja devovido, se existir
+                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', //garantir que a categoria seja devolvida
+                'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName),
             ];
 
-            // Adicionar as informações do produto ao array de resultados
+            //adicionar as informações do produto ao array de resultados
             $resultArray[] = $productInfo;
         }
 

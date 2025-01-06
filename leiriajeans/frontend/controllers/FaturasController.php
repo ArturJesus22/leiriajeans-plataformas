@@ -176,18 +176,18 @@ class FaturasController extends Controller
 
     public function actionCreateFromCart()
     {
-        // Verifica se o usuário está autenticado
+        // Verifica se o utilizador está autenticado
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
 
-        // Obtém o formulário do usuário (assumindo que há um formulário do usuário associado ao usuário atual)
+        // Obtém o formulário do utilizador (assumindo que há um formulário do utilizador associado ao utilizador atual)
         $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
         if (!$userForm) {
             return $this->redirect(['site/index']);
         }
 
-        // Obtém o carrinho associado ao usuário
+        // Obtém o carrinho associado ao utilizador
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
         if (!$carrinho) {
             Yii::$app->session->setFlash('error', 'Carrinho não encontrado.');

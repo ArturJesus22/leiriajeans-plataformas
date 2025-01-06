@@ -71,7 +71,7 @@ class CarrinhosController extends Controller
                     'quantidade' => $linha->quantidade,
                     'subtotal' => $linha->subTotal,
                     'valorIva' => $linha->valorIva,
-                    'stock' => $produto->stock // Aqui, você já adiciona o stock
+                    'stock' => $produto->stock
                 ];
                 $total += $linha->subTotal;
                 $ivatotal += $linha->valorIva;
@@ -132,7 +132,7 @@ class CarrinhosController extends Controller
 
         // Verifica se já existe uma linha para este produto
         $linhaCarrinho = LinhaCarrinho::find()
-            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtos_id]) // Verifique apenas linhas ativas
+            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtos_id]) // Verifica apenas linhas ativas
             ->one();
 
         if ($linhaCarrinho) {
@@ -337,13 +337,13 @@ class CarrinhosController extends Controller
 
     public function actionCheckout()
     {
-        // Obter o ID do usuário logado
+        // Obter o ID do utilizador logado
         $userId = Yii::$app->user->id;
 
-        // Buscar o UserForm relacionado ao usuário logado
+        // Buscar o UserForm relacionado ao utilizador logado
         $userdata = UserForm::findOne(['user_id' => $userId]);
         if ($userdata === null) {
-            throw new NotFoundHttpException('UserData não encontrado para o usuário.');
+            throw new NotFoundHttpException('UserData não encontrado para o utilizador.');
         }
 
         // Obter o userdata_id a partir do UserForm
@@ -354,7 +354,7 @@ class CarrinhosController extends Controller
 
         // Se não encontrou o carrinho, lançar erro
         if ($carrinho === null) {
-            throw new NotFoundHttpException('Carrinho não encontrado para o usuário.');
+            throw new NotFoundHttpException('Carrinho não encontrado para o utilizador.');
         }
 
 

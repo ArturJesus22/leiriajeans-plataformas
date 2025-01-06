@@ -36,30 +36,29 @@ class CarrinhoController extends ActiveController
         return $this->render('index');
     }
 
-    //function to get a carrinho through the user id
     public function actionCarrinho($user_id)
     {
         $carrinhoModel = new $this->modelClass;
         $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
         $produtoModel = new $this->produtoModelClass;
 
-        // Encontra o carrinho do usuário
+        //vai buscar o carrinho do utilizador
         $carrinho = $carrinhoModel::find()->where(['userdata_id' => $user_id])->one();
 
         if ($carrinho == null) {
             throw new \yii\web\NotFoundHttpException("Não existe um carrinho do user " . $user_id);
         }
 
-        // Encontra as linhas do carrinho
+        //vai buscar as linhas do carrinho
         $linhasCarrinho = $linhasCarrinhoModel::find()->where(['carrinho_id' => $carrinho->id])->all();
 
-        // Para cada linha do carrinho, encontra o produto relacionado
+        //para cada linha do carrinho, procura o produto relacionado
         foreach ($linhasCarrinho as $linhaCarrinho) {
             $produto = $produtoModel::find()->where(['id' => $linhaCarrinho->produto_id])->one();
             $linhaCarrinho->produto_id = $produto;
         }
 
-        return $carrinho;  // Retorna o carrinho com as linhas e produtos
+        return $carrinho;
     }
 
 

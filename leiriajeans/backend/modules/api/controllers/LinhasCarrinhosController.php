@@ -16,11 +16,8 @@ class LinhasCarrinhosController extends ActiveController
 {
 
     public $modelClass = 'common\models\LinhaCarrinho';
-
     public $produtosModelClass = 'common\models\Produto';
-
     public $userModelClass = 'common\models\User';
-
     public $carrinhosModelClass = 'common\models\Carrinho';
 
     public function behaviors()

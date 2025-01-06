@@ -104,7 +104,6 @@ class Fatura extends \yii\db\ActiveRecord
         return $this->hasOne(Carrinho::class, ['id' => 'carrinho_id']);
     }
 
-
     public function FazPublishNoMosquitto($canal, $msg)
     {
         $server = "localhost";
@@ -116,10 +115,12 @@ class Fatura extends \yii\db\ActiveRecord
         if ($mqtt->connect(true, NULL, $username, $password)) {
             $mqtt->publish($canal, $msg, 0);
             $mqtt->close();
+            file_put_contents("mqtt_publish.log", "Mensagem publicada: {$msg}\n", FILE_APPEND);  // Log
         } else {
-            file_put_contents("debug . output", "Time out!");
+            file_put_contents("debug_output.log", "Erro na conexão MQTT: Time out!\n", FILE_APPEND);  // Log de erro
         }
     }
+
 
     public function afterSave($insert, $changedAttributes)
     {

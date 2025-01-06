@@ -35,7 +35,7 @@ class AuthController extends ActiveController
         }
 
         if ($user->validatePassword($password)) {
-            return ['message' => 'Autenticado com sucesso'];
+            return ['message' => 'Autenticado com sucesso' . $username];
         } else {
             return ['message' => 'Erro na autenticação'];
         }

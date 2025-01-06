@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use app\mosquitto\phpMQTT;
 use Yii;
 
 /**
@@ -98,6 +99,44 @@ class Avaliacao extends \yii\db\ActiveRecord
 
         if (!$fatura || $fatura->userdata_id !== Yii::$app->user->identity->userform->id) {
             $this->addError($attribute, 'Não tem permissão para avaliar esta linha fatura.');
+        }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Get the user data
+        $utilizador = $this->userdata;
+        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
+
+        // Get the product related to the review
+        $produto = $this->linhafatura ? $this->linhafatura->produto->nome : 'Desconhecido';  // Assuming LinhaFatura has a 'produto_nome' field
+
+        // Message to be sent
+        $mensagem = "O utilizador {$nomeUtilizador} deixou uma avaliacao no produto {$produto}.";
+
+        // Define the MQTT channel
+        $canal = $insert ? "INSERT_AVALIACOES" : "UPDATE_AVALIACOES";
+
+        // Publish the message to Mosquitto
+        $this->FazPublishNoMosquitto($canal, $mensagem);
+    }
+
+    // Method to publish to Mosquitto
+    public function FazPublishNoMosquitto($canal, $msg)
+    {
+        $server = "localhost";
+        $port = 1883;
+        $username = "";
+        $password = "";
+        $client_id = "phpMQTT-publisher";
+        $mqtt = new phpMQTT($server, $port, $client_id);
+        if ($mqtt->connect(true, NULL, $username, $password)) {
+            $mqtt->publish($canal, $msg, 0);
+            $mqtt->close();
+        } else {
+            file_put_contents("debug_output.log", "Time out!");
         }
     }
 }

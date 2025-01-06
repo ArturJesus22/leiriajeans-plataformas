@@ -1,54 +1,84 @@
 <?php
+
 namespace backend\modules\api\controllers;
-use yii\base\Behavior;
-use yii\filters\auth\QueryParamAuth;
+
 use yii\rest\ActiveController;
-use yii;
-use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use backend\modules\api\components\CustomAuth;
+use yii\filters\auth\QueryParamAuth;
 
 class UserController extends ActiveController
 {
-    public $modelClass = 'common\models\User'; //model default user
-    public $modelUserForm = 'common\models\UserForm'; //model dos dados do utilizador
+    public $modelClass = 'common\models\User'; // Modelo padrão de usuário
+    public $modelUserForm = 'common\models\UserForm'; // Modelo dos dados do utilizador
 
+    // Comportamentos do controlador (ex: autenticação)
     public function behaviors()
     {
         $behaviors = parent::behaviors();
 
+        $behaviors['authenticator'] = [
+            'class' => QueryParamAuth::class,
+        ];
+
         return $behaviors;
     }
 
-    public function actionIndex()
+    // Método de ping para verificar se a API está funcionando
+    public function actionPing()
     {
-        return ['message' => 'Autenticado com sucesso'];
-        //return $this->render('index');
+        return ['status' => 'Module API is working'];
     }
 
+    // Método para buscar dados do utilizador pelo username
     public function actionDados($username)
     {
+        // Busca o usuário pelo username
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['username' => $username])->one();
-        if($user == null)
-        {
-            throw new \yii\web\NotFoundHttpException("O Utilizador" . $username . "não foi encontrado");
+
+        // Verifica se o usuário existe
+        if ($user === null) {
+            throw new NotFoundHttpException("O Utilizador {$username} não foi encontrado");
         }
+
+        // Busca os dados adicionais do usuário (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
-        return [$user, $userForm];
+
+        // Retorna tanto o usuário quanto o formulário do usuário
+        return [
+            'user' => $user,
+            'userForm' => $userForm,
+        ];
     }
 
+    // Método para buscar dados do utilizador pelo ID
     public function actionGetUserById($id)
     {
+        // Busca o usuário pelo ID
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['id' => $id])->one();
-        if($user == null)
-        {
-            throw new \yii\web\NotFoundHttpException("O Utilizador com ID ". $id . "não foi encontrado");
+
+        // Verifica se o usuário existe
+        if ($user === null) {
+            throw new NotFoundHttpException("O Utilizador com ID {$id} não foi encontrado");
         }
+
+        // Busca os dados adicionais do usuário (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
-        return [$userForm];
+
+        // Retorna apenas os dados do formulário do utilizador
+        return [
+            'user' => $user,
+            'userForm' => $userForm,
+        ];
     }
 
+    // Método de ação de índice (caso você precise de uma página inicial)
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
 }

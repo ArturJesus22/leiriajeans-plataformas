@@ -10,10 +10,10 @@ use yii\rest\ActiveController;
 
 class ProdutosController extends ActiveController
 {
-    public $modelClass = 'common\models\Produtos';
-    public $imagensModelClass = 'common\models\Imagens';
-    public $categoriaModelClass = 'common\models\Categorias';
-    public $ivaModelClass = 'common\models\Ivas';
+    public $modelClass = 'common\models\Produto';
+    public $imagensModelClass = 'common\models\Imagem';
+    public $categoriaModelClass = 'common\models\Categoria';
+    public $ivaModelClass = 'common\models\Iva';
 
     public function behaviors()
     {
@@ -34,7 +34,7 @@ class ProdutosController extends ActiveController
         throw new \yii\web\NotFoundHttpException('Ação não permitida.');
     }
 
-    public function actionProdutosAll()
+    public function actionProdutos()
     {
         $produtoModel = new $this->modelClass;
         $categoriaModel = new $this->categoriaModelClass;
@@ -51,7 +51,7 @@ class ProdutosController extends ActiveController
 
         foreach ($produtos as $produto) {
             // Procurar a categoria e IVA relacionados ao produto
-            $categoria = $categoriaModel::find()->where(['id' => $produto->categoria_produto_id])->one();
+            $categoria = $categoriaModel::find()->where(['id' => $produto->categoria_id])->one();
             $iva = $ivaModel::find()->where(['id' => $produto->iva_id])->one();
 
             // Obter a primeira imagem associada ao produto
@@ -71,7 +71,7 @@ class ProdutosController extends ActiveController
                 'descricao' => $produto->descricao,
                 'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja retornado, se existir
                 'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja retornada
-                'imagens' => Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
+                'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
             ];
 
             // Adicionar as informações do produto ao array de resultados

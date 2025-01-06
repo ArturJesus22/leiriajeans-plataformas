@@ -1,10 +1,11 @@
 <?php
 namespace backend\modules\api\controllers;
 
+use Yii;
 use yii\filters\auth\QueryParamAuth;
 use yii\web\Controller;
 use yii\rest\ActiveController;
-use carbon\carbon;
+use Carbon\Carbon;
 
 /**
  * Default controller for the `api` module
@@ -12,8 +13,8 @@ use carbon\carbon;
 
 class AvaliacoesController extends ActiveController
 {
-    public $modelClass = 'common\models\Avaliacoes';
-    public $produtosModelClass = 'common\models\Produtos';
+    public $modelClass = 'common\models\Avaliacao';
+    public $produtosModelClass = 'common\models\Produto';
     public $userModelClass = 'common\models\User';
 
     public function behaviors()
@@ -41,20 +42,23 @@ class AvaliacoesController extends ActiveController
 
     public function actionCriaravaliacao()
     {
-        $requestCriarAvaliacao = \Yii::$app->request->post();
+        $comentario = Yii::$app->request->post('comentario');
+        $rating = Yii::$app->request->post('rating');
+        $linhafatura = Yii::$app->request->post('linhafatura_id');
+        $userdata = Yii::$app->request->post('userdata_id');
+
 
         $avaliacoesModel = new $this->modelClass;
         $avaliacao = new $avaliacoesModel;
         $avaliacao->data = Carbon::now();
-        $avaliacao->comentario = $requestCriarAvaliacao['comentario'];
-        $avaliacao->rating = $requestCriarAvaliacao['rating'];
-        $avaliacao->linhafatura_id = $requestCriarAvaliacao['linhafatura_id'];
-        $avaliacao->userdata_id = $requestCriarAvaliacao['userdata_id'];
+        $avaliacao->comentario = $comentario;
+        $avaliacao->rating = $rating;
+        $avaliacao->linhafatura_id = $linhafatura;
+        $avaliacao->userdata_id = $userdata;
         $avaliacao->save();
         return $avaliacao;
 
     }
-
 
     public function actionUpdateavaliacao($id)
     {
@@ -65,7 +69,7 @@ class AvaliacoesController extends ActiveController
         if ($avaliacao) {
             $avaliacao->comentario = $requestPostAvaliacao['comentario'];
             $avaliacao->rating = $requestPostAvaliacao['rating'];
-            $avaliacao->dtarating = Carbon::now();
+            $avaliacao->data = Carbon::now();
 
             $avaliacao->save();
         } else {

@@ -61,33 +61,78 @@ return [
             'rules' => [
                 //USERS
                 ['class' => 'yii\rest\UrlRule',
-                'controller' => 'api/user',
-                'extraPatterns' => [
-                    'GET nomes'=> 'nomes',
-                    'GET {username}/dados' => 'dados',
-                    'GET {id}' => 'getuserbyid',
-                    'POST signup' => 'Signup',
+                    'controller' => 'api/user',
+                    'extraPatterns' => [
+                        'GET nomes'=> 'nomes',
+                        'GET {username}/dados' => 'dados',
+                        'GET {id}' => 'getuserbyid',
+                        'POST signup' => 'Signup',
 
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                        '{username}' => '<username:\w+>',
+                    ],
                 ],
-                'tokens' => [
-                    '{id}' => '<id:\d+>',
-                    '{username}' => '<username:\w+>',
-                ],
-                ],
+                //produtos
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/produtos',
                     'extraPatterns' => [
-                        'GET all'=> 'produtosall',
+                        'GET produtos'=> 'produtos',
                         'GET index'=> 'index',
                     ],
                 ],
+                //avaliacoes - por acabar
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/avaliacoes',
                     'extraPatterns' => [
                         'GET avaliacoes'=> 'avaliacoes',
+                        'POST avaliacoes'=> 'criaravaliacao',
+                        'PUT {id}/avaliacoes'=> 'updateavaliacao',
+                        'DELETE {id}/avaliacoes'=> 'deleteavaliacao',
                     ],
                 ],
-            ],
+                //auth
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/auth',
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'POST signup' => 'signup',
+                    ],
+                ],
+                //falta carrinho/faturas
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/carrinho',
+                    'extraPatterns' => [
+                        'GET {id}/carrinho'=> 'carrinho',
+                        'PUT {id}/carrinho'=> 'updatecarrinho',
+                    ],
+                ],
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/faturas',
+                    'extraPatterns' => [
+                        'GET {id}/faturas' => 'faturas',
+                        'POST criarfatura'=> 'criar',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
+                    ],
+                ],
+                //LINHAS CARRINHOS
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/linhascarrinhos',
+                    'extraPatterns' => [
+                        'GET {carrinho_id}/dados' => 'dados',
+                        'POST criar' => 'postlinhacarrinho',
+                        'PUT {id}/update' => 'updatelinhacarrinho',
+                        'DELETE {id}/delete' => 'deletelinhacarrinho',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
+                        '{carrinho_id}' => '<carrinho_id:\\d+>',
+                    ],
+                ],
+            ]
         ],
     ],
     'params' => $params,

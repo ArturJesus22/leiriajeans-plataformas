@@ -32,29 +32,43 @@ class FaturasController extends ActiveController
 
     public function actionDados($id)
     {
+        // Modelos principais
         $faturasModel = new $this->modelClass;
         $linhasFaturasModel = new $this->linhasFaturasModelClass;
-        $fatura = $faturasModel::find()->where(['id' => $id])->one();
-        if($fatura == null){
-            throw new \yii\web\NotFoundHttpException("Fatura não existe");
+
+        // Busca a fatura pelo userdata_id
+        $fatura = $faturasModel::find()->where(['userdata_id' => $id])->one();
+
+        if ($fatura == null) {
+            throw new \yii\web\NotFoundHttpException("Fatura com userdata_id {$id} não existe ou não foi encontrada.");
         }
-        $linhasFaturas = $linhasFaturasModel::find()->where(['fatura_id'=>$fatura->id])->all();
+
+        // Busca as linhas de fatura relacionadas
+        $linhasFaturas = $linhasFaturasModel::find()->where(['fatura_id' => $fatura->id])->all();
+
         $resultArray = [];
-        foreach($linhasFaturas as $linha){
-            //METER OS NOSSOS DADOS NA ARRAY
+        foreach ($linhasFaturas as $linha) {
+            // Relacionamentos diretos
+            $produto = $linha->produto; // Certifique-se de que a relação 'produto' está configurada no modelo LinhaFatura
+            $iva = $linha->iva; // Certifique-se de que a relação 'iva' está configurada no modelo LinhaFatura
+
+            // Montagem dos dados da linha
             $linhasInfo = [
-                'nome_produto' => $linha->linhasCarrinho->produto->nome,
-                'valor'=> $linha->produtosCarrinhos->produto->preco,
-                'iva'=> $linha->produtosCarrinhos->produto->iva->percentagem,
-                'valor_iva' => $linha->produtosCarrinhos->produto->preco*($linha->produtosCarrinhos->produto->iva->percentagem/100),
-                'quantidade' => $linha->produtosCarrinhos->quantidade,
-                'total'=>($linha->produtosCarrinhos->produto->preco*($linha->produtosCarrinhos->produto->iva->percentagem/100)+$linha->produtosCarrinhos->produto->preco)*$linha->produtosCarrinhos->quantidade,
+                'nome_produto' => $produto ? $produto->nome : null,
+                'valor' => $linha->precoVenda, // Preço de venda da linha
+                'iva' => $iva ? $iva->percentagem : 0, // Percentual de IVA
+                'valor_iva' => $linha->valorIva, // Valor do IVA da linha
+                'quantidade' => $linha->quantidade, // Quantidade do produto
+                'total' => $linha->subTotal, // Subtotal (preço + IVA * quantidade)
             ];
             $resultArray[] = $linhasInfo;
         }
 
         return $resultArray;
     }
+
+
+
 
     public function actionCriar()
     {
@@ -73,7 +87,6 @@ class FaturasController extends ActiveController
         $fatura = new $this->modelClass;
         $user = new $this->userModelClass;
         $carrinho = new $this->carrinhosModelClass;
-        $linhasCarrinho = new $this->linhaCarrinhoModelClass;
         $linhasFaturas = new $this->linhasFaturasModelClass;
         $metodoPagamento = new $this->metodoPagamentoModelClass;
         $metodoExpedicao = new $this->metodoExpedicaoModelClass;
@@ -103,16 +116,34 @@ class FaturasController extends ActiveController
     }
 
 
-    public function actionDadosbyuser($user_id)
+    public function actionFaturas($id)
     {
-        $userModel = new $this->userModelClass;
-        $user = $userModel::find()->where(['id' => $user_id])->one();
-        if($user == null){
-            throw new \yii\web\NotFoundHttpException("Utilizador não existe");
-        }
+        // Model principal da tabela Fatura
         $faturasModel = new $this->modelClass;
-        $faturas = $faturasModel::find()->where(['user_id' => $user_id])->all();
 
-        return $faturas;
+        // Busca todas as faturas associadas ao userdata_id fornecido
+        $faturas = $faturasModel::find()->where(['userdata_id' => $id])->all();
+
+        // Verifica se há faturas para o userdata_id
+        if (empty($faturas)) {
+            throw new \yii\web\NotFoundHttpException("Nenhuma fatura encontrada para o usuário com ID {$id}");
+        }
+
+        // Monta a resposta com os dados das faturas
+        $resultArray = [];
+        foreach ($faturas as $fatura) {
+            $resultArray[] = [
+                'id' => $fatura->id,
+                'metodopagamento_id' => $fatura->metodopagamento_id,
+                'metodoexpedicao_id' => $fatura->metodoexpedicao_id,
+                'userdata_id' => $fatura->userdata_id,
+                'data' => $fatura->data,
+                'valorTotal' => $fatura->valorTotal,
+                'statuspedido' => $fatura->statuspedido,
+            ];
+        }
+
+        return $resultArray;
     }
+
 }

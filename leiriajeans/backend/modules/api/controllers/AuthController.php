@@ -10,7 +10,7 @@ use backend\modules\api\components\CustomAuth;
 class AuthController extends ActiveController
 {
     public $modelClass = 'common\models\User'; //model default user
-    public $modelUserForm = 'common\models\UsersForm'; //model dos dados do utilizador
+    public $modelUserForm = 'common\models\UserForm'; //model dos dados do utilizador
 
     public function behaviors()
     {
@@ -22,7 +22,7 @@ class AuthController extends ActiveController
     public function actionLogin() {
         // Obter os dados
         $username = Yii::$app->request->post('username');
-        $password = Yii::$app->request->post('password');
+        $password = Yii::$app->request->post('password_hash');
 
         // Validar os dados de entrada
         if (empty($username) || empty($password)) {
@@ -35,9 +35,9 @@ class AuthController extends ActiveController
         }
 
         if ($user->validatePassword($password)) {
-            return ['message' => 'Autenticado com sucesso' . $username];
+            return $user;
         } else {
-            return ['message' => 'Erro na autenticação'];
+            return ['message' => 'Erro nas credenciais'];
         }
     }
 
@@ -83,14 +83,17 @@ class AuthController extends ActiveController
             $userFormModel->nif = $nif;
             $userFormModel->telefone = $telefone;
 
-            // guardar o perfil do utilizador
-            if ($userFormModel->save()) {
-                return ['message' => 'Utilizador e perfil criados com sucesso'];
+            if ($userFormModel->validate()) {
+                if ($userFormModel->save()) {
+                    return ['message' => 'Utilizador e perfil criados com sucesso'];
+                } else {
+                    return ['message' => 'Erro ao salvar o perfil do utilizador', 'errors' => $userFormModel->errors];
+                }
             } else {
-                return ['message' => 'Erro ao criar o perfil do Utilizador'];
+                return ['message' => 'Erro na validação do perfil do utilizador', 'errors' => $userFormModel->errors];
             }
         } else {
-            return ['message' => 'Erro ao criar o utilizador'];
+            return ['message' => 'Erro ao criar o utilizador', 'errors' => $userModel->errors];
         }
     }
 }

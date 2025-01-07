@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Cor;
 use backend\models\CorSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,6 +26,16 @@ class CoresController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'delete'],
+                            'roles' => ['admin', 'funcionario'],
+                        ],
                     ],
                 ],
             ]

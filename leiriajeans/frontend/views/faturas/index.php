@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Minhas Fatura';
+$this->title = 'Meus Pedidos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -14,37 +14,36 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($dataProvider->models as $fatura): ?>
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3>Fatura #<?= $fatura->id ?></h3>
+                    <h3>Pedido <?= $fatura->id ?></h3>
                     <div>Data: <?= Yii::$app->formatter->asDate($fatura->data) ?></div>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>Preço</th>
-                                <th>IVA</th>
-                                <th>Subtotal</th>
-                            </tr>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>IVA</th>
+                            <th>Subtotal</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($fatura->linhafaturas as $linhafatura): ?>
-                                <tr>
-                                    <td><?= Html::encode($linhafatura->produto->nome) ?></td>
-                                    <td><?= $linhafatura->quantidade ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->precoVenda) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->valorIva) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->subTotal) ?></td>
-
-                                </tr>
-                            <?php endforeach; ?>
+                        <?php foreach ($fatura->linhafaturas as $linhafatura): ?>
+                            <tr>
+                                <td><?= Html::encode($linhafatura->produto->nome) ?></td>
+                                <td><?= $linhafatura->quantidade ?></td>
+                                <td><?= Html::encode($linhafatura['precoVenda']) . '€' ?></td>
+                                <td><?= Html::encode($linhafatura['valorIva']) . '€' ?></td>
+                                <td><?= Html::encode($linhafatura['subTotal']) . '€' ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td colspan="4" class="text-right"><strong>Total:</strong></td>
-                                <td><strong><?= Yii::$app->formatter->asCurrency($fatura->valorTotal) ?></strong></td>
-                            </tr>
+                        <tr>
+                            <td colspan="4" class="text-right"><strong>Total:</strong></td>
+                            <td><strong><?= Html::encode($fatura['valorTotal']) . '€' ?></strong></td>
+                        </tr>
                         </tfoot>
                     </table>
 

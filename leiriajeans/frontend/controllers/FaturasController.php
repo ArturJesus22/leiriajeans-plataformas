@@ -8,6 +8,7 @@ use common\models\LinhaCarrinho;
 use common\models\LinhaFatura;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,6 +33,16 @@ class FaturasController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'create-from-cart'],
+                        'roles' => ['admin', 'funcionario', 'cliente'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -42,16 +53,20 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
-        $user_id = Yii::$app->user->identity->id;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
 
-        $query = Fatura::find()
-            ->where(['userdata_id' => $user_id])
-            ->orderBy(['data' => SORT_DESC]);
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
 
+        // Obter as faturas associadas ao usuário
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifique se o relacionamento está correto
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 10, // Você pode ajustar a quantidade de itens por página
             ],
         ]);
 
@@ -83,7 +98,7 @@ class FaturasController extends Controller
     {
         // Carregar a fatura
         $model = $this->findModel($id);
-        
+
         // Buscar as linhas da fatura
         $linhasFatura = LinhaFatura::find()
             ->with('produto') // Carrega o relacionamento com o produto e a linha do carrinho
@@ -176,18 +191,18 @@ class FaturasController extends Controller
 
     public function actionCreateFromCart()
     {
-        // Verifica se o usuário está autenticado
+        // Verifica se o utilizador está autenticado
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
 
-        // Obtém o formulário do usuário (assumindo que há um formulário do usuário associado ao usuário atual)
+        // Obtém o formulário do utilizador (assumindo que há um formulário do utilizador associado ao utilizador atual)
         $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
         if (!$userForm) {
             return $this->redirect(['site/index']);
         }
 
-        // Obtém o carrinho associado ao usuário
+        // Obtém o carrinho associado ao utilizador
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
         if (!$carrinho) {
             Yii::$app->session->setFlash('error', 'Carrinho não encontrado.');

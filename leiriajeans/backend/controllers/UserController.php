@@ -7,6 +7,7 @@ use common\models\SignupForm;
 use common\models\User;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,6 +31,16 @@ class UserController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                         'Colaboradores' => 'GET',
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                            'roles' => ['admin', 'funcionario'],
+                        ],
                     ],
                 ],
             ]

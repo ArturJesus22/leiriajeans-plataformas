@@ -43,7 +43,7 @@ class CarrinhoController extends ActiveController
         $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
         $produtoModel = new $this->produtoModelClass;
 
-        // Encontra o carrinho do usuário
+        // Encontra o carrinho do utilizador
         $carrinho = $carrinhoModel::find()->where(['userdata_id' => $user_id])->one();
 
         if ($carrinho == null) {
@@ -59,7 +59,7 @@ class CarrinhoController extends ActiveController
             $linhaCarrinho->produto_id = $produto;
         }
 
-        return $carrinho;  // Retorna o carrinho com as linhas e produtos
+        return $carrinho;  // Devolve o carrinho com as linhas e produtos
     }
 
 

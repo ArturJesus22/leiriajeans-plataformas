@@ -9,6 +9,7 @@ use common\models\MetodoExpedicao;
 use common\models\MetodoPagamento;
 use common\models\User;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use common\models\Produto;
@@ -28,6 +29,16 @@ class CarrinhosController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'add', 'remove', 'updatequantidade', 'totaisCarrinho', 'checkout'],
+                        'roles' => ['admin', 'funcionario', 'cliente'],
+                    ],
                 ],
             ],
         ];
@@ -63,7 +74,6 @@ class CarrinhosController extends Controller
         foreach ($linhasCarrinho as $linha) {
             $produto = $linha->produto;
             if ($produto) {
-                // Adiciona as informações de cada item do carrinho
                 $itens[] = [
                     'id' => $produto->id,
                     'nome' => $produto->nome,
@@ -71,7 +81,7 @@ class CarrinhosController extends Controller
                     'quantidade' => $linha->quantidade,
                     'subtotal' => $linha->subTotal,
                     'valorIva' => $linha->valorIva,
-                    'stock' => $produto->stock // Aqui, você já adiciona o stock
+                    'stock' => $produto->stock
                 ];
                 $total += $linha->subTotal;
                 $ivatotal += $linha->valorIva;
@@ -86,17 +96,8 @@ class CarrinhosController extends Controller
 
         return $this->render('index', [
             'carrinhoAtual' => $carrinhoAtual,
-            'linhasCarrinho' => $linhasCarrinho // Passa as linhas do carrinho para a view
+            'linhasCarrinho' => $linhasCarrinho
         ]);
-    }
-
-
-    public function beforeAction($action)
-    {
-        if ($action->id === 'add') {
-            $this->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
     }
 
     public function actionAdd($produtos_id)
@@ -113,36 +114,29 @@ class CarrinhosController extends Controller
         }
 
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
-            'produto_id' => $produto->id,
             'userdata_id' => $userForm->id,
             'total' => 0,
             'ivatotal' => 0,
         ]);
 
         if ($carrinho->isNewRecord && !$carrinho->save()) {
-            return $this->redirect(['index']); // Redireciona se houver erro ao criar o carrinho
+            return $this->redirect(['index']);
         }
-
-        $id = Yii::$app->request->post('id');
-
 
         if (!$produto) {
-            return $this->redirect(['index']); // Redireciona se o produto não for encontrado
+            return $this->redirect(['index']);
         }
 
-        // Verifica se já existe uma linha para este produto
         $linhaCarrinho = LinhaCarrinho::find()
-            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtos_id]) // Verifique apenas linhas ativas
+            ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtos_id])
             ->one();
 
         if ($linhaCarrinho) {
-            // Se já existe, atualiza a quantidade e totais
             $linhaCarrinho->quantidade++;
             $linhaCarrinho->precoVenda = $produto->preco;
             $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
             $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
         } else {
-            // Se não existe, cria nova linha
             $linhaCarrinho = new LinhaCarrinho([
                 'carrinho_id' => $carrinho->id,
                 'produto_id' => $produtos_id,
@@ -154,13 +148,12 @@ class CarrinhosController extends Controller
         }
 
         if (!$linhaCarrinho->save()) {
-            return $this->redirect(['index']); // Redireciona se houver erro ao salvar a linha do carrinho
+            return $this->redirect(['index']);
         }
 
-        // Atualiza os totais do carrinho
         $this->atualizarTotaisCarrinho($carrinho);
 
-        return $this->redirect(['index']); // Redireciona para a página de produtos
+        return $this->redirect(['index']);
     }
 
     public function actionRemove($id)
@@ -176,17 +169,13 @@ class CarrinhosController extends Controller
 
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
         if ($carrinho) {
-            // Remove a linha do carrinho
             LinhaCarrinho::deleteAll(['carrinho_id' => $carrinho->id, 'produto_id' => $id]);
 
-            // Verifica se ainda existem produtos no carrinho
             $temProdutos = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->exists();
 
             if ($temProdutos) {
-                // Atualiza os totais se ainda houver produtos
                 $this->atualizarTotaisCarrinho($carrinho);
             } else {
-                // Remove o carrinho se estiver vazio
                 $carrinho->delete();
             }
         }
@@ -211,27 +200,20 @@ class CarrinhosController extends Controller
             return $this->redirect(['index']);
         }
 
-        // Obtém a nova quantidade do formulário
         $quantidade = Yii::$app->request->post('quantidade');
 
-        // Verifica se a quantidade é válida
         if ($quantidade < 1) {
             Yii::$app->session->setFlash('error', 'A quantidade deve ser pelo menos 1.');
             return $this->redirect(['index']);
         }
 
-        // Busca a linha do carrinho
         $linhaCarrinho = LinhaCarrinho::findOne(['carrinho_id' => $carrinho->id, 'produto_id' => $id]);
         if ($linhaCarrinho) {
-            // Atualiza a quantidade
             $linhaCarrinho->quantidade = $quantidade;
-
-            // Atualiza os valores da linha
             $linhaCarrinho->subTotal = $linhaCarrinho->precoVenda * $linhaCarrinho->quantidade;
             $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($linhaCarrinho->produto->iva->percentagem / 100);
 
             if ($linhaCarrinho->save()) {
-                // Atualiza os totais do carrinho
                 $this->atualizarTotaisCarrinho($carrinho);
                 Yii::$app->session->setFlash('success', 'Quantidade atualizada com sucesso!');
             } else {
@@ -244,7 +226,6 @@ class CarrinhosController extends Controller
         return $this->redirect(['index']);
     }
 
-    // Método auxiliar para atualizar totais
     private function atualizarTotaisCarrinho($carrinho)
     {
         $carrinho->total = LinhaCarrinho::find()
@@ -256,69 +237,6 @@ class CarrinhosController extends Controller
             ->sum('valorIva') ?? 0;
 
         $carrinho->save();
-    }
-
-    public function actionAddToCart()
-    {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['site/login']);
-        }
-
-        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
-        if (!$userForm) {
-            return $this->redirect(['site/index']);
-        }
-
-        $id = Yii::$app->request->post('id');
-        $produto = Produto::findOne($id);
-
-        if (!$produto) {
-            return $this->redirect(['index']); // Redireciona se o produto não for encontrado
-        }
-
-        // Procura um carrinho existente ou cria um novo
-        $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]) ?? new Carrinho([
-            'userdata_id' => $userForm->id,
-            'total' => 0,
-            'ivatotal' => 0,
-        ]);
-
-        if ($carrinho->isNewRecord && !$carrinho->save()) {
-            return $this->redirect(['index']); // Redireciona se houver erro ao criar o carrinho
-        }
-
-        // Verifica se já existe uma linha para este produto
-        $linhaCarrinho = LinhaCarrinho::findOne([
-            'carrinho_id' => $carrinho->id,
-            'produto_id' => $id
-        ]);
-
-        if ($linhaCarrinho) {
-            // Se já existe, atualiza a quantidade e totais
-            $linhaCarrinho->quantidade++;
-            $linhaCarrinho->precoVenda = $produto->preco;
-            $linhaCarrinho->subTotal = $produto->preco * $linhaCarrinho->quantidade;
-            $linhaCarrinho->valorIva = $linhaCarrinho->subTotal * ($produto->iva->percentagem / 100);
-        } else {
-            // Se não existe, cria nova linha
-            $linhaCarrinho = new LinhaCarrinho([
-                'carrinho_id' => $carrinho->id,
-                'produto_id' => $id,
-                'quantidade' => 1,
-                'precoVenda' => $produto->preco,
-                'subTotal' => $produto->preco,
-                'valorIva' => $produto->preco * ($produto->iva->percentagem / 100),
-            ]);
-        }
-
-        if (!$linhaCarrinho->save()) {
-            return $this->redirect(['index']); // Redireciona se houver erro ao salvar a linha do carrinho
-        }
-
-        // Atualiza os totais do carrinho
-        $this->atualizarTotaisCarrinho($carrinho);
-
-        return $this->redirect(['index']); // Redireciona para a página de produtos
     }
 
     public function actionView($id)
@@ -337,13 +255,13 @@ class CarrinhosController extends Controller
 
     public function actionCheckout()
     {
-        // Obter o ID do usuário logado
+        // Obter o ID do utilizador
         $userId = Yii::$app->user->id;
 
-        // Buscar o UserForm relacionado ao usuário logado
+        // Buscar o UserForm relacionado ao utilizador logado
         $userdata = UserForm::findOne(['user_id' => $userId]);
         if ($userdata === null) {
-            throw new NotFoundHttpException('UserData não encontrado para o usuário.');
+            throw new NotFoundHttpException('UserData não encontrado para o utilizador.');
         }
 
         // Obter o userdata_id a partir do UserForm
@@ -354,11 +272,11 @@ class CarrinhosController extends Controller
 
         // Se não encontrou o carrinho, lançar erro
         if ($carrinho === null) {
-            throw new NotFoundHttpException('Carrinho não encontrado para o usuário.');
+            throw new NotFoundHttpException('Carrinho não encontrado para o utilizador.');
         }
 
 
-        // Buscar as linhas do carrinho usando apenas o carrinho_id
+        // Buscar as linhas do carrinho pelo carrinho_id
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
 
@@ -374,8 +292,4 @@ class CarrinhosController extends Controller
             'metodosExpedicao' => $metodosExpedicao,
         ]);
     }
-
-
-
-
 }

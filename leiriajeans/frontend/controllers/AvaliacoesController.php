@@ -6,6 +6,7 @@ use common\models\Avaliacao;
 use common\models\Fatura;
 use common\models\LinhaFatura;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -28,6 +29,16 @@ class AvaliacoesController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
                     ],
                 ],
             ]

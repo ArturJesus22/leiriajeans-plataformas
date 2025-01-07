@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h3><?= Html::encode($model->nome) ?></h3>
                         <p class="m-3"><?= Html::encode($model->descricao) ?></p>
                         <hr>
+
                         <h4 class="mt-4">Tamanho</h4>
                         <ul class="list-unstyled d-flex flex-wrap">
                             <?php foreach (Tamanho::find()->all() as $tamanho): ?>

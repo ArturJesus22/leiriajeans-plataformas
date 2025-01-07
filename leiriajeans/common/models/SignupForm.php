@@ -53,8 +53,11 @@ class SignupForm extends Model
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
 
             //UserData
-            [['nome', 'rua'], 'required','message'=>'Este campo é obrigatório'],
-            [['nome', 'rua'], 'string', 'max' => 255],
+
+            [['nome'], 'required', 'message' => 'Este campo é obrigatório'],
+            [['nome'], 'string', 'max' => 255],
+            [['nome'], 'match', 'pattern' => '/^[a-zA-Zá-úÁ-Ú ]+$/', 'message' => 'O nome deve conter apenas letras e espaços.'],
+
 
 
             // Código Postal

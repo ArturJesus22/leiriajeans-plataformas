@@ -7,6 +7,7 @@ use common\models\SignupForm;
 use common\models\User;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,6 +31,16 @@ class UserController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                         'Colaboradores' => 'GET',
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                            'roles' => ['admin', 'funcionario'],
+                        ],
                     ],
                 ],
             ]
@@ -106,10 +117,16 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        // Encontra o modelo principal User
         $model = $this->findModel($id);
-        $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm Relacionado
+
+        // Procura o modelo UserForm relacionado
+        $modelUserData = UserForm::findOne(['user_id' => $id]);
+
+        // Obtem as roles do usuário atual
         $rolename = Yii::$app->authManager->getRolesByUser($id);
 
+        // Atribuir a role ao modelo principal User
         foreach ($rolename as $role) {
             $roleName = $role->name;
             $model->role = $roleName;
@@ -122,29 +139,34 @@ class UserController extends Controller
         }
 
         // Verificar se a requisição é um POST e se os modelos são válidos
-        if ($this->request->isPost && $model->load($this->request->post()) && $modelUserData->load($this->request->post())) {
+        if ($this->request->isPost) {
+            // Carregar os dados do modelo User e UserForm
+            if ($model->load($this->request->post()) && $modelUserData->load($this->request->post())) {
 
-            // Salvar os dados do modelo User
-            if ($model->save()) {
-                // Entrar no authManager
-                $auth = Yii::$app->authManager;
-                $role = $auth->getRole($model->role);
-                // Apagar a role atual
-                $auth->revokeAll($model->id);
-                // Atribuir a nova role
-                $auth->assign($role, $model->id);
+                // Salvar o modelo User
+                if ($model->save()) {
+                    // Entrar no authManager
+                    $auth = Yii::$app->authManager;
+                    $role = $auth->getRole($model->role);
 
-                // Salvar os dados do modelo UserForm
-                if ($modelUserData->save()) {
-                    // Redirecionar para a visualização do modelo atualizado
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    // Apagar a role atual
+                    $auth->revokeAll($model->id);
+
+                    // Atribuir a nova role
+                    $auth->assign($role, $model->id);
+
+                    // Salvar os dados do modelo UserForm
+                    if ($modelUserData->save()) {
+                        // Redirecionar para a visualização do modelo atualizado
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    } else {
+                        // Se o modelo UserForm não for salvo, adicionar mensagem de erro
+                        Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
+                    }
                 } else {
-                    // Se o modelo UserForm não for salvo, adicionar mensagem de erro
-                    Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
+                    // Se o modelo User não for salvo, adicionar mensagem de erro
+                    Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
                 }
-            } else {
-                // Se o modelo User não for salvo, adicionar mensagem de erro
-                Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
             }
         }
 

@@ -126,7 +126,7 @@ class FaturasController extends ActiveController
 
         // Verifica se há faturas para o userdata_id
         if (empty($faturas)) {
-            throw new \yii\web\NotFoundHttpException("Nenhuma fatura encontrada para o usuário com ID {$id}");
+            throw new \yii\web\NotFoundHttpException("Nenhuma fatura encontrada para o utilizador com ID {$id}");
         }
 
         // Monta a resposta com os dados das faturas

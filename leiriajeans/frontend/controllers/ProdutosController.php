@@ -6,6 +6,7 @@ use common\models\Categoria;
 use common\models\Imagem;
 use common\Models\Produto;
 use frontend\Models\ProdutoSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +28,16 @@ class ProdutosController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
                     ],
                 ],
             ]

@@ -69,8 +69,8 @@ class ProdutosController extends ActiveController
                 'nome' => $produto->nome,
                 'preco' => $produto->preco,
                 'descricao' => $produto->descricao,
-                'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja retornado, se existir
-                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja retornada
+                'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja devolvido, se existir
+                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja devolvida
                 'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
             ];
 

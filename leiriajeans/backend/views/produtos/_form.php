@@ -27,10 +27,6 @@ use common\models\Produto;
 
     <?= $form->field($model, 'stock')->textInput() ?>
 
-    <?= $form->field($model, 'tamanho_id')->dropDownList(ArrayHelper::map(Tamanho::find()->all(),
-        'id', 'nome'),
-        ['prompt'=>'Selecione o Tamanho']) ?>
-
     <?= $form->field($model, 'cor_id')->dropDownList(ArrayHelper::map(Cor::find()->all(),
         'id', 'nome'),
         ['prompt'=>'Selecione a Cor']) ?>

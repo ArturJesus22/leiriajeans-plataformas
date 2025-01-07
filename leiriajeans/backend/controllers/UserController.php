@@ -107,7 +107,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm relacionado
+        $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm Relacionado
         $rolename = Yii::$app->authManager->getRolesByUser($id);
 
         foreach ($rolename as $role) {
@@ -115,25 +115,37 @@ class UserController extends Controller
             $model->role = $roleName;
         }
 
-        //Se não houver um UserForm relacionado, cria um novo
+        // Se não houver um UserForm relacionado, cria um novo
         if (!$modelUserData) {
             $modelUserData = new UserForm();
             $modelUserData->user_id = $model->id;
         }
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            $model->load(\Yii::$app->request->post());
-            $modelUserData->load(\Yii::$app->request->post());
-            //entrar no authManager
-            $auth = Yii::$app->authManager;
-            $role = $auth->getRole($model->role);
-            //apagar a role atual
-            $auth -> revokeAll($model->id);
-            //atribuir a nova role
-            $auth->assign($role, $model->id);
+        // Verificar se a requisição é um POST e se os modelos são válidos
+        if ($this->request->isPost && $model->load($this->request->post()) && $modelUserData->load($this->request->post())) {
 
+            // Salvar os dados do modelo User
+            if ($model->save()) {
+                // Entrar no authManager
+                $auth = Yii::$app->authManager;
+                $role = $auth->getRole($model->role);
+                // Apagar a role atual
+                $auth->revokeAll($model->id);
+                // Atribuir a nova role
+                $auth->assign($role, $model->id);
 
-            return $this->redirect(['view', 'id' => $model->id]);
+                // Salvar os dados do modelo UserForm
+                if ($modelUserData->save()) {
+                    // Redirecionar para a visualização do modelo atualizado
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    // Se o modelo UserForm não for salvo, adicionar mensagem de erro
+                    Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
+                }
+            } else {
+                // Se o modelo User não for salvo, adicionar mensagem de erro
+                Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
+            }
         }
 
         return $this->render('update', [
@@ -141,6 +153,7 @@ class UserController extends Controller
             'modelUserData' => $modelUserData,
         ]);
     }
+
 
     /**
      * Deletes an existing User model.

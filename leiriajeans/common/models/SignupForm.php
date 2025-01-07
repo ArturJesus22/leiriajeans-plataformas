@@ -123,6 +123,7 @@ class SignupForm extends Model
 
         $userData->save();
         var_dump($userData->getErrors());
+        die();
 
         return $this->sendEmail($user);
     }

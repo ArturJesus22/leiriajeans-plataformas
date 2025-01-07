@@ -53,23 +53,31 @@ class SignupForm extends Model
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
 
             //UserData
-            ['nome', 'required'],
-            ['nome', 'string', 'max' => 255],
+            [['nome', 'rua'], 'required','message'=>'Este campo é obrigatório'],
+            [['nome', 'rua'], 'string', 'max' => 255],
 
-            ['codigopostal', 'required'],
-            ['codigopostal', 'string', 'max' => 255],
 
-            ['localidade', 'required'],
-            ['localidade', 'string', 'max' => 255],
+            // Código Postal
+            ['codigopostal', 'required', 'message' => 'O campo Código Postal é obrigatório.'],
+            ['codigopostal', 'string', 'max' => 255, 'tooLong' => 'O Código Postal não pode ter mais que 255 caracteres.'],
 
-            ['rua', 'required'],
-            ['rua', 'string', 'max' => 255],
+            // Localidade
+            ['localidade', 'required', 'message' => 'O campo Localidade é obrigatório.'],
+            ['localidade', 'string', 'max' => 255, 'tooLong' => 'A Localidade não pode ter mais que 255 caracteres.'],
 
-            ['telefone', 'required'],
-            ['telefone', 'string', 'max' => 255],
+            // Rua
+            ['rua', 'required', 'message' => 'O campo Rua é obrigatório.'],
+            ['rua', 'string', 'max' => 255, 'tooLong' => 'A Rua não pode ter mais que 255 caracteres.'],
 
-            ['nif', 'required'],
-            ['nif', 'string', 'max' => 255],
+
+            [['telefone'], 'string', 'max' => 9, 'min' => 9, 'tooShort' => 'Precisa no mínimo 9 digitos', 'tooLong' => 'Não pode ter mais de 9 digitos'],
+            ['telefone', 'unique', 'targetClass' => '\common\models\UserForm', 'message' => 'This telefone has already been taken.'],
+            [['telefone'], 'match', 'pattern' => '/^\d+$/i', 'message' => 'Só são aceites números .'],
+
+            [['nif'], 'string', 'max' => 10, 'min' => 9, 'tooShort' => 'Precisa no mínimo 9 digitos', 'tooLong' => 'Não pode ter mais de 9 digitos'],
+            ['nif', 'unique', 'targetClass' => '\common\models\UserForm', 'message' => 'This NIF has already been taken.'],
+            [['nif'], 'match', 'pattern' => '/^\d+$/i', 'message' => 'Só são aceites números.'],
+
 
             ['role', 'required'],
             ['role', 'string', 'max' => 255],

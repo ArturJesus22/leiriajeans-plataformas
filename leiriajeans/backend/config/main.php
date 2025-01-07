@@ -62,11 +62,8 @@ return [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
-                        'GET nomes'=> 'nomes',
                         'GET {username}/dados' => 'dados',
                         'GET {id}' => 'getuserbyid',
-                        'POST signup' => 'Signup',
-
                     ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
@@ -78,7 +75,6 @@ return [
                     'controller' => 'api/produtos',
                     'extraPatterns' => [
                         'GET produtos'=> 'produtos',
-                        'GET index'=> 'index',
                     ],
                 ],
                 //AVALIACOES
@@ -112,6 +108,7 @@ return [
                     'controller' => 'api/faturas',
                     'extraPatterns' => [
                         'GET {id}/faturas' => 'faturas',
+                        'GET {id}/faturasdados' => 'dados',
                         'POST criarfatura'=> 'criar',
                     ],
                     'tokens' => [

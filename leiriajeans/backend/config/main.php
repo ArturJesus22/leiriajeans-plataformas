@@ -35,7 +35,6 @@ return [
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
             'cookieParams' => ['httponly' => true],
         ],
@@ -63,26 +62,22 @@ return [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
-                        'GET nomes'=> 'nomes',
                         'GET {username}/dados' => 'dados',
                         'GET {id}' => 'getuserbyid',
-                        'POST signup' => 'Signup',
-
                     ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{username}' => '<username:\w+>',
                     ],
                 ],
-                //produtos
+                //PRODUTOS
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/produtos',
                     'extraPatterns' => [
                         'GET produtos'=> 'produtos',
-                        'GET index'=> 'index',
                     ],
                 ],
-                //avaliacoes - por acabar
+                //AVALIACOES
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/avaliacoes',
                     'extraPatterns' => [
@@ -92,7 +87,7 @@ return [
                         'DELETE {id}/avaliacoes'=> 'deleteavaliacao',
                     ],
                 ],
-                //auth
+                //AUTH
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/auth',
                     'extraPatterns' => [
@@ -100,7 +95,7 @@ return [
                         'POST signup' => 'signup',
                     ],
                 ],
-                //falta carrinho/faturas
+                //CARRINHO
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/carrinho',
                     'extraPatterns' => [
@@ -108,10 +103,12 @@ return [
                         'PUT {id}/carrinho'=> 'updatecarrinho',
                     ],
                 ],
+                //FATURAS
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/faturas',
                     'extraPatterns' => [
                         'GET {id}/faturas' => 'faturas',
+                        'GET {id}/faturasdados' => 'dados',
                         'POST criarfatura'=> 'criar',
                     ],
                     'tokens' => [

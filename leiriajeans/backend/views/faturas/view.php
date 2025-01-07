@@ -30,8 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'metodopagamento_id',
-            'metodoexpedicao_id',
+            [
+                'attribute' => 'metodopagamento.nome',
+                'label' => 'Método de Pagamento',
+            ],
+            [
+                'attribute' => 'metodoexpedicao.nome',
+                'label' => 'Método de Expedição',
+            ],
             'data',
             'valorTotal',
             'statuspedido',

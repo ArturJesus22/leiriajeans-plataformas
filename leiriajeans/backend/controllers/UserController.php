@@ -38,7 +38,7 @@ class UserController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                            'actions' => ['index', 'view', 'create', 'update', 'delete', 'perfil'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -123,7 +123,7 @@ class UserController extends Controller
         // Procura o modelo UserForm relacionado
         $modelUserData = UserForm::findOne(['user_id' => $id]);
 
-        // Obtem as roles do usuário atual
+        // Obtem as roles do utilizador atual
         $rolename = Yii::$app->authManager->getRolesByUser($id);
 
         // Atribuir a role ao modelo principal User
@@ -138,10 +138,25 @@ class UserController extends Controller
             $modelUserData->user_id = $model->id;
         }
 
+        $isOwnAccount = Yii::$app->user->id == $id;
+        $currentUserRole = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+        $currentUserRoleName = key($currentUserRole); // Obtém o nome da role atual do utilizador logado
+
         // Verificar se a requisição é um POST e se os modelos são válidos
         if ($this->request->isPost) {
             // Carregar os dados do modelo User e UserForm
             if ($model->load($this->request->post()) && $modelUserData->load($this->request->post())) {
+
+                if ($isOwnAccount) {
+                    $model->role = $roleName; // Recuperar a role original
+                    Yii::$app->session->setFlash('warning', 'Você não pode alterar sua própria role.');
+                }
+
+                if ($currentUserRoleName === 'funcionario' && $model->role !== $roleName) {
+                    Yii::$app->session->setFlash('error', 'Você não tem permissão para alterar a role de um utilizador.');
+                    $model->role = $roleName; // Restaura a role original
+                }
+
 
                 // Salvar o modelo User
                 if ($model->save()) {
@@ -160,11 +175,11 @@ class UserController extends Controller
                         // Redirecionar para a visualização do modelo atualizado
                         return $this->redirect(['view', 'id' => $model->id]);
                     } else {
-                        // Se o modelo UserForm não for salvo, adicionar mensagem de erro
+                        // Se o modelo UserForm não for guardadado, adicionar mensagem de erro
                         Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
                     }
                 } else {
-                    // Se o modelo User não for salvo, adicionar mensagem de erro
+                    // Se o modelo UserForm não for guardadado, adicionar mensagem de erro
                     Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
                 }
             }
@@ -195,16 +210,6 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    public  function actionActivate($id)
-    {
-        $model = $this->findModel($id);
-
-        // Atualiza o status para 'inactive'
-        $model->status = 10;
-        $model->save(false);
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the User model based on its primary key value.

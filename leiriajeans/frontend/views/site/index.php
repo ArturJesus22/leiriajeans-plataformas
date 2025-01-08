@@ -47,7 +47,7 @@ $this->title = 'LeiriaJeans';
             <h2><strong>Bem Vindo a, </strong></h2>
             <p></p>
             <h2> LeiriaJeans</h2>
-            <p>"Transformando visuais, sem complicações!"</p>
+            <p>"A transformar visuais, sem complicações!"</p>
         </div>
     </div>
 

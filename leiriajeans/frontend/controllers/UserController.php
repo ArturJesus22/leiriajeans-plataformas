@@ -6,6 +6,7 @@ use common\models\User;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\rest\IndexAction;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,6 +33,7 @@ class UserController extends Controller
                 ],
                 'access' => [
                     'class' => AccessControl::class,
+                    'only' => ['index', 'view', 'update'],
                     'rules' => [
                         [
                             'allow' => true,
@@ -81,7 +83,7 @@ class UserController extends Controller
         $userid = Yii::$app->user->id;
 
         if($userid != $id){
-            return $this->redirect(['index']);
+           $this->redirect(['produtos/index']);
         }
 
         return $this->render('view', [
@@ -155,12 +157,6 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the User model based on its primary key value.

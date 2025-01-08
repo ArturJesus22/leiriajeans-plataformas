@@ -33,6 +33,7 @@ class CarrinhosController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'add', 'remove', 'updatequantidade', 'totaisCarrinho', 'checkout'],
                 'rules' => [
                     [
                         'allow' => true,

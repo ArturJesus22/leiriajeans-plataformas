@@ -55,7 +55,7 @@
 
 
                     ['label' => 'Produto', 'header' => true],
-                        ['label'=>'Categoria','icon'=>'fa-regular fa-folder', 'url'=>['categorias/index']],
+                        ['label' => 'Categoria', 'icon' => 'fa-regular fa-folder', 'url' => ['categorias/index'], 'options' => ['id' => 'categoria']],
                         ['label' => 'Produto', 'icon' => 'fa-solid fa-box', 'url' => ['produtos/index']],
                         ['label' => 'Tamanho', 'icon' => 'fa-regular fa-ruler combined', 'url' => ['tamanhos/index']],
                         ['label' => 'Cor', 'icon' => 'fa-solid fa-tag', 'url' => ['cores/index']],

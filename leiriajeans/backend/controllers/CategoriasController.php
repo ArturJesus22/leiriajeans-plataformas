@@ -33,7 +33,7 @@ class CategoriasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'delete'],
+                            'actions' => ['index', 'view', 'delete', 'create', 'update'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],

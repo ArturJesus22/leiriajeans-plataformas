@@ -7,6 +7,8 @@ use common\models\Fatura;
 /** @var array $carrinhoAtual */
 
 $this->title = 'Carrinho de Compras';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="carrinho-index">
     <h1><?= Html::encode($this->title) ?></h1>

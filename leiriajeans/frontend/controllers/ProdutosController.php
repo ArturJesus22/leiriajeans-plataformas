@@ -35,10 +35,13 @@ class ProdutosController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'create'],
+                            'actions' => [ 'view', 'create'],
                             'roles' => ['admin', 'funcionario', 'cliente'],
                         ],
+                        ['allow' => true,
+                            'actions' => ['index']]
                     ],
+
                 ],
             ]
         );

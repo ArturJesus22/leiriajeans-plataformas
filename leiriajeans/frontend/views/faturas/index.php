@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Meus Pedidos';
+$this->title = 'Os meus Pedidos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="faturas-index">
-    <h1 class="text-center mb-4"><?= Html::encode($this->title) ?></h1>
+    <h1 class="mb-4"><?= Html::encode($this->title) ?></h1>
 
     <?php if (!empty($dataProvider->models)): ?>
         <?php foreach ($dataProvider->models as $fatura): ?>
@@ -61,8 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <div class="alert alert-info text-center">
-            Você ainda não tem faturas.
+        <div class="alert alert-info">
+            Ainda não tem faturas.
         </div>
     <?php endif; ?>
 </div>

@@ -4,6 +4,9 @@ namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
+use common\models\User;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * Class LoginCest
@@ -17,28 +20,39 @@ class LoginCest
      * @see \Codeception\Module\Yii2::loadFixtures()
      * @return array
      */
-    public function _fixtures()
+
+    public function _before(FunctionalTester $I)
     {
-        return [
-            'user' => [
-                'class' => UserFixture::class,
-                'dataFile' => codecept_data_dir() . 'login_data.php'
-            ]
-        ];
+        $I->amOnPage(Url::toRoute('/site/login'));
     }
-    
     /**
      * @param FunctionalTester $I
      */
-    public function loginUser(FunctionalTester $I)
+
+    public function loginVazio(FunctionalTester $I)
     {
         $I->amOnRoute('/site/login');
-        $I->fillField('Username', 'erau');
-        $I->fillField('Password', 'password_0');
-        $I->click('login-button');
+        $I->fillField('LoginForm[username]', '');
+        $I->fillField('LoginForm[password]', '');
+        $I->click('LOGIN');
+        $I->see('Username cannot be blank.');
+        $I->see('Password cannot be blank.');
+    }
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
-        $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
+    public function credenciaisErradas(FunctionalTester $I)
+    {
+        $I->amOnRoute('site/login');
+        $I->fillField('LoginForm[username]', 'aaaaaaa');
+        $I->fillField('LoginForm[password]', 'aaaaaaa');
+        $I->click('LOGIN');
+        $I->see('Incorrect username or password.');
+    }
+
+    public function validarLoginAdmin(FunctionalTester $I)
+    {
+        $I->fillField('LoginForm[username]', 'artur');
+        $I->fillField('LoginForm[password]', 'artur123');
+        $I->click('LOGIN');
+        $I->amOnPage('/');
     }
 }

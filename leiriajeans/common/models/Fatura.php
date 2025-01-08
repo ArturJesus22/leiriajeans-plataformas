@@ -22,6 +22,7 @@ require_once('../../mosquitto/phpMQTT.php');
  * @property LinhaFatura[] $linhafatura
  * @property MetodoExpedicao $metodoexpedicao
  * @property MetodoPagamento $metodopagamento
+ * @property Fatura $model
  */
 class Fatura extends \yii\db\ActiveRecord
 {
@@ -40,12 +41,14 @@ class Fatura extends \yii\db\ActiveRecord
     {
         return [
             [['metodopagamento_id', 'metodoexpedicao_id', 'userdata_id'], 'required'],
-            [['metodopagamento_id', 'metodoexpedicao_id', 'statuspedido', 'userdata_id'], 'integer'],
+            [['metodopagamento_id', 'metodoexpedicao_id', 'userdata_id'], 'integer'],
             [['data'], 'safe'],
             [['valorTotal'], 'number'],
             [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoExpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
             [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoPagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
+            [['statuspedido'], 'in', 'range' => ['pendente', 'pago', 'anulada']],
+
         ];
     }
 

@@ -8,18 +8,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="faturas-index">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-center mb-4"><?= Html::encode($this->title) ?></h1>
 
     <?php if (!empty($dataProvider->models)): ?>
         <?php foreach ($dataProvider->models as $fatura): ?>
-            <div class="card mb-4">
-                <div class="card-header">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-dark text-white">
                     <h3>Pedido <?= $fatura->id ?></h3>
                     <div>Data: <?= Yii::$app->formatter->asDate($fatura->data) ?></div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                         <tr>
                             <th>Produto</th>
                             <th>Quantidade</th>
@@ -55,13 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <strong>Status do Pedido:</strong> <?= $fatura->statuspedido ?>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <?= Html::a('Ver Detalhes', ['view', 'id' => $fatura->id], ['class' => 'btn btn-primary']) ?>
+                <div class="card-footer text-center bg-blue">
+                    <?= Html::a('Ver Detalhes', ['view', 'id' => $fatura->id], ['class' => 'btn btn-success']) ?>
                 </div>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <div class="alert alert-info">
+        <div class="alert alert-info text-center">
             Você ainda não tem faturas.
         </div>
     <?php endif; ?>

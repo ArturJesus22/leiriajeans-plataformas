@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\Models\Empresa;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -26,6 +27,7 @@ class EmpresaController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'contact' => ['POST'],
                     ],
                 ],
                 'access' => [
@@ -33,7 +35,7 @@ class EmpresaController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view'],
+                            'actions' => ['index', 'view', 'contact'],
                             'roles' => ['admin', 'funcionario', 'cliente'],
                         ],
                     ],
@@ -52,7 +54,7 @@ class EmpresaController extends Controller
         $model = Empresa::find()->one(); // Procura a primeira empresa existente.
 
         if (!$model) {
-            throw new \yii\web\NotFoundHttpException('Nenhuma empresa encontrada.');
+            throw new NotFoundHttpException('Nenhuma empresa encontrada.');
         }
 
         return $this->render('index', [
@@ -73,8 +75,13 @@ class EmpresaController extends Controller
         ]);
     }
 
+    public function actionContact()
+    {
+        //mensagem flash
+        Yii::$app->session->setFlash('contactFormSubmitted', true);
 
-
+        return $this->redirect(['index']);
+    }
 
     /**
      * Updates an existing Empresa model.
@@ -95,8 +102,6 @@ class EmpresaController extends Controller
             'model' => $model,
         ]);
     }
-
-
 
     /**
      * Deletes an existing Empresa model.

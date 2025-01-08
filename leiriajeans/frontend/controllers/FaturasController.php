@@ -168,7 +168,12 @@ class FaturasController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->statuspedido = 'anulada'; // Definir como anulada
+        $model->save(false); // Salvar sem validar para apenas alterar o status
+
+        // Agora você pode excluir o modelo
+        $model->delete();
 
         return $this->redirect(['index']);
     }
@@ -231,7 +236,8 @@ class FaturasController extends Controller
         $fatura->userdata_id = $userForm->id;
         $fatura->metodopagamento_id = $metodoPagamentoId;
         $fatura->metodoexpedicao_id = $metodoExpedicaoId;
-        $fatura->data = date('Y-m-d');
+        $fatura->data = date('Y-m-d H:i:s'); // Data e hora da compra
+        $fatura->statuspedido = 'pendente'; // Status inicial é "pendente"
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal;
 
         // Salva a fatura
@@ -245,7 +251,6 @@ class FaturasController extends Controller
                 $linhaFatura->valorIva = $linhaCarrinho->valorIva;
                 $linhaFatura->subTotal = $linhaCarrinho->subTotal;
                 $linhaFatura->produto_id = $linhaCarrinho->produto_id;
-                $linhaFatura->save();
                 //var_dump($linhaFatura);
 
                 if ($linhaFatura->save()) {
@@ -259,6 +264,10 @@ class FaturasController extends Controller
                         $produto->save();
                     }// Guardar a atualização do produto
                 }
+
+                // Após salvar todas as linhas de fatura, atualiza o status da fatura para "pago"
+                $fatura->statuspedido = 'pago'; // Alterando o status para "pago"
+                $fatura->save(); // Salva a fatura com o status atualizado
 
                 foreach ($linhasCarrinho as $linhaCarrinho) {
                     $linhaCarrinho->delete();

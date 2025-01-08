@@ -1,13 +1,11 @@
 <?php
 return [
     [
-        'username' => 'erau',
-        'auth_key' => 'tUu1qHcde0diwUol3xeI-18MuHkkprQI',
-        // password_0
-        'password_hash' => '$2y$13$nJ1WDlBaGcbCdbNC5.5l4.sgy.OMEKCqtDQOdQ2OWpgiKRWYyzzne',
-        'password_reset_token' => 'RkD_Jw0_8HEedzLk7MM-ZKEFfYR7VbMr_1392559490',
-        'created_at' => '1392559490',
-        'updated_at' => '1392559490',
-        'email' => 'sfriesen@jenkins.info',
+        'username' => 'artur',
+        'auth_key' => 'W4yxJOCQMXFtZmwjJNsYJR0nRS8cDz6o',
+        'password_hash' => '$2y$13$xN5u3i5GMiPxPzjJ48GnTOOJ2D2W9XDti4mNAxB/IPdLe6z4IPu7O',
+        'password_reset_token' => null,
+        'email' => 'artur@gmail.com',
+        'status' => '10',
     ],
 ];

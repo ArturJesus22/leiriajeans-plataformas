@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a(
                             '<i class="fas fa-edit"></i> Editar User', // Editar User
                             $url,
-                            ['title' => 'Editar User', 'class' => 'btn btn-sm btn-warning']
+                            ['title' => 'Editar User', 'class' => 'btn btn-sm btn-warning', 'id' => 'editar-cliente']
                         );
                     },
                     'delete' => function ($url, $model) {

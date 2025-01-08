@@ -86,7 +86,7 @@ use yii\widgets\ActiveForm;
     <h3 class="mt-4">Método de Expedição</h3>
     <?= $form->field(new MetodoExpedicao(), 'id')->radioList(
         \yii\helpers\ArrayHelper::map($metodosExpedicao, 'id', 'nome'),
-        ['name' => 'metodoexpedicao_id', 'itemOptions' => ['class' => 'form-check-input']]
+        ['name' => 'metodoexpedicao_id', 'itemOptions' => ['class' => 'form-check-input1']]
     )->label(false) ?>
 
     <div class="form-group mt-4">

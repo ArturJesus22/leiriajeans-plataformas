@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a('Criar Iva', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Iva<i class="fas fa-plus"></i>', ['create'], ['id' => 'criar-iva', 'class' => 'btn btn-success']) ?>
     </p>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>

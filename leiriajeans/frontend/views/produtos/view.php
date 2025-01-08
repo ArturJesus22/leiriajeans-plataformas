@@ -197,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <?= $form->field($avaliacaoModel, 'linhafatura_id')->hiddenInput(['value' => $linhaFatura->id])->label(false); ?>
 
-                                <?= Html::submitButton('Enviar Avaliação', ['class' => 'btn btn-primary mt-3']); ?>
+                                <?= Html::submitButton('Enviar Avaliação', ['class' => 'btn btn-primary mt-3 ', 'name' => 'enviar-avaliacao' ]); ?>
 
                             </div>
                             <?php ActiveForm::end(); ?>

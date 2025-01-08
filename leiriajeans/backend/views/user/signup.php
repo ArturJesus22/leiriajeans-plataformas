@@ -56,6 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'placeholder' => 'NIF'
             ]) ?>
 
+            <?= $form->field($model, 'role')->textInput(['readonly' => true, 'value' => $model->role]) ?>
+
 
 
             <div class="form-group">

@@ -1,14 +1,11 @@
 <?php
-
 return [
     [
-        'username' => 'bayer.hudson',
-        'auth_key' => 'HP187Mvq7Mmm3CTU80dLkGmni_FUH_lR',
-        //password_0
-        'password_hash' => '$2y$13$EjaPFBnZOQsHdGuHI.xvhuDp1fHpo8hKRSk6yshqa9c5EG8s3C3lO',
-        'password_reset_token' => 'ExzkCOaYc1L8IOBs4wdTGGbgNiG3Wz1I_1402312317',
-        'created_at' => '1402312317',
-        'updated_at' => '1402312317',
-        'email' => 'nicole.paucek@schultz.info',
+        'username' => 'artur',
+        'auth_key' => 'W4yxJOCQMXFtZmwjJNsYJR0nRS8cDz6o',
+        'password_hash' => '$2y$13$xN5u3i5GMiPxPzjJ48GnTOOJ2D2W9XDti4mNAxB/IPdLe6z4IPu7O',
+        'password_reset_token' => null,
+        'email' => 'artur@gmail.com',
+        'status' => '10',
     ],
 ];

@@ -108,6 +108,8 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
+        $user->role = $this->role;
+
         //userData
         $userData->nome = $this->nome;
         $userData->codpostal = $this->codigopostal;
@@ -125,8 +127,6 @@ class SignupForm extends Model
         $userData->user_id = $user->id;
 
         $userData->save();
-        var_dump($userData->getErrors());
-        die();
 
         return $this->sendEmail($user);
     }

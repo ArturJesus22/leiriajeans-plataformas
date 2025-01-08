@@ -142,13 +142,13 @@ class UserController extends Controller
         $currentUserRole = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
         $currentUserRoleName = key($currentUserRole); // Obtém o nome da role atual do utilizador logado
 
-        // Verificar se a requisição é um POST e se os modelos são válidos
+        // Verifica se a requisição é um POST e se os modelos são válidos
         if ($this->request->isPost) {
-            // Carregar os dados do modelo User e UserForm
+            // Carrega os dados do modelo User e UserForm
             if ($model->load($this->request->post()) && $modelUserData->load($this->request->post())) {
 
                 if ($isOwnAccount) {
-                    $model->role = $roleName; // Recuperar a role original
+                    $model->role = $roleName; // Recupera a role original
                     Yii::$app->session->setFlash('warning', 'Você não pode alterar sua própria role.');
                 }
 
@@ -158,28 +158,28 @@ class UserController extends Controller
                 }
 
 
-                // Salvar o modelo User
+                // Salva o modelo User
                 if ($model->save()) {
-                    // Entrar no authManager
+                    // Entra no authManager
                     $auth = Yii::$app->authManager;
                     $role = $auth->getRole($model->role);
 
-                    // Apagar a role atual
+                    // Apaga a role atual
                     $auth->revokeAll($model->id);
 
-                    // Atribuir a nova role
+                    // Atribui a nova role
                     $auth->assign($role, $model->id);
 
-                    // Salvar os dados do modelo UserForm
+                    // Salva os dados do modelo UserForm
                     if ($modelUserData->save()) {
                         // Redirecionar para a visualização do modelo atualizado
                         return $this->redirect(['view', 'id' => $model->id]);
                     } else {
-                        // Se o modelo UserForm não for guardadado, adicionar mensagem de erro
+                        // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
                         Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
                     }
                 } else {
-                    // Se o modelo UserForm não for guardadado, adicionar mensagem de erro
+                    // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
                     Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
                 }
             }
@@ -203,7 +203,7 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        // Atualiza o status para 'inactive'
+        // Atualiza o estado para inativo
         $model->status = 9;
         $model->save(false);
 

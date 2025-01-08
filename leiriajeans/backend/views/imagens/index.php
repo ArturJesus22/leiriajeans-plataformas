@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         gap: 10px;
     }
     .image-item {
-        width: 150px; /* Ajuste o tamanho conforme necessário */
+        width: 150px; /* Ajusta o tamanho conforme necessário */
         text-align: center;
     }
     .img-thumbnail {

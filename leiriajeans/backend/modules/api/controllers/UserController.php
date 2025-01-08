@@ -32,7 +32,7 @@ class UserController extends ActiveController
     // Método para buscar dados do utilizador pelo username
     public function actionDados($username)
     {
-        // Busca o utilizador pelo username
+        // Procura o utilizador pelo username
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['username' => $username])->one();
 
@@ -41,7 +41,7 @@ class UserController extends ActiveController
             throw new NotFoundHttpException("O Utilizador {$username} não foi encontrado");
         }
 
-        // Busca os dados adicionais do utilizador (se existir)
+        // Procura os dados adicionais do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
 
@@ -55,7 +55,7 @@ class UserController extends ActiveController
     // Método para buscar dados do utilizador pelo ID
     public function actionGetUserById($id)
     {
-        // Busca o utilizador pelo ID
+        // Procura o utilizador pelo ID
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['id' => $id])->one();
 
@@ -64,7 +64,7 @@ class UserController extends ActiveController
             throw new NotFoundHttpException("O Utilizador com ID {$id} não foi encontrado");
         }
 
-        // Busca os dados adicionais do utilizador (se existir)
+        // Procura os dados adicionais do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
 

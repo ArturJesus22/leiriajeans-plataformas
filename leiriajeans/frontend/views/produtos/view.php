@@ -12,10 +12,10 @@ use common\models\Fatura;
 /** @var yii\web\View $this */
 /** @var common\Models\Produto $model */
 
-
 $this->title = $model->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Produto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 
 ?>

@@ -245,7 +245,7 @@ class CarrinhosController extends Controller
         // Encontra a fatura com o ID fornecido
         $model = $this->findModel($id);
 
-        // Busca as linhas da fatura associadas
+        // Procura as linhas da fatura associadas
         $linhasFatura = $model->getLinhafaturas()->all();
 
         return $this->render('view', [
@@ -259,7 +259,7 @@ class CarrinhosController extends Controller
         // Obter o ID do utilizador
         $userId = Yii::$app->user->id;
 
-        // Buscar o UserForm relacionado ao utilizador logado
+        // Procura o UserForm relacionado ao utilizador logado
         $userdata = UserForm::findOne(['user_id' => $userId]);
         if ($userdata === null) {
             throw new NotFoundHttpException('UserData não encontrado para o utilizador.');
@@ -268,25 +268,25 @@ class CarrinhosController extends Controller
         // Obter o userdata_id a partir do UserForm
         $userdataId = $userdata->id;
 
-        // Buscar o carrinho associado ao userdata_id
+        // Procura o carrinho associado ao userdata_id
         $carrinho = Carrinho::findOne(['userdata_id' => $userdataId]);
 
-        // Se não encontrou o carrinho, lançar erro
+        // Se não encontrou o carrinho, aparece o erro
         if ($carrinho === null) {
             throw new NotFoundHttpException('Carrinho não encontrado para o utilizador.');
         }
 
 
-        // Buscar as linhas do carrinho pelo carrinho_id
+        // Procura as linhas do carrinho pelo carrinho_id
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
 
 
-        // Buscar métodos de pagamento e expedição
+        // Procura os métodos de pagamento e expedição
         $metodosPagamento = MetodoPagamento::find()->all();
         $metodosExpedicao = MetodoExpedicao::find()->all();
 
-        // Renderizar a view
+        // Renderiza a view
         return $this->render('checkout', [
             'linhasCarrinho' => $linhasCarrinho,
             'metodosPagamento' => $metodosPagamento,

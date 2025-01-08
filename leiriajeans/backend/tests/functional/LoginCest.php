@@ -21,6 +21,15 @@ class LoginCest
      * @return array
      */
 
+    public function _fixtures()
+    {
+        return [
+            'user' => [
+                'class' => UserFixture::class,
+                'dataFile' => codecept_data_dir() . 'login_data.php',
+            ],
+        ];
+    }
     public function _before(FunctionalTester $I)
     {
         $I->amOnPage(Url::toRoute('/site/login'));
@@ -53,6 +62,6 @@ class LoginCest
         $I->fillField('LoginForm[username]', 'artur');
         $I->fillField('LoginForm[password]', 'artur123');
         $I->click('LOGIN');
-        $I->amOnPage('/');
+        $I->see('Dashboard');
     }
 }

@@ -37,7 +37,7 @@ class UserForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-//Nome só aceita letras
+            //Nome só aceita letras
             [['rua'], 'required','message'=>'Este campo é obrigatório'],
             [['rua'], 'string', 'max' => 255],
 

@@ -94,7 +94,7 @@ class Avaliacao extends \yii\db\ActiveRecord
             return;
         }
 
-        // Verificar se a linha de fatura pertence a uma fatura do utilizador
+        // Verifica se a linha de fatura pertence a uma fatura do utilizador
         $fatura = Fatura::findOne($linhaFatura->fatura_id);
 
         if (!$fatura || $fatura->userdata_id !== Yii::$app->user->identity->userform->id) {

@@ -62,11 +62,11 @@ class FaturasController extends Controller
             return $this->redirect(['site/index']);
         }
 
-        // Obter as faturas associadas ao usuário
+        // Obtem as faturas associadas ao utilizador
         $dataProvider = new ActiveDataProvider([
-            'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifique se o relacionamento está correto
+            'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifica se o relacionamento está correto
             'pagination' => [
-                'pageSize' => 10, // Você pode ajustar a quantidade de itens por página
+                'pageSize' => 10,
             ],
         ]);
 
@@ -96,16 +96,16 @@ class FaturasController extends Controller
      */
     public function actionView($id)
     {
-        // Carregar a fatura
+        // Carrega a fatura
         $model = $this->findModel($id);
 
-        // Buscar as linhas da fatura
+        // Procura as linhas da fatura
         $linhasFatura = LinhaFatura::find()
             ->with('produto') // Carrega o relacionamento com o produto e a linha do carrinho
             ->where(['fatura_id' => $id])
             ->all();
 
-        // Busca os métodos de pagamento e expedição
+        // Procura os métodos de pagamento e expedição
         $metodoPagamento = MetodoPagamento::findOne($model->metodopagamento_id);
         $metodoExpedicao = MetodoExpedicao::findOne($model->metodoexpedicao_id);
 
@@ -169,10 +169,10 @@ class FaturasController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->statuspedido = 'anulada'; // Definir como anulada
-        $model->save(false); // Salvar sem validar para apenas alterar o status
+        $model->statuspedido = 'anulada'; // Define como anulada
+        $model->save(false); // Salva sem validar para apenas alterar o estado
 
-        // Agora você pode excluir o modelo
+        // Excluir o modelo
         $model->delete();
 
         return $this->redirect(['index']);
@@ -217,7 +217,7 @@ class FaturasController extends Controller
         // Obtém as linhas do carrinho
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
-        // Se o carrinho estiver vazio, exibe uma mensagem de erro
+        // Se o carrinho estiver vazio, mostra uma mensagem de erro
         if (empty($linhasCarrinho)) {
             Yii::$app->session->setFlash('error', 'O carrinho está vazio.');
             return $this->redirect(['carrinhos/index']);
@@ -227,7 +227,7 @@ class FaturasController extends Controller
         $metodoPagamentoId = Yii::$app->request->post('metodopagamento_id');
         $metodoExpedicaoId = Yii::$app->request->post('metodoexpedicao_id');
 
-        // Busca os métodos de pagamento e expedição
+        // Procura os métodos de pagamento e expedição
         $metodoPagamento = MetodoPagamento::findOne($metodoPagamentoId);
         $metodoExpedicao = MetodoExpedicao::findOne($metodoExpedicaoId);
 
@@ -240,7 +240,7 @@ class FaturasController extends Controller
         $fatura->statuspedido = 'pendente'; // Status inicial é "pendente"
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal;
 
-        // Salva a fatura
+        // Guarda a fatura
         if ($fatura->save()) {
             // Cria as linhas de fatura com base nas linhas do carrinho
             foreach ($linhasCarrinho as $linhaCarrinho) {
@@ -257,17 +257,17 @@ class FaturasController extends Controller
                     // Atualiza a quantidade do produto após a compra
                     $produto = $linhaCarrinho->produto;
                     if ($produto) {
-                        $produto->stock -= $linhaCarrinho->quantidade; // Retirar a quantidade comprada
+                        $produto->stock -= $linhaCarrinho->quantidade; // Retira a quantidade comprada
                         if ($produto->stock < 0) {
                             $produto->stock = 0;
                         }
                         $produto->save();
-                    }// Guardar a atualização do produto
+                    }// Guarda a atualização do produto
                 }
 
-                // Após salvar todas as linhas de fatura, atualiza o status da fatura para "pago"
-                $fatura->statuspedido = 'pago'; // Alterando o status para "pago"
-                $fatura->save(); // Salva a fatura com o status atualizado
+                // Após salvar todas as linhas de fatura, atualiza o estado da fatura para "pago"
+                $fatura->statuspedido = 'pago'; // Altera o estado para "pago"
+                $fatura->save(); // Guarda a fatura com o estado atualizado
 
                 foreach ($linhasCarrinho as $linhaCarrinho) {
                     $linhaCarrinho->delete();
@@ -285,7 +285,7 @@ class FaturasController extends Controller
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
             return $this->redirect(['view', 'id' => $fatura->id]);
         } else {
-            // Se houver erro ao salvar a fatura, exibe uma mensagem de erro e redireciona
+            // Se houver erro ao salvar a fatura, mostra uma mensagem de erro e redireciona
             Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
             return $this->redirect(['carrinhos/index']);
         }

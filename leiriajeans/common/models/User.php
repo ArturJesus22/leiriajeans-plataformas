@@ -236,7 +236,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function afterLogin($event)
     {
         try {
-            // Encontrar o userdata_id correspondente
+            // Encontra o userdata_id correspondente
             $userForm = UserForm::findOne(['user_id' => $this->id]);
             if (!$userForm) {
                 Yii::error('UserForm não encontrado para user_id: ' . $this->id);

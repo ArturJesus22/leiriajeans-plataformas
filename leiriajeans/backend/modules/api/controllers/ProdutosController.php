@@ -50,7 +50,7 @@ class ProdutosController extends ActiveController
         $resultArray = [];
 
         foreach ($produtos as $produto) {
-            // Procurar a categoria e IVA relacionados ao produto
+            // Procura a categoria e IVA relacionados ao produto
             $categoria = $categoriaModel::find()->where(['id' => $produto->categoria_id])->one();
             $iva = $ivaModel::find()->where(['id' => $produto->iva_id])->one();
 
@@ -60,21 +60,21 @@ class ProdutosController extends ActiveController
             // Caso o produto não tenha imagem, atribui uma imagem padrão
             if ($imagem == null) {
                 $imagem = new $this->imagensModelClass;
-                $imagem->fileName = "sem_imagem.jpg";  // Colocar uma imagem padrão
+                $imagem->fileName = "sem_imagem.jpg";  // Coloca uma imagem padrão
             }
 
-            // Criar um array com as informações do produto
+            // Cria um array com as informações do produto
             $productInfo = [
                 'id' => $produto->id,
                 'nome' => $produto->nome,
                 'preco' => $produto->preco,
                 'descricao' => $produto->descricao,
-                'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja devolvido, se existir
-                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja devolvida
+                'iva' => $iva ? $iva->percentagem : null,  // Garante que o IVA seja devolvido, se existir
+                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garante que a categoria seja devolvida
                 'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
             ];
 
-            // Adicionar as informações do produto ao array de resultados
+            // Adiciona as informações do produto ao array de resultados
             $resultArray[] = $productInfo;
         }
 

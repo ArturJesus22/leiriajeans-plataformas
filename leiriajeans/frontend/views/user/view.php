@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Logout', ['/site/logout'], [
             'class' => 'btn btn-danger',
             'data-method' => 'post',
-            'data-confirm' => 'Tem certeza de que deseja terminar sessão?',
+            'data-confirm' => 'Tem a certeza de que deseja terminar sessão?',
         ]) ?>
     </p>
 

@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         );
                     },
                     'delete' => function ($url, $model) {
-                        // Verifica se o status do user é "Bloqueado" (9) ou "Ativado" (10)
+                        // Verifica se o estado do user é "Bloqueado" (9) ou "Ativado" (10)
                         $actionUrl = $model->status == 9
                             ? Url::to(['user/activate', 'id' => $model->id]) // URL para desbloquear
                             : Url::to(['user/delete', 'id' => $model->id]);  // URL para bloquear

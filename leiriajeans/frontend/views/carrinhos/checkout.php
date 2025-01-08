@@ -103,12 +103,12 @@ use yii\widgets\ActiveForm;
         document.getElementById('metodo-paypal').style.display = 'none';
         document.getElementById('metodo-multibanco').style.display = 'none';
 
-        // Recuperar o método de pagamento selecionado
+        // Recupera o método de pagamento selecionado
         var metodoSelecionado = document.querySelector('input[name="metodopagamento_id"]:checked');
 
         if (metodoSelecionado) {
             var metodoId = metodoSelecionado.value;
-            // Mostrar os campos dependendo do método selecionado
+            // Mostra os campos dependendo do método selecionado
             if (metodoId == 1) { // MBWay
                 document.getElementById('metodo-mbway').style.display = 'block';
             } else if (metodoId == 2) { // PayPal

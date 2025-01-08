@@ -36,21 +36,21 @@ class FaturasController extends ActiveController
         $faturasModel = new $this->modelClass;
         $linhasFaturasModel = new $this->linhasFaturasModelClass;
 
-        // Busca a fatura pelo userdata_id
+        // Procura a fatura pelo userdata_id
         $fatura = $faturasModel::find()->where(['userdata_id' => $id])->one();
 
         if ($fatura == null) {
             throw new \yii\web\NotFoundHttpException("Fatura com userdata_id {$id} não existe ou não foi encontrada.");
         }
 
-        // Busca as linhas de fatura relacionadas
+        // Procura as linhas de fatura relacionadas
         $linhasFaturas = $linhasFaturasModel::find()->where(['fatura_id' => $fatura->id])->all();
 
         $resultArray = [];
         foreach ($linhasFaturas as $linha) {
             // Relacionamentos diretos
-            $produto = $linha->produto; // Certifique-se de que a relação 'produto' está configurada no modelo LinhaFatura
-            $iva = $linha->iva; // Certifique-se de que a relação 'iva' está configurada no modelo LinhaFatura
+            $produto = $linha->produto; // Certifica-se que a relação 'produto' está configurada no modelo LinhaFatura
+            $iva = $linha->iva; // Certifica-se de que a relação 'iva' está configurada no modelo LinhaFatura
 
             // Montagem dos dados da linha
             $linhasInfo = [
@@ -121,7 +121,7 @@ class FaturasController extends ActiveController
         // Model principal da tabela Fatura
         $faturasModel = new $this->modelClass;
 
-        // Busca todas as faturas associadas ao userdata_id fornecido
+        // Procura todas as faturas associadas ao userdata_id fornecido
         $faturas = $faturasModel::find()->where(['userdata_id' => $id])->all();
 
         // Verifica se há faturas para o userdata_id

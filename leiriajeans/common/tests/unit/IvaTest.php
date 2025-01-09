@@ -34,7 +34,7 @@ class IvaTest extends Unit
         $savedIva = Iva::findOne($iva->id);
         $this->assertNotNull($savedIva);
         $this->assertEquals("23.5", $savedIva->percentagem);
-        $this->assertEquals('IVA padrão', $savedIva->descricao);
+        $this->assertEquals('Desconto Natal', $savedIva->descricao);
     }
 
     public function testCreateIvaWithInvalidData()

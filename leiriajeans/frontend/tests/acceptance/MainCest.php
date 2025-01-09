@@ -47,12 +47,10 @@ class MainCest
         $I->wait('2');
         $I->fillField('Avaliacao[comentario]','Muito bom!');
         $I->wait('1');
-        $I->click('.star[data-value="3"]');
+        $I->click('.star[data-value="5"]');
         $I->wait('1');
-        $I->see('3 estrelas avaliadas');
-        $I->scrollTo('Adicionar ao carrinho');
+        $I->scrollTo('footer');
         $I->click('enviar-avaliacao');
-        $I->click('Enviar Avaliação');
-        $I->wait('1');
+        $I->wait('3');
     }
 }

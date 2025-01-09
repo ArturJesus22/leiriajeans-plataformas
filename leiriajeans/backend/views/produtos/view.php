@@ -35,19 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'preco',
             'stock',
             [
-                'attribute' => 'tamanho.nome',
-                'label' => 'tamanho',
-            ],
-            [
                 'attribute' => 'cor.nome',
                 'label' => 'Cor',
             ],
             [
-                'attribute' => 'iva.nome',
+                'attribute' => 'iva_id',
                 'label' => 'Iva',
             ],
             [
-                'attribute' => 'categoria.nome',
+                'attribute' => 'categoria_id',
                 'label' => 'Categoria',
             ],
         ],

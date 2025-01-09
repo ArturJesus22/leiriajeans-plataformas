@@ -66,7 +66,7 @@ class FaturasController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifica se o relacionamento está correto
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 99999999,
             ],
         ]);
 

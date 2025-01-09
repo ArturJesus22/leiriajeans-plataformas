@@ -87,7 +87,7 @@ class AuthController extends ActiveController
                 if ($userFormModel->save()) {
                     return ['message' => 'Utilizador e perfil criados com sucesso'];
                 } else {
-                    return ['message' => 'Erro ao salvar o perfil do utilizador', 'errors' => $userFormModel->errors];
+                    return ['message' => 'Erro ao guardar o perfil do utilizador', 'errors' => $userFormModel->errors];
                 }
             } else {
                 return ['message' => 'Erro na validação do perfil do utilizador', 'errors' => $userFormModel->errors];

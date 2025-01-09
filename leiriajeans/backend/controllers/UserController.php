@@ -159,7 +159,7 @@ class UserController extends Controller
                 }
 
 
-                // Salva o modelo User
+                // guarda o modelo User
                 if ($model->save()) {
                     // Entra no authManager
                     $auth = Yii::$app->authManager;
@@ -171,17 +171,17 @@ class UserController extends Controller
                     // Atribui a nova role
                     $auth->assign($role, $model->id);
 
-                    // Salva os dados do modelo UserForm
+                    // guarda os dados do modelo UserForm
                     if ($modelUserData->save()) {
                         // Redirecionar para a visualização do modelo atualizado
                         return $this->redirect(['view', 'id' => $model->id]);
                     } else {
                         // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
-                        Yii::$app->session->setFlash('error', 'Erro ao salvar os dados adicionais do usuário.');
+                        Yii::$app->session->setFlash('error', 'Erro ao guardar os dados adicionais do usuário.');
                     }
                 } else {
                     // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
-                    Yii::$app->session->setFlash('error', 'Erro ao salvar o usuário.');
+                    Yii::$app->session->setFlash('error', 'Erro ao guardar o usuário.');
                 }
             }
         }

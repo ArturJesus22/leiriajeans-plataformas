@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Html::beginForm(['carrinhos/update-quantidade', 'id' => $item['id']], 'post') ?>
                             <?= Html::input('number', 'quantidade', $item['quantidade'], [
                                 'min' => 1,
-                                'max' => $item['stock'], // Respeita o estoque do item
+                                'max' => $item['stock'], // Respeita o stock do item
                                 'class' => 'form-control',
                                 'style' => 'width: 80px; display: inline;',
                                 'placeholder' => 'Quantidade'

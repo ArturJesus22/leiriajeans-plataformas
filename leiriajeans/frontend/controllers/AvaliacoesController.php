@@ -87,7 +87,7 @@ class AvaliacoesController extends Controller
                 throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
             }
 
-            // Salvar a avaliação
+            // guardar a avaliação
             if ($avaliacao->save()) {
                 Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
                 return $this->redirect(['produtos/view', 'id' => $linhaFatura->produto_id]);

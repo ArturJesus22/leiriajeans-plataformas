@@ -53,20 +53,25 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
+        //verificação do utilizador autenticado
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
 
+        //procurar os dados do utilizador
         $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
         if (!$userForm) {
             return $this->redirect(['site/index']);
         }
 
-        // Obtem as faturas associadas ao utilizador
+        //obtem as faturas associadas ao utilizador
+        //ActiveDataProvider: fornece dados para serem usados em componentes como tabelas ou listas paginadas
+        //Fatura::find(): cria uma consulta para buscar registros na tabela associada ao modelo Fatura
+        //where(['userdata_id' => $userForm->id]): filtra as faturas onde o campo userdata_id é igual ao id do objeto $userForm
         $dataProvider = new ActiveDataProvider([
             'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifica se o relacionamento está correto
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 9999,
             ],
         ]);
 
@@ -118,28 +123,6 @@ class FaturasController extends Controller
     }
 
     /**
-     * Creates a new Fatura model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new Fatura();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Updates an existing Fatura model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
@@ -170,7 +153,7 @@ class FaturasController extends Controller
     {
         $model = $this->findModel($id);
         $model->statuspedido = 'anulada'; // Define como anulada
-        $model->save(false); // Salva sem validar para apenas alterar o estado
+        $model->save(false); // guarda sem validar para apenas alterar o estado
 
         // Excluir o modelo
         $model->delete();
@@ -265,7 +248,7 @@ class FaturasController extends Controller
                     }// Guarda a atualização do produto
                 }
 
-                // Após salvar todas as linhas de fatura, atualiza o estado da fatura para "pago"
+                // Após guardar todas as linhas de fatura, atualiza o estado da fatura para "pago"
                 $fatura->statuspedido = 'pago'; // Altera o estado para "pago"
                 $fatura->save(); // Guarda a fatura com o estado atualizado
 
@@ -275,7 +258,7 @@ class FaturasController extends Controller
 
                 $carrinho->delete();
 
-//                // Se houver erro ao salvar a linha de fatura, exibe uma mensagem de erro e redireciona
+//                // Se houver erro ao guardar a linha de fatura, exibe uma mensagem de erro e redireciona
 //                if (!$linhaFatura->save()) {
 //                    return $this->redirect(['carrinhos/index']);
 //                }
@@ -285,7 +268,7 @@ class FaturasController extends Controller
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
             return $this->redirect(['view', 'id' => $fatura->id]);
         } else {
-            // Se houver erro ao salvar a fatura, mostra uma mensagem de erro e redireciona
+            // Se houver erro ao guardar a fatura, mostra uma mensagem de erro e redireciona
             Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
             return $this->redirect(['carrinhos/index']);
         }

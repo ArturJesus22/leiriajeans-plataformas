@@ -28,6 +28,7 @@ class ProdutosCest
 
     public function criarProduto(FunctionalTester $I)
     {
+        //$I->am('admin', 'artur'); TESTAR DEPOIS
         $I->click('Produto');
         $I->click('#criar-produto');
         $I->fillField('Produto[nome]', 'calcas');

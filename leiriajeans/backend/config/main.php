@@ -99,6 +99,7 @@ return [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/carrinho',
                     'extraPatterns' => [
+                        'POST criar' => 'criar',
                         'GET {id}/carrinho'=> 'carrinho',
                         'PUT {id}/carrinho'=> 'updatecarrinho',
                     ],

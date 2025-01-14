@@ -48,6 +48,8 @@ class CarrinhoController extends ActiveController
         if ($model->load(\Yii::$app->request->post(), '') && $model->save()) {
             return $model; // Retorne o carrinho criado
         } else {
+            // Adicione um log para verificar os dados recebidos
+            \Yii::error("Erro ao criar carrinho: " . json_encode($model->getErrors()));
             return ['errors' => $model->getErrors()]; // Retorne os erros se falhar
         }
     }

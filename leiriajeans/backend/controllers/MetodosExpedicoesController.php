@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MetodosExpedicoesController implements the CRUD actions for MetodoExpedicao model.
+ * MetodosPagamentosController implements the CRUD actions for MetodoExpedicao model.
  */
 class MetodosExpedicoesController extends Controller
 {

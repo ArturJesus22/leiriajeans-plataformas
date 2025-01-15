@@ -134,6 +134,38 @@ return [
                         '{carrinho_id}' => '<carrinho_id:\\d+>',
                     ],
                 ],
+
+                // LINHAS FATURAS
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/linhasfaturas',
+                    'extraPatterns' => [
+                        'GET dados/<fatura_id:\d+>' => 'dados',
+                        'POST criarlinhafatura' => 'criarlinhafatura',
+                    ],
+                    'tokens' => [
+                        '{fatura_id}' => '<fatura_id:\\d+>',
+                    ],
+                ],
+                // Métodos de Expedição
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/metodosexpedicoes',
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                    ],
+                ],
+
+                // Métodos de Pagamento
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/metodospagamentos',
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                    ],
+                ],
+
+
             ]
         ],
     ],

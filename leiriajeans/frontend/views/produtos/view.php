@@ -12,10 +12,10 @@ use common\models\Fatura;
 /** @var yii\web\View $this */
 /** @var common\Models\Produto $model */
 
-
 $this->title = $model->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Produto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 
 ?>
@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h3><?= Html::encode($model->nome) ?></h3>
                         <p class="m-3"><?= Html::encode($model->descricao) ?></p>
                         <hr>
+
                         <h4 class="mt-4">Tamanho</h4>
                         <ul class="list-unstyled d-flex flex-wrap">
                             <?php foreach (Tamanho::find()->all() as $tamanho): ?>
@@ -196,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <?= $form->field($avaliacaoModel, 'linhafatura_id')->hiddenInput(['value' => $linhaFatura->id])->label(false); ?>
 
-                                <?= Html::submitButton('Enviar Avaliação', ['class' => 'btn btn-primary mt-3']); ?>
+                                <?= Html::submitButton('Enviar Avaliação', ['class' => 'btn btn-primary mt-3 ', 'name' => 'enviar-avaliacao' ]); ?>
 
                             </div>
                             <?php ActiveForm::end(); ?>

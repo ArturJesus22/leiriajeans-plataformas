@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -39,20 +40,28 @@ $this->params['breadcrumbs'][] = $model->designacao;
                     </div>
                     <div class="row">
                         <div class="col-md-12 contact">
-                            <form method="post" action="contact-post.html">
+                            <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
+                                <div class="alert alert-success">
+                                    Agradeçemos o seu contacto, entraremos em contacto consigo dentro de 24 horas.
+                                </div>
+                            <?php endif; ?>
+                            <?php $form = ActiveForm::begin(['action' => ['empresa/contact']]); ?>
                                 <div class="to">
-                                    <input type="text" class="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
-                                    <input type="text" class="text" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
-                                    <input type="text" class="text" value="Subject" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Subject';}">
+                                    <input type="text" class="text" name="nome" value="Nome" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Nome';}">
+                                    <input type="text" class="text" name="email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
+                                    <input type="text" class="text" name="assunto" value="Assunto" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Assunto';}">
                                 </div>
                                 <div class="text">
-                                    <textarea value="Message:" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message:</textarea>
+                                    <textarea name="mensagem" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Mensagem';}">Mensagem:</textarea>
                                     <div class="form-submit">
                                         <input name="enviar" type="submit" id="enviar" value="Enviar"><br>
                                     </div>
                                 </div>
                                 <div class="clear"></div>
-                            </form>
+                            <?php ActiveForm::end(); ?>
+                            <div id="success-message" style="display:none;">
+                                Agradeçemos o seu contacto, entraremos em contacto consigo dentro de 24 horas.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,3 +69,4 @@ $this->params['breadcrumbs'][] = $model->designacao;
         </div>
 
 </div>
+

@@ -27,15 +27,36 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'metodopagamento_id',
-            'metodoexpedicao_id',
-            'data',
+            [
+                'attribute' => 'metodopagamento.nome',
+                'label' => 'Método de Pagamento',
+            ],
+            [
+                'attribute' => 'metodoexpedicao.nome',
+                'label' => 'Método de Expedição',
+            ],
+            [
+                'attribute' => 'data',
+                'value' => function ($model) {
+                    // Formata a data no formato MM-DD-AAAA
+                    return Yii::$app->formatter->asDate($model->data, 'php:d-m-Y');
+                },
+            ],
             'valorTotal',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Fatura $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'header' => 'Ações',
+                'template' => '{view}',
+                'buttons' =>
+                    [
+                        'view' => function ($url, $model) {
+                            return Html::a(
+                                '<i class="fas fa-eye"></i> Ver Fatura', // Ver Fatura
+                                $url,
+                                ['title' => 'Visualizar Fatura', 'class' => 'btn btn-sm btn-primary']
+                            );
+                        },
+                    ],
             ],
         ],
     ]); ?>

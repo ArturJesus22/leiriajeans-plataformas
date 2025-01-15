@@ -8,6 +8,7 @@ use common\models\LinhaCarrinho;
 use common\models\LinhaFatura;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,6 +33,16 @@ class FaturasController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'create-from-cart'],
+                        'roles' => ['admin', 'funcionario', 'cliente'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -42,16 +53,25 @@ class FaturasController extends Controller
      */
     public function actionIndex()
     {
-        $user_id = Yii::$app->user->identity->id;
+        //verificação do utilizador autenticado
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
 
-        $query = Fatura::find()
-            ->where(['userdata_id' => $user_id])
-            ->orderBy(['data' => SORT_DESC]);
+        //procurar os dados do utilizador
+        $userForm = UserForm::findOne(['user_id' => Yii::$app->user->id]);
+        if (!$userForm) {
+            return $this->redirect(['site/index']);
+        }
 
+        //obtem as faturas associadas ao utilizador
+        //ActiveDataProvider: fornece dados para serem usados em componentes como tabelas ou listas paginadas
+        //Fatura::find(): cria uma consulta para buscar registros na tabela associada ao modelo Fatura
+        //where(['userdata_id' => $userForm->id]): filtra as faturas onde o campo userdata_id é igual ao id do objeto $userForm
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => Fatura::find()->where(['userdata_id' => $userForm->id]), // Verifica se o relacionamento está correto
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 9999,
             ],
         ]);
 
@@ -81,16 +101,16 @@ class FaturasController extends Controller
      */
     public function actionView($id)
     {
-        // Carregar a fatura
+        // Carrega a fatura
         $model = $this->findModel($id);
-        
-        // Buscar as linhas da fatura
+
+        // Procura as linhas da fatura
         $linhasFatura = LinhaFatura::find()
             ->with('produto') // Carrega o relacionamento com o produto e a linha do carrinho
             ->where(['fatura_id' => $id])
             ->all();
 
-        // Busca os métodos de pagamento e expedição
+        // Procura os métodos de pagamento e expedição
         $metodoPagamento = MetodoPagamento::findOne($model->metodopagamento_id);
         $metodoExpedicao = MetodoExpedicao::findOne($model->metodoexpedicao_id);
 
@@ -99,28 +119,6 @@ class FaturasController extends Controller
             'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
             'metodoPagamento' => $metodoPagamento, // Passa o modelo do método de pagamento
             'metodoExpedicao' => $metodoExpedicao, // Passa o modelo do método de expedição
-        ]);
-    }
-
-    /**
-     * Creates a new Fatura model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new Fatura();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
         ]);
     }
 
@@ -153,7 +151,12 @@ class FaturasController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->statuspedido = 'anulada'; // Define como anulada
+        $model->save(false); // guarda sem validar para apenas alterar o estado
+
+        // Excluir o modelo
+        $model->delete();
 
         return $this->redirect(['index']);
     }
@@ -197,7 +200,7 @@ class FaturasController extends Controller
         // Obtém as linhas do carrinho
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
-        // Se o carrinho estiver vazio, exibe uma mensagem de erro
+        // Se o carrinho estiver vazio, mostra uma mensagem de erro
         if (empty($linhasCarrinho)) {
             Yii::$app->session->setFlash('error', 'O carrinho está vazio.');
             return $this->redirect(['carrinhos/index']);
@@ -207,7 +210,7 @@ class FaturasController extends Controller
         $metodoPagamentoId = Yii::$app->request->post('metodopagamento_id');
         $metodoExpedicaoId = Yii::$app->request->post('metodoexpedicao_id');
 
-        // Busca os métodos de pagamento e expedição
+        // Procura os métodos de pagamento e expedição
         $metodoPagamento = MetodoPagamento::findOne($metodoPagamentoId);
         $metodoExpedicao = MetodoExpedicao::findOne($metodoExpedicaoId);
 
@@ -216,10 +219,11 @@ class FaturasController extends Controller
         $fatura->userdata_id = $userForm->id;
         $fatura->metodopagamento_id = $metodoPagamentoId;
         $fatura->metodoexpedicao_id = $metodoExpedicaoId;
-        $fatura->data = date('Y-m-d');
+        $fatura->data = date('Y-m-d H:i:s'); // Data e hora da compra
+        $fatura->statuspedido = 'pendente'; // Status inicial é "pendente"
         $fatura->valorTotal = $carrinho->total + $carrinho->ivatotal;
 
-        // Salva a fatura
+        // Guarda a fatura
         if ($fatura->save()) {
             // Cria as linhas de fatura com base nas linhas do carrinho
             foreach ($linhasCarrinho as $linhaCarrinho) {
@@ -230,20 +234,23 @@ class FaturasController extends Controller
                 $linhaFatura->valorIva = $linhaCarrinho->valorIva;
                 $linhaFatura->subTotal = $linhaCarrinho->subTotal;
                 $linhaFatura->produto_id = $linhaCarrinho->produto_id;
-                $linhaFatura->save();
                 //var_dump($linhaFatura);
 
                 if ($linhaFatura->save()) {
                     // Atualiza a quantidade do produto após a compra
                     $produto = $linhaCarrinho->produto;
                     if ($produto) {
-                        $produto->stock -= $linhaCarrinho->quantidade; // Retirar a quantidade comprada
+                        $produto->stock -= $linhaCarrinho->quantidade; // Retira a quantidade comprada
                         if ($produto->stock < 0) {
                             $produto->stock = 0;
                         }
                         $produto->save();
-                    }// Guardar a atualização do produto
+                    }// Guarda a atualização do produto
                 }
+
+                // Após guardar todas as linhas de fatura, atualiza o estado da fatura para "pago"
+                $fatura->statuspedido = 'pago'; // Altera o estado para "pago"
+                $fatura->save(); // Guarda a fatura com o estado atualizado
 
                 foreach ($linhasCarrinho as $linhaCarrinho) {
                     $linhaCarrinho->delete();
@@ -251,7 +258,7 @@ class FaturasController extends Controller
 
                 $carrinho->delete();
 
-//                // Se houver erro ao salvar a linha de fatura, exibe uma mensagem de erro e redireciona
+//                // Se houver erro ao guardar a linha de fatura, exibe uma mensagem de erro e redireciona
 //                if (!$linhaFatura->save()) {
 //                    return $this->redirect(['carrinhos/index']);
 //                }
@@ -261,7 +268,7 @@ class FaturasController extends Controller
             Yii::$app->session->setFlash('success', 'Fatura criada com sucesso!');
             return $this->redirect(['view', 'id' => $fatura->id]);
         } else {
-            // Se houver erro ao salvar a fatura, exibe uma mensagem de erro e redireciona
+            // Se houver erro ao guardar a fatura, mostra uma mensagem de erro e redireciona
             Yii::$app->session->setFlash('error', 'Erro ao criar fatura.');
             return $this->redirect(['carrinhos/index']);
         }

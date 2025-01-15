@@ -3,7 +3,9 @@
 namespace frontend\controllers;
 
 use common\Models\Empresa;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,6 +27,17 @@ class EmpresaController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'contact' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'contact'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
                     ],
                 ],
             ]
@@ -41,7 +54,7 @@ class EmpresaController extends Controller
         $model = Empresa::find()->one(); // Procura a primeira empresa existente.
 
         if (!$model) {
-            throw new \yii\web\NotFoundHttpException('Nenhuma empresa encontrada.');
+            throw new NotFoundHttpException('Nenhuma empresa encontrada.');
         }
 
         return $this->render('index', [
@@ -62,8 +75,13 @@ class EmpresaController extends Controller
         ]);
     }
 
+    public function actionContact()
+    {
+        //mensagem flash
+        Yii::$app->session->setFlash('contactFormSubmitted', true);
 
-
+        return $this->redirect(['index']);
+    }
 
     /**
      * Updates an existing Empresa model.
@@ -92,12 +110,6 @@ class EmpresaController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Empresa model based on its primary key value.

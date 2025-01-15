@@ -3,48 +3,47 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Minhas Fatura';
+$this->title = 'Os meus Pedidos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="faturas-index">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="mb-4"><?= Html::encode($this->title) ?></h1>
 
     <?php if (!empty($dataProvider->models)): ?>
         <?php foreach ($dataProvider->models as $fatura): ?>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Fatura #<?= $fatura->id ?></h3>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h3>Pedido <?= $fatura->id ?></h3>
                     <div>Data: <?= Yii::$app->formatter->asDate($fatura->data) ?></div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>Preço</th>
-                                <th>IVA</th>
-                                <th>Subtotal</th>
-                            </tr>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>IVA</th>
+                            <th>Subtotal</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($fatura->linhafaturas as $linhafatura): ?>
-                                <tr>
-                                    <td><?= Html::encode($linhafatura->produto->nome) ?></td>
-                                    <td><?= $linhafatura->quantidade ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->precoVenda) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->valorIva) ?></td>
-                                    <td><?= Yii::$app->formatter->asCurrency($linhafatura->subTotal) ?></td>
-
-                                </tr>
-                            <?php endforeach; ?>
+                        <?php foreach ($fatura->linhafaturas as $linhafatura): ?>
+                            <tr>
+                                <td><?= Html::encode($linhafatura->produto->nome) ?></td>
+                                <td><?= $linhafatura->quantidade ?></td>
+                                <td><?= Html::encode($linhafatura['precoVenda']) . '€' ?></td>
+                                <td><?= Html::encode($linhafatura['valorIva']) . '€' ?></td>
+                                <td><?= Html::encode($linhafatura['subTotal']) . '€' ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td colspan="4" class="text-right"><strong>Total:</strong></td>
-                                <td><strong><?= Yii::$app->formatter->asCurrency($fatura->valorTotal) ?></strong></td>
-                            </tr>
+                        <tr>
+                            <td colspan="4" class="text-right"><strong>Total:</strong></td>
+                            <td><strong><?= Html::encode($fatura['valorTotal']) . '€' ?></strong></td>
+                        </tr>
                         </tfoot>
                     </table>
 
@@ -56,14 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         <strong>Status do Pedido:</strong> <?= $fatura->statuspedido ?>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <?= Html::a('Ver Detalhes', ['view', 'id' => $fatura->id], ['class' => 'btn btn-primary']) ?>
+                <div class="card-footer text-center bg-blue">
+                    <?= Html::a('Ver Detalhes', ['view', 'id' => $fatura->id], ['class' => 'btn btn-success']) ?>
                 </div>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
         <div class="alert alert-info">
-            Você ainda não tem faturas.
+            Ainda não tem faturas.
         </div>
     <?php endif; ?>
 </div>

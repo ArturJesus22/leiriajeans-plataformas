@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\widgets\Alert;
 
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
@@ -22,14 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Atualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
     </p>
+
+    <?php
+    //Mensagem de flash de erro
+    if (Yii::$app->session->hasFlash('error')) {
+        echo '<div class="alert alert-danger">' . Yii::$app->session->getFlash('error') . '</div>';
+    }
+    ?>
+
 
     <?= DetailView::widget([
         'model' => $model,
@@ -60,6 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'userform.telefone',
                 'label' => 'Telefone',
             ],
+            //role
+
         ],
     ]) ?>
 </div>

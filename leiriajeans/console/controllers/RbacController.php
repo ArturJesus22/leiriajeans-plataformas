@@ -1,17 +1,15 @@
 <?php
 
-use yii\db\Migration;
+namespace console\controllers;
 
-/**
- * Class m241021_154839_add_initial_rbac_roles
- */
-class m241021_154839_initial_rbac extends Migration
+use yii\console\controller;
+use yii;
+
+class RbacController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function safeUp()
+    public function actionInit()
     {
+
         //                 * Permissões de todos
         //                 *  - Ver, Editar os seus dados pessoais
         //                 *
@@ -166,30 +164,6 @@ class m241021_154839_initial_rbac extends Migration
         $auth->assign($role_funcionario, 2);
         $auth->assign($role_cliente, 3);
 
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function safeDown()
-    {
-        echo "m241021_154839_add_initial_rbac_roles cannot be reverted.\n";
-
-        return false;
-    }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
 
     }
-
-    public function down()
-    {
-        echo "m241021_154839_add_initial_rbac_roles cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

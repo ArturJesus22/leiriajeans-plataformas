@@ -32,31 +32,34 @@ class FaturasController extends ActiveController
 
     public function actionDados($id)
     {
+        // Modelos principais
         $faturasModel = new $this->modelClass;
         $linhasFaturasModel = new $this->linhasFaturasModelClass;
 
-        //procura a fatura pelo userdata_id
+        // Procura a fatura pelo userdata_id
         $fatura = $faturasModel::find()->where(['userdata_id' => $id])->one();
 
         if ($fatura == null) {
             throw new \yii\web\NotFoundHttpException("Fatura com userdata_id {$id} não existe ou não foi encontrada.");
         }
 
-        //vai buscar as linhas de fatura relacionadas
+        // Procura as linhas de fatura relacionadas
         $linhasFaturas = $linhasFaturasModel::find()->where(['fatura_id' => $fatura->id])->all();
 
         $resultArray = [];
         foreach ($linhasFaturas as $linha) {
-            $produto = $linha->produto;
-            $iva = $linha->iva;
+            // Relacionamentos diretos
+            $produto = $linha->produto; // Certifica-se que a relação 'produto' está configurada no modelo LinhaFatura
+            $iva = $linha->iva; // Certifica-se de que a relação 'iva' está configurada no modelo LinhaFatura
 
+            // Montagem dos dados da linha
             $linhasInfo = [
                 'nome_produto' => $produto ? $produto->nome : null,
-                'valor' => $linha->precoVenda,
-                'iva' => $iva ? $iva->percentagem : 0,
-                'valor_iva' => $linha->valorIva,
-                'quantidade' => $linha->quantidade,
-                'total' => $linha->subTotal,
+                'valor' => $linha->precoVenda, // Preço de venda da linha
+                'iva' => $iva ? $iva->percentagem : 0, // Percentual de IVA
+                'valor_iva' => $linha->valorIva, // Valor do IVA da linha
+                'quantidade' => $linha->quantidade, // Quantidade do produto
+                'total' => $linha->subTotal, // Subtotal (preço + IVA * quantidade)
             ];
             $resultArray[] = $linhasInfo;
         }
@@ -115,17 +118,18 @@ class FaturasController extends ActiveController
 
     public function actionFaturas($id)
     {
+        // Model principal da tabela Fatura
         $faturasModel = new $this->modelClass;
 
-        //vai buscar todas as faturas associadas ao userdata_id fornecido
+        // Procura todas as faturas associadas ao userdata_id fornecido
         $faturas = $faturasModel::find()->where(['userdata_id' => $id])->all();
 
-        //verifica se há faturas para o userdata_id
+        // Verifica se há faturas para o userdata_id
         if (empty($faturas)) {
             throw new \yii\web\NotFoundHttpException("Nenhuma fatura encontrada para o utilizador com ID {$id}");
         }
 
-        //cria a resposta
+        // Monta a resposta com os dados das faturas
         $resultArray = [];
         foreach ($faturas as $fatura) {
             $resultArray[] = [

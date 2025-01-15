@@ -47,7 +47,7 @@ $this->title = 'LeiriaJeans';
             <h2><strong>Bem Vindo a, </strong></h2>
             <p></p>
             <h2> LeiriaJeans</h2>
-            <p>"Transformando visuais, sem complicações!"</p>
+            <p>"A transformar visuais, sem complicações!"</p>
         </div>
     </div>
 
@@ -88,8 +88,7 @@ $this->title = 'LeiriaJeans';
                             </div>
                         </a> </div
                 </div>
-                <h4 class="m_4"><a href="#">Veste-te com a LeiriaJeans!</a></h4>
-                <p class="m_5">Junta-te a nós!</p>
+
             </div>
             <div class="col-md-3 top_box">
                 <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'T-shirt']) ?>">
@@ -101,7 +100,7 @@ $this->title = 'LeiriaJeans';
                             <p>A melhor roupa na LeiriaJeans</p>
                         </div>
                     </a> </div>
-                <h4 class="m_4"><a href="#">LeiriaJeans!</a></h4>
+
 
             </div>
             <div class="col-md-3 top_box">
@@ -114,21 +113,21 @@ $this->title = 'LeiriaJeans';
                             <p>Grande variedade de roupa</p>
                         </div>
                     </a> </div>
-                <h4 class="m_4"><a href="#">Veste-te com a LeiriaJeans!</a></h4>
-                <p class="m_5">Junta-te a nós!</p>
+
+
             </div>
             <div class="col-md-3 top_box1">
-                <div class="view view-ninth"><a href="single.html">
+                <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'calças']) ?>">
                         <img src="<?= Yii::getAlias('@web/images/cap.jpg') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">
-                            <h2>LeiriaJeans Style #9</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing.</p>
+                            <h2>Acessorios</h2>
+                            <p>Os melhores acessorios</p>
                         </div>
                     </a> </div>
-                <h4 class="m_4"><a href="#">Veste-te com a LeiriaJeans!</a></h4>
-                <p class="m_5">Junta-te a nós!</p>
+
+
             </div>
         </div>
     </div>

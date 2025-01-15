@@ -16,7 +16,7 @@
             </div>
             <div class="info">
                 <?php $userid = Yii::$app->user->id; ?>
-                <a href="<?= Yii::$app->urlManager->createUrl(['user/view', 'id' => $userid]) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['user/perfil']) ?>" class="d-block">    <?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 
@@ -48,14 +48,14 @@
                         ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
 
                     ['label' => 'Gestão de Dados', 'header' => true],
-                        ['label' => 'Administrar contas', 'icon' => 'user', 'url' => ['user/index']],
+                        ['label' => 'Administrar contas', 'icon' => 'user', 'url' => ['user/index'], 'options' => ['id' => 'admin']],
                         ['label' => 'IVAS', 'icon' => 'fa-solid fa-percent', 'url' => ['ivas/index'], 'visible'],
                         ['label' => 'Empresa', 'icon' => 'fa-solid fa-building', 'url' => ['empresa/index'], 'visible' => ($userRole = Yii::$app->user->can('admin') )],
                         ['label' => 'Avaliações', 'icon' => 'fa-solid fa-star', 'url' => ['avaliacoes/index']],
 
 
                     ['label' => 'Produto', 'header' => true],
-                        ['label'=>'Categoria','icon'=>'fa-regular fa-folder', 'url'=>['categorias/index']],
+                        ['label' => 'Categoria', 'icon' => 'fa-regular fa-folder', 'url' => ['categorias/index'], 'options' => ['id' => 'categoria']],
                         ['label' => 'Produto', 'icon' => 'fa-solid fa-box', 'url' => ['produtos/index']],
                         ['label' => 'Tamanho', 'icon' => 'fa-regular fa-ruler combined', 'url' => ['tamanhos/index']],
                         ['label' => 'Cor', 'icon' => 'fa-solid fa-tag', 'url' => ['cores/index']],

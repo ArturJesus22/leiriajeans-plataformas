@@ -14,6 +14,10 @@
 adicionar/remover ao carrinho, ver uma breve descrição sobre os produtos, entre outra coisas, até achar o seu produto ideal para o que pretende. 
 </p>
 
+<p align="center">Crendenciais de Acesso ao BACKEND</p>
+<p align="center">Utilizador: artur</p>
+<p align="center">Password: artur123</p>
+
 
 
 DIRECTORY STRUCTURE

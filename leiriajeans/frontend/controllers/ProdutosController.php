@@ -6,6 +6,7 @@ use common\models\Categoria;
 use common\models\Imagem;
 use common\Models\Produto;
 use frontend\Models\ProdutoSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,6 +30,19 @@ class ProdutosController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => [ 'view', 'create'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
+                        ['allow' => true,
+                            'actions' => ['index']]
+                    ],
+
+                ],
             ]
         );
     }
@@ -41,56 +55,56 @@ class ProdutosController extends Controller
 
     public function actionIndex($sexo = null, $tipo = null)
     {
-        // Iniciar a query de produtos
+        // Inicia a query de produtos
         $query = Produto::find();
 
-        // Carregar os tipos e sexos de categorias distintas da base de dados
+        // Carrega os tipos e sexos de categorias distintas da base de dados
         $tiposDisponiveis = Categoria::find()
             ->select('tipo')
-            ->distinct() // Para evitar duplicações de tipos
+            ->distinct() // Evita duplicações de tipos
             ->all();
 
         $sexosDisponiveis = Categoria::find()
             ->select('sexo')
-            ->distinct() // Para evitar duplicações de sexos
+            ->distinct() // Evita duplicações de sexos
             ->all();
 
         // Se o parâmetro tipo for fornecido, filtrar os produtos por tipo
         if ($tipo) {
-            // Encontrar categorias que correspondem ao tipo especificado
+            // Encontra as categorias que correspondem ao tipo especificado
             $categoriaIds = Categoria::find()
                 ->select('id')
                 ->where(['tipo' => $tipo])
                 ->column();
 
-            // Aplicar filtro de categoria à query de produtos
+            // Aplica o  filtro de categoria à query de produtos
             $query->andWhere(['categoria_id' => $categoriaIds]);
         }
 
-        // Se o parâmetro sexo for fornecido, filtrar os produtos por sexo
+        // Se o parâmetro sexo for fornecido, filtra os produtos por sexo
         if ($sexo) {
-            // Encontrar categorias que correspondem ao sexo especificado
+            // Encontra as categorias que correspondem ao sexo especificado
             $categoriaIds = Categoria::find()
                 ->select('id')
                 ->where(['sexo' => $sexo])
                 ->column();
 
-            // Aplicar filtro de categoria à query de produtos
+            // Aplica o filtro de categoria à query de produtos
             $query->andWhere(['categoria_id' => $categoriaIds]);
         }
 
-        // Criar o dataProvider para paginação dos produtos
+        // Cria o dataProvider para paginação dos produtos
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 12, // Número de produtos por página
+                'pageSize' => 9999999, // Número de produtos por página
             ],
         ]);
 
-        // Criar o model de pesquisa
+        // Cria o model de pesquisa
         $searchModel = new ProdutoSearch();
 
-        // Passar os tipos e sexos para a view
+        // Passa os tipos e sexos para a view
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -109,11 +123,11 @@ class ProdutosController extends Controller
      */
     public function actionView($id)
     {
-        $imagensAssociadas = Imagem::findAll(['produto_id' => $id]); // Buscar imagens existentes
+        $imagensAssociadas = Imagem::findAll(['produto_id' => $id]); // Procura as imagens existentes
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'imagensAssociadas' => $imagensAssociadas, // Passar as imagens associadas
+            'imagensAssociadas' => $imagensAssociadas, // Passa as imagens associadas
         ]);
     }
 

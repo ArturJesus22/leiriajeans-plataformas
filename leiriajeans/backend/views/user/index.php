@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a('Criar Cliente', ['create'], ['class' => 'btn btn-success']) ?>
+    <p>
+        <?= Html::a('Criar Cliente <i class="fas fa-plus"></i>', ['create'], ['id' => 'criar-cliente', 'class' => 'btn btn-success']) ?>
+    </p>
     </p>
 
 
@@ -62,11 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a(
                             '<i class="fas fa-edit"></i> Editar User', // Editar User
                             $url,
-                            ['title' => 'Editar User', 'class' => 'btn btn-sm btn-warning']
+                            ['title' => 'Editar User', 'class' => 'btn btn-sm btn-warning', 'id' => 'editar-cliente']
                         );
                     },
                     'delete' => function ($url, $model) {
-                        // Verifica se o status do user é "Bloqueado" (9) ou "Ativado" (10)
+                        // Verifica se o estado do user é "Bloqueado" (9) ou "Ativado" (10)
                         $actionUrl = $model->status == 9
                             ? Url::to(['user/activate', 'id' => $model->id]) // URL para desbloquear
                             : Url::to(['user/delete', 'id' => $model->id]);  // URL para bloquear

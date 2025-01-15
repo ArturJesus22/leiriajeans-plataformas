@@ -7,6 +7,8 @@ use common\models\Fatura;
 /** @var array $carrinhoAtual */
 
 $this->title = 'Carrinho de Compras';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="carrinho-index">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -33,7 +35,7 @@ $this->title = 'Carrinho de Compras';
                             <?= Html::beginForm(['carrinhos/update-quantidade', 'id' => $item['id']], 'post') ?>
                             <?= Html::input('number', 'quantidade', $item['quantidade'], [
                                 'min' => 1,
-                                'max' => $item['stock'], // Respeita o estoque do item
+                                'max' => $item['stock'], // Respeita o stock do item
                                 'class' => 'form-control',
                                 'style' => 'width: 80px; display: inline;',
                                 'placeholder' => 'Quantidade'

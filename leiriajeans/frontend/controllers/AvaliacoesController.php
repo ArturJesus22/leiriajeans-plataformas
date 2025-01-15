@@ -6,6 +6,7 @@ use common\models\Avaliacao;
 use common\models\Fatura;
 use common\models\LinhaFatura;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,6 +31,16 @@ class AvaliacoesController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
+                    ],
+                ],
             ]
         );
     }
@@ -39,26 +50,6 @@ class AvaliacoesController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Avaliacao::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
 
     /**
      * Displays a single Avaliacao model.
@@ -96,7 +87,7 @@ class AvaliacoesController extends Controller
                 throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
             }
 
-            // Salvar a avaliação
+            // guardar a avaliação
             if ($avaliacao->save()) {
                 Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
                 return $this->redirect(['produtos/view', 'id' => $linhaFatura->produto_id]);
@@ -135,12 +126,6 @@ class AvaliacoesController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Avaliacao model based on its primary key value.

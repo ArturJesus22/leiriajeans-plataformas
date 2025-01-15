@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Imagem;
 use backend\models\ImagemSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +28,16 @@ class ImagensController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                            'roles' => ['admin', 'funcionario'],
+                        ],
                     ],
                 ],
             ]

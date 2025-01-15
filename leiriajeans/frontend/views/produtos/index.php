@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <?php if ($model->stock > 0): ?>
                                         <li class="shop_btn">
-                                            <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>">
+                                            <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>"  id="addproduto">
                                                 Adicionar
                                             </a>
                                         </li>

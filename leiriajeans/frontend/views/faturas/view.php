@@ -12,75 +12,89 @@ $this->params['breadcrumbs'][] = ['label' => 'Faturas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="fatura-view">
+<div class="fatura-view container mt-4">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
 
-    <!-- Exibir métodos de pagamento e expedição -->
-    <h3>Método de Pagamento</h3>
-    <p><?= Html::encode($metodoPagamento ? $metodoPagamento->nome : 'Método de pagamento não encontrado') ?></p> <!-- Exibe o nome do método de pagamento -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>
+                        Método de Pagamento
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><?= Html::encode($metodoPagamento ? $metodoPagamento->nome : 'Método de pagamento não encontrado') ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>
+                        Método de Expedição
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><?= Html::encode($metodoExpedicao ? $metodoExpedicao->nome : 'Método de expedição não encontrado') ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h3>Método de Expedição</h3>
-    <p><?= Html::encode($metodoExpedicao ? $metodoExpedicao->nome : 'Método de expedição não encontrado') ?></p> <!-- Exibe o nome do método de expedição -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>
+                        Estado do Pedido
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><?= Html::encode($model ? $model->statuspedido : 'Status pedido ' . $model->statuspedido = 'anulada') ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!--    <p>-->
-<!--        --><?php //= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-<!--        --><?php //= Html::a('Delete', ['delete', 'id' => $model->id], [
-//            'class' => 'btn btn-danger',
-//            'data' => [
-//                'confirm' => 'Are you sure you want to delete this item?',
-//                'method' => 'post',
-//            ],
-//        ]) ?>
-<!--    </p>-->
-<!---->
-<!--    --><?php //= DetailView::widget([
-//        'model' => $model,
-//        'attributes' => [
-//            'id',
-//            'metodopagamento_id',
-//            'metodoexpedicao_id',
-//            'data',
-//            'valorTotal',
-//            'statuspedido',
-//        ],
-//    ]) ?>
-
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-<!--                <th>ID</th>-->
-                <th>Produto</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
-                <th>Subtotal</th>
-                <th>IVA</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            if (empty($linhasFatura)) {
-                echo '<tr><td colspan="6">Nenhuma linha de fatura encontrada.</td></tr>';
-            } else {
-                foreach ($linhasFatura as $linha): ?>
+    <div class="card mt-4">
+        <div class="card-header">
+            <strong>
+                Detalhes da Fatura
+            </strong>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
                     <tr>
-<!--                        <td>--><?php //= Html::encode($linha->id) ?><!--</td>-->
-                        <td>
-
-                            <?= Html::encode($linha->produto ? $linha->produto->nome : 'Produto não encontrado') ?>
-                        </td>
-                        <td><?= Html::encode($linha['precoVenda']) . '€' ?></td>
-                        <td><?= Html::encode($linha->quantidade) ?></td>
-                        <td><?= Html::encode($linha['subTotal']) . '€' ?></td>
-                        <td><?= Html::encode($linha['valorIva']) . '€' ?></td>
-                        <!--metodo pagamento-->
-                        <!--metodo expedicao-->
+                        <th>Produto</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Subtotal</th>
+                        <th>IVA</th>
                     </tr>
-                <?php endforeach;
-            }
-            ?>
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    <?php
+                    if (empty($linhasFatura)) {
+                        echo '<tr><td colspan="5" class="text-center">Nenhuma linha de fatura encontrada.</td></tr>';
+                    } else {
+                        foreach ($linhasFatura as $linha): ?>
+                            <tr>
+                                <td><?= Html::encode($linha->produto ? $linha->produto->nome : 'Produto não encontrado') ?></td>
+                                <td><?= Html::encode($linha['precoVenda']) . '€' ?></td>
+                                <td><?= Html::encode($linha->quantidade) ?></td>
+                                <td><?= Html::encode($linha['subTotal']) . '€' ?></td>
+                                <td><?= Html::encode($linha['valorIva']) . '€' ?></td>
+                            </tr>
+                        <?php endforeach;
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

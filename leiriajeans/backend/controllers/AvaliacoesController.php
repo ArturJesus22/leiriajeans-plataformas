@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Avaliacao;
 use backend\models\AvaliacaoSearch;
 use http\Exception;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,16 @@ class AvaliacoesController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'delete'],
+                            'roles' => ['admin', 'funcionario'],
+                        ],
                     ],
                 ],
             ]

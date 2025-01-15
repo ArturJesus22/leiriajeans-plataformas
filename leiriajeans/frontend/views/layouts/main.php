@@ -55,9 +55,10 @@ AppAsset::register($this);
                                             echo Html::tag(
                                                 'li',
                                                 Html::a('Login', ['/site/login'], ['class' => 'btn btn-link login text-decoration-none']),
-                                                ['class' => 'd-flex']
+                                                ['class' => 'd-flex', 'id' => 'login']
                                             );
-                                            ?></a></li>
+                                            ?>
+                                            </a></li>
                                         <li> <?php
                                             echo Html::tag(
                                                 'li',
@@ -82,6 +83,8 @@ AppAsset::register($this);
                                     <li>  |    </li>
 
                                     <li><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index']) ?>">Produtos</a></li>
+
+                                    <li><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Faturas</a></li>
 
                                     <li><a href="<?= Yii::$app->urlManager->createUrl(['empresa/index']) ?>">Sobre Nós</a></li>
 

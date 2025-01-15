@@ -14,6 +14,7 @@ class ProdutosController extends ActiveController
     public $imagensModelClass = 'common\models\Imagem';
     public $categoriaModelClass = 'common\models\Categoria';
     public $ivaModelClass = 'common\models\Iva';
+    public $corModelClass = 'common\models\Cor';
 
     public function behaviors()
     {
@@ -40,6 +41,7 @@ class ProdutosController extends ActiveController
         $categoriaModel = new $this->categoriaModelClass;
         $ivaModel = new $this->ivaModelClass;
         $imagensModel = new $this->imagensModelClass;
+        $corModel = new $this->corModelClass; // Modelo de cor
 
         $produtos = $produtoModel::find()->all();
 
@@ -50,31 +52,35 @@ class ProdutosController extends ActiveController
         $resultArray = [];
 
         foreach ($produtos as $produto) {
-            //procurar a categoria e IVA relacionados ao produto
+            // Procurar a categoria e IVA relacionados ao produto
             $categoria = $categoriaModel::find()->where(['id' => $produto->categoria_id])->one();
             $iva = $ivaModel::find()->where(['id' => $produto->iva_id])->one();
 
-            //obter a primeira imagem associada ao produto
+            // Obter a primeira imagem associada ao produto
             $imagem = $imagensModel::find()->where(['produto_id' => $produto->id])->one();
 
-            //caso o produto não tenha imagem, atribui uma imagem default
+            $cor = $corModel::find()->where(['id' => $produto->cor_id])->one();
+
+            // Caso o produto não tenha imagem, atribui uma imagem padrão
             if ($imagem == null) {
                 $imagem = new $this->imagensModelClass;
-                $imagem->fileName = "sem_imagem.jpg";
+                $imagem->fileName = "sem_imagem.jpg";  // Colocar uma imagem padrão
             }
 
-            //criar um array com as informações do produto
+            // Criar um array com as informações do produto
             $productInfo = [
                 'id' => $produto->id,
                 'nome' => $produto->nome,
                 'preco' => $produto->preco,
                 'descricao' => $produto->descricao,
-                'iva' => $iva ? $iva->percentagem : null,  //garantir que o IVA seja devovido, se existir
-                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', //garantir que a categoria seja devolvida
-                'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName),
+                'stock' => $produto->stock,
+                'iva' => $iva ? $iva->percentagem : null,  // Garantir que o IVA seja retornado, se existir
+                'categoria' => $categoria ? $categoria->sexo. ' - ' .$categoria->tipo : 'Categoria não encontrada', // Garantir que a categoria seja retornada
+                'cor' => $cor ? $cor->nome : 'Cor não encontrada',
+                'imagens' => \Yii::getAlias('@web/images/produtos/' . $imagem->fileName), // Caminho completo da imagem
             ];
 
-            //adicionar as informações do produto ao array de resultados
+            // Adicionar as informações do produto ao array de resultados
             $resultArray[] = $productInfo;
         }
 

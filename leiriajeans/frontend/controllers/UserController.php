@@ -5,6 +5,8 @@ namespace frontend\controllers;
 use common\models\User;
 use common\models\UserForm;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\rest\IndexAction;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +29,17 @@ class UserController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index', 'view', 'update'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view', 'update'],
+                            'roles' => ['admin', 'funcionario', 'cliente'],
+                        ],
                     ],
                 ],
             ]
@@ -70,7 +83,7 @@ class UserController extends Controller
         $userid = Yii::$app->user->id;
 
         if($userid != $id){
-            return $this->redirect(['index']);
+           $this->redirect(['produtos/index']);
         }
 
         return $this->render('view', [
@@ -113,10 +126,10 @@ class UserController extends Controller
         $modelUserData = UserForm::findOne(['user_id' => $id]); // UserForm relacionado
         $authManager = Yii::$app->authManager;
 
-        // Obter a role atual do utilizador
+        // Obtém a role atual do utilizador
         $roles = $authManager->getRolesByUser($id);
         if (!empty($roles)) {
-            $model->role = reset($roles)->name; // Atribuir a role no model
+            $model->role = reset($roles)->name; // Atribui a role no model
         } else {
             $model->role = '(Nenhuma role atribuída)'; // Valor padrão se não houver role
         }
@@ -144,12 +157,6 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the User model based on its primary key value.

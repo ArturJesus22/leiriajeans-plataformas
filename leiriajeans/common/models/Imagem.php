@@ -35,7 +35,7 @@ class Imagem extends \yii\db\ActiveRecord
             [['produto_id'], 'integer'],
             [['produto_id'], 'required', 'message' => 'Selecione um Produto!'],
             [['produto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Produto::class, 'targetAttribute' => ['produto_id' => 'id']],
-            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
+            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10, 'maxSize' => 1024 * 1024 * 2] // Limite de 2MB
         ];
     }
 

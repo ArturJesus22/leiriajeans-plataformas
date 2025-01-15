@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\Models\Empresa;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,24 @@ class EmpresaController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'only' => ['index', 'view', 'create', 'update', 'delete'],
+                    'rules' => [
+                        //permite o acesso total para o admin
+                        [
+                            'allow' => true,
+                            'actions' => ['create', 'update', 'delete', 'index', 'view'],
+                            'roles' => ['admin'],
+                        ],
+                        //os funcionarios apenas podem ver
+                        [
+                            'allow' => true,
+                            'actions' => ['index', 'view'],
+                            'roles' => ['funcionario'],
+                        ],
                     ],
                 ],
             ]

@@ -102,22 +102,6 @@ class Avaliacao extends \yii\db\ActiveRecord
         }
     }
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        $utilizador = $this->userdata;
-        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
-
-        $produto = $this->linhafatura ? $this->linhafatura->produto->nome : 'Desconhecido';  // Assuming LinhaFatura has a 'produto_nome' field
-
-        $mensagem = "O utilizador {$nomeUtilizador} deixou uma avaliacao no produto {$produto}.";
-
-        $canal = $insert ? "INSERT_AVALIACOES" : "UPDATE_AVALIACOES";
-
-        $this->FazPublishNoMosquitto($canal, $mensagem);
-    }
-
     public function FazPublishNoMosquitto($canal, $msg)
     {
         $server = "localhost";
@@ -132,5 +116,21 @@ class Avaliacao extends \yii\db\ActiveRecord
         } else {
             file_put_contents("debug_output.log", "Time out!");
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $utilizador = $this->userdata;
+        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
+
+        $produto = $this->linhafatura ? $this->linhafatura->produto->nome : 'Desconhecido';  // Assuming LinhaFatura has a 'produto_nome' field
+
+        $mensagem = "O utilizador {$nomeUtilizador} deixou uma avaliacao no produto {$produto}.";
+
+        $canal = $insert ? "INSERT_AVALIACOES" : "UPDATE_AVALIACOES";
+
+        $this->FazPublishNoMosquitto($canal, $mensagem);
     }
 }

@@ -85,6 +85,7 @@ class ProdutosController extends ActiveController
         }
 
         return $resultArray;
+
     }
 
 }

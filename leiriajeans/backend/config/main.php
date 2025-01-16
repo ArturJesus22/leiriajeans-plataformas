@@ -100,7 +100,7 @@ return [
                         'POST signup' => 'signup',
                     ],
                 ],
-                //falta carrinho/faturas
+                //CARRINHOS
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/carrinho',
                     'extraPatterns' => [
@@ -109,16 +109,7 @@ return [
                         'PUT {id}/carrinho'=> 'updatecarrinho',
                     ],
                 ],
-                ['class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/faturas',
-                    'extraPatterns' => [
-                        'GET {id}/faturas' => 'faturas',
-                        'POST criarfatura'=> 'criar',
-                    ],
-                    'tokens' => [
-                        '{id}' => '<id:\\d+>',
-                    ],
-                ],
+
 
                 //LINHAS CARRINHOS
                 ['class' => 'yii\rest\UrlRule',
@@ -132,6 +123,18 @@ return [
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
                         '{carrinho_id}' => '<carrinho_id:\\d+>',
+                    ],
+                ],
+
+                //FATURAS
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/faturas',
+                    'extraPatterns' => [
+                        'GET {id}/faturas' => 'faturas',
+                        'POST criarfatura'=> 'criar',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
                     ],
                 ],
 

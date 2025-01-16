@@ -1,13 +1,19 @@
 <?php
 namespace backend\modules\api\controllers;
 use app\mosquitto\phpMQTT;
+use common\models\Carrinho;
+use common\models\MetodoExpedicao;
+use common\models\MetodoPagamento;
 use yii\base\Behavior;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 use yii;
 use yii\web\Controller;
 use backend\modules\api\components\CustomAuth;
-use carbon\carbon;
+use Carbon\Carbon;
+use common\models\Fatura;
+use common\models\User;
+
 
 class FaturasController extends ActiveController
 {
@@ -67,54 +73,50 @@ class FaturasController extends ActiveController
         return $resultArray;
     }
 
-
-
-
     public function actionCriar()
     {
-        if(!Yii::$app->request->isPost) {
-            throw new \yii\web\NotFoundHttpException("O pedido tem de ser do tipo POST");
+        $request = Yii::$app->request;
+        $userId = $request->post('user_id');
+
+        if (!$userId) {
+            throw new \yii\web\BadRequestHttpException('O campo user_id é obrigatório.');
         }
 
-        $requestPostFatura = \Yii::$app->request->post();
+        $user = User::findOne($userId);
 
-        $faturasModel = new $this->modelClass;
-        $userModel = new $this->userModelClass;
-        $carrinhosModel = new $this->carrinhosModelClass;
-        $linhasFaturasModel = new $this->linhasFaturasModelClass;
-        $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
-
-        $fatura = new $this->modelClass;
-        $user = new $this->userModelClass;
-        $carrinho = new $this->carrinhosModelClass;
-        $linhasFaturas = new $this->linhasFaturasModelClass;
-        $metodoPagamento = new $this->metodoPagamentoModelClass;
-        $metodoExpedicao = new $this->metodoExpedicaoModelClass;
-
-        $user = $userModel::find()->where(['id' => $requestPostFatura['user_id']])->one();
-        $carrinho = $carrinhosModel::find()->where(['user_id' => $user->id])->one();
-        $linhasCarrinho = $linhasCarrinhoModel::find()->where(['carrinho_id' => $carrinho->id])->all();
-
-
-        $fatura->data = Carbon::now();
-        $fatura->valorTotal = $carrinho->valortotal;
-        $fatura->statuspedidos = 'Paga';
-        $fatura->user_id = $user->id;
-        $fatura->metodoPagamento_id = $metodoPagamento->id;
-        $fatura->metodoExpedicao_id = $metodoExpedicao->id;
-        $fatura->save();
-
-        foreach ($linhasCarrinho as $linhaCarrinho) {
-            $linhaFatura =  new $this->linhasFaturasModelClass;
-            $linhaFatura->fatura_id = $fatura->id;
-            $linhaFatura->linhacarrinho_id = $linhaCarrinho->id;
-            $linhaFatura->save();
+        if (!$user) {
+            throw new \yii\web\NotFoundHttpException("Usuário com ID {$userId} não encontrado.");
         }
 
+        $carrinho = Carrinho::find()->where(['userdata_id' => $userId])->all();
 
-        return $fatura;
+        if (empty($carrinho)) {
+            throw new \yii\web\NotFoundHttpException("Carrinho para o usuário com ID {$userId} não encontrado.");
+        }
+
+        // Continuação do processo de criar a fatura
+        $fatura = new Fatura();
+        $fatura->valorTotal = $request->post('valorTotal');
+        $fatura->data = date('Y-m-d H:i:s');
+        $fatura->userdata_id = $userId;
+        $fatura->metodopagamento_id = $request->post('metodopagamento_id');
+        $fatura->metodoexpedicao_id = $request->post('metodoexpedicao_id');
+        // Adicionar o status do pedido
+        $fatura->statuspedido = $request->post('statuspedido', 'Pendente'); // Valor padrão 'Pendente' se não for fornecido
+
+        if ($fatura->save()) {
+            return [
+                'success' => true,
+                'message' => 'Fatura criada com sucesso!',
+                'data' => $fatura->toArray(), // Isso incluirá o statuspedido na resposta
+            ];
+        } else {
+            return [
+                'success' => false,
+                'errors' => $fatura->errors,
+            ];
+        }
     }
-
 
     public function actionFaturas($id)
     {

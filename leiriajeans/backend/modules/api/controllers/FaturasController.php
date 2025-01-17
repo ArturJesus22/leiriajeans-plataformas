@@ -13,6 +13,7 @@ use backend\modules\api\components\CustomAuth;
 use Carbon\Carbon;
 use common\models\Fatura;
 use common\models\User;
+use common\models\UserForm;
 
 
 class FaturasController extends ActiveController
@@ -76,39 +77,39 @@ class FaturasController extends ActiveController
     public function actionCriar()
     {
         $request = Yii::$app->request;
-        $userId = $request->post('user_id');
+        $userdataId = $request->post('userdata_id'); // Mudado de get('user_id') para post('userdata_id')
 
-        if (!$userId) {
-            throw new \yii\web\BadRequestHttpException('O campo user_id é obrigatório.');
+        if (!$userdataId) {
+            throw new \yii\web\BadRequestHttpException('O campo userdata_id é obrigatório.');
         }
 
-        $user = User::findOne($userId);
-
-        if (!$user) {
-            throw new \yii\web\NotFoundHttpException("Usuário com ID {$userId} não encontrado.");
+        // Verificar se existe o userdata
+        $userdata = UserForm::findOne($userdataId);
+        if (!$userdata) {
+            throw new \yii\web\NotFoundHttpException("UserData com ID {$userdataId} não encontrado.");
         }
 
-        $carrinho = Carrinho::find()->where(['userdata_id' => $userId])->all();
-
+        // Verificar se existe carrinho
+        $carrinho = Carrinho::find()->where(['userdata_id' => $userdataId])->all();
         if (empty($carrinho)) {
-            throw new \yii\web\NotFoundHttpException("Carrinho para o usuário com ID {$userId} não encontrado.");
+            throw new \yii\web\NotFoundHttpException("Carrinho para o userdata_id {$userdataId} não encontrado.");
         }
 
         // Continuação do processo de criar a fatura
         $fatura = new Fatura();
         $fatura->valorTotal = $request->post('valorTotal');
         $fatura->data = date('Y-m-d H:i:s');
-        $fatura->userdata_id = $userId;
+        $fatura->userdata_id = $userdataId;
         $fatura->metodopagamento_id = $request->post('metodopagamento_id');
         $fatura->metodoexpedicao_id = $request->post('metodoexpedicao_id');
         // Adicionar o status do pedido
-        $fatura->statuspedido = $request->post('statuspedido', 'Pendente'); // Valor padrão 'Pendente' se não for fornecido
+        $fatura->statuspedido = strtolower($request->post('statuspedido', 'pendente')); // Convertido para minúsculo
 
         if ($fatura->save()) {
             return [
                 'success' => true,
                 'message' => 'Fatura criada com sucesso!',
-                'data' => $fatura->toArray(), // Isso incluirá o statuspedido na resposta
+                'data' => $fatura->toArray(),
             ];
         } else {
             return [
@@ -117,6 +118,7 @@ class FaturasController extends ActiveController
             ];
         }
     }
+
 
     public function actionFaturas($id)
     {

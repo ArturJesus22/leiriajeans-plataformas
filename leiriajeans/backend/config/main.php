@@ -35,6 +35,7 @@ return [
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
+            // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
             'cookieParams' => ['httponly' => true],
         ],
@@ -62,22 +63,27 @@ return [
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
+                        'GET nomes'=> 'nomes',
                         'GET {username}/dados' => 'dados',
                         'GET {id}' => 'getuserbyid',
+                        'POST signup' => 'Signup',
+                        'POST update-dados' => 'update-dados', // Adicione esta linha
                     ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{username}' => '<username:\w+>',
                     ],
                 ],
-                //PRODUTOS
+
+                //produtos
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/produtos',
                     'extraPatterns' => [
                         'GET produtos'=> 'produtos',
+                        'GET index'=> 'index',
                     ],
                 ],
-                //AVALIACOES
+                //avaliacoes - por acabar
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/avaliacoes',
                     'extraPatterns' => [
@@ -87,7 +93,7 @@ return [
                         'DELETE {id}/avaliacoes'=> 'deleteavaliacao',
                     ],
                 ],
-                //AUTH
+                //auth
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/auth',
                     'extraPatterns' => [
@@ -95,40 +101,75 @@ return [
                         'POST signup' => 'signup',
                     ],
                 ],
-                //CARRINHO
+                //CARRINHOS
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/carrinho',
                     'extraPatterns' => [
+                        'POST criar' => 'criar',
                         'GET {id}/carrinho'=> 'carrinho',
                         'PUT {id}/carrinho'=> 'updatecarrinho',
                     ],
                 ],
-                //FATURAS
-                ['class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/faturas',
-                    'extraPatterns' => [
-                        'GET {id}/faturas' => 'faturas',
-                        'GET {id}/faturasdados' => 'dados',
-                        'POST criarfatura'=> 'criar',
-                    ],
-                    'tokens' => [
-                        '{id}' => '<id:\\d+>',
-                    ],
-                ],
+
+
                 //LINHAS CARRINHOS
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/linhascarrinhos',
                     'extraPatterns' => [
-                        'GET {carrinho_id}/dados' => 'dados',
-                        'POST criar' => 'postlinhacarrinho',
-                        'PUT {id}/update' => 'updatelinhacarrinho',
-                        'DELETE {id}/delete' => 'deletelinhacarrinho',
+                        'GET dados/<carrinho_id:\d+>' => 'dados',
+                        'POST postlinhacarrinho' => 'postlinhacarrinho',
+                        'PUT updatelinhacarrinho/<id:\d+>' => 'updatelinhacarrinho',
+                        'DELETE deletelinhacarrinho/<id:\d+>' => 'deletelinhacarrinho',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
                         '{carrinho_id}' => '<carrinho_id:\\d+>',
                     ],
                 ],
+
+                //FATURAS
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/faturas',
+                    'extraPatterns' => [
+                        'GET {id}/faturas' => 'faturas',
+                        'POST criarfatura'=> 'criar',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
+                    ],
+                ],
+
+                // LINHAS FATURAS
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/linhasfaturas',
+                    'extraPatterns' => [
+                        'GET dados/<fatura_id:\d+>' => 'dados',
+                        'POST criarlinhafatura' => 'criarlinhafatura',
+                    ],
+                    'tokens' => [
+                        '{fatura_id}' => '<fatura_id:\\d+>',
+                    ],
+                ],
+                // Métodos de Expedição
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/metodosexpedicoes',
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                    ],
+                ],
+
+                // Métodos de Pagamento
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/metodospagamentos',
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                    ],
+                ],
+
+
             ]
         ],
     ],

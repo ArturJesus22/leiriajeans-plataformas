@@ -22,9 +22,9 @@ class AuthController extends ActiveController
     public function actionLogin() {
         // Obter os dados
         $username = Yii::$app->request->post('username');
-        $password = Yii::$app->request->post('password_hash');
+        $password = Yii::$app->request->post('password');
 
-        // Valida os dados de entrada
+        // Validar os dados de entrada
         if (empty($username) || empty($password)) {
             return ['message' => 'Todos os campos são obrigatórios.'];
         }
@@ -55,12 +55,12 @@ class AuthController extends ActiveController
         $telefone = Yii::$app->request->post('telefone');
         $role = ('cliente');
 
-        // Valida os dados de entrada
+        // Validar dados de entrada
         if (empty($nome) || empty($username) || empty($password) ||empty($email)  || empty($codpostal) || empty($localidade) || empty($rua) || empty($nif) || empty($telefone)) {
             return ['message' => 'Todos os campos são obrigatórios.'];
         }
 
-        // Cria o novo utilizador
+        // Criar o novo utilizador
         $userModel = new $this->modelClass;
         $userModel->username = $username;
         $userModel->email = $email;
@@ -71,11 +71,11 @@ class AuthController extends ActiveController
 
 
 
-        // guarda o utilizador
+        // guardar o utilizador
         if ($userModel->save()) {
-            // Após guardar o utilizador, cria o perfil associado
+            // Após guardar o utilizador, criar o perfil associado
             $userFormModel = new $this->modelUserForm;
-            $userFormModel->user_id = $userModel->id; // associa o perfil ao utilizador
+            $userFormModel->user_id = $userModel->id; // associar o perfil ao utilizador
             $userFormModel->nome = $nome;
             $userFormModel->codpostal = $codpostal;
             $userFormModel->localidade = $localidade;
@@ -87,7 +87,7 @@ class AuthController extends ActiveController
                 if ($userFormModel->save()) {
                     return ['message' => 'Utilizador e perfil criados com sucesso'];
                 } else {
-                    return ['message' => 'Erro ao guardar o perfil do utilizador', 'errors' => $userFormModel->errors];
+                    return ['message' => 'Erro ao salvar o perfil do utilizador', 'errors' => $userFormModel->errors];
                 }
             } else {
                 return ['message' => 'Erro na validação do perfil do utilizador', 'errors' => $userFormModel->errors];

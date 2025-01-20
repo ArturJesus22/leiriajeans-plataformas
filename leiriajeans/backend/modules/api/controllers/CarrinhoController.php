@@ -3,10 +3,12 @@ namespace backend\modules\api\controllers;
 
 
 use Carbon\Carbon;
+use common\models\Carrinho;
 use yii\filters\auth\QueryParamAuth;
 use yii\web\Controller;
 use yii\rest\ActiveController;
 use yii;
+use yii\web\Response;
 
 class CarrinhoController extends ActiveController
 {
@@ -36,6 +38,21 @@ class CarrinhoController extends ActiveController
         return $this->render('index');
     }
 
+
+    public function actionCriar()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON; // Define o formato da resposta como JSON
+
+        $model = new Carrinho(); // Crie uma nova instância do modelo Carrinho
+
+        // Carrega os dados da requisição
+        if ($model->load(\Yii::$app->request->post(), '') && $model->save()) {
+            return $model; // Retorne o carrinho criado
+        } else {
+            return ['errors' => $model->getErrors()]; // Retorne os erros se falhar
+        }
+    }
+
     //function to get a carrinho through the user id
     public function actionCarrinho($user_id)
     {
@@ -43,7 +60,7 @@ class CarrinhoController extends ActiveController
         $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
         $produtoModel = new $this->produtoModelClass;
 
-        // Encontra o carrinho do utilizador
+        // Encontra o carrinho do usuário
         $carrinho = $carrinhoModel::find()->where(['userdata_id' => $user_id])->one();
 
         if ($carrinho == null) {
@@ -59,7 +76,7 @@ class CarrinhoController extends ActiveController
             $linhaCarrinho->produto_id = $produto;
         }
 
-        return $carrinho;  // Devolve o carrinho com as linhas e produtos
+        return $carrinho;  // Retorna o carrinho com as linhas e produtos
     }
 
 

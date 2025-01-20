@@ -1,13 +1,20 @@
 <?php
 namespace backend\modules\api\controllers;
 use app\mosquitto\phpMQTT;
+use common\models\Carrinho;
+use common\models\MetodoExpedicao;
+use common\models\MetodoPagamento;
 use yii\base\Behavior;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 use yii;
 use yii\web\Controller;
 use backend\modules\api\components\CustomAuth;
-use carbon\carbon;
+use Carbon\Carbon;
+use common\models\Fatura;
+use common\models\User;
+use common\models\UserForm;
+
 
 class FaturasController extends ActiveController
 {
@@ -67,52 +74,49 @@ class FaturasController extends ActiveController
         return $resultArray;
     }
 
-
-
-
     public function actionCriar()
     {
-        if(!Yii::$app->request->isPost) {
-            throw new \yii\web\NotFoundHttpException("O pedido tem de ser do tipo POST");
+        $request = Yii::$app->request;
+        $userdataId = $request->post('userdata_id'); // Mudado de get('user_id') para post('userdata_id')
+
+        if (!$userdataId) {
+            throw new \yii\web\BadRequestHttpException('O campo userdata_id é obrigatório.');
         }
 
-        $requestPostFatura = \Yii::$app->request->post();
-
-        $faturasModel = new $this->modelClass;
-        $userModel = new $this->userModelClass;
-        $carrinhosModel = new $this->carrinhosModelClass;
-        $linhasFaturasModel = new $this->linhasFaturasModelClass;
-        $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
-
-        $fatura = new $this->modelClass;
-        $user = new $this->userModelClass;
-        $carrinho = new $this->carrinhosModelClass;
-        $linhasFaturas = new $this->linhasFaturasModelClass;
-        $metodoPagamento = new $this->metodoPagamentoModelClass;
-        $metodoExpedicao = new $this->metodoExpedicaoModelClass;
-
-        $user = $userModel::find()->where(['id' => $requestPostFatura['user_id']])->one();
-        $carrinho = $carrinhosModel::find()->where(['user_id' => $user->id])->one();
-        $linhasCarrinho = $linhasCarrinhoModel::find()->where(['carrinho_id' => $carrinho->id])->all();
-
-
-        $fatura->data = Carbon::now();
-        $fatura->valorTotal = $carrinho->valortotal;
-        $fatura->statuspedidos = 'Paga';
-        $fatura->user_id = $user->id;
-        $fatura->metodoPagamento_id = $metodoPagamento->id;
-        $fatura->metodoExpedicao_id = $metodoExpedicao->id;
-        $fatura->save();
-
-        foreach ($linhasCarrinho as $linhaCarrinho) {
-            $linhaFatura =  new $this->linhasFaturasModelClass;
-            $linhaFatura->fatura_id = $fatura->id;
-            $linhaFatura->linhacarrinho_id = $linhaCarrinho->id;
-            $linhaFatura->save();
+        // Verificar se existe o userdata
+        $userdata = UserForm::findOne($userdataId);
+        if (!$userdata) {
+            throw new \yii\web\NotFoundHttpException("UserData com ID {$userdataId} não encontrado.");
         }
 
+        // Verificar se existe carrinho
+        $carrinho = Carrinho::find()->where(['userdata_id' => $userdataId])->all();
+        if (empty($carrinho)) {
+            throw new \yii\web\NotFoundHttpException("Carrinho para o userdata_id {$userdataId} não encontrado.");
+        }
 
-        return $fatura;
+        // Continuação do processo de criar a fatura
+        $fatura = new Fatura();
+        $fatura->valorTotal = $request->post('valorTotal');
+        $fatura->data = date('Y-m-d H:i:s');
+        $fatura->userdata_id = $userdataId;
+        $fatura->metodopagamento_id = $request->post('metodopagamento_id');
+        $fatura->metodoexpedicao_id = $request->post('metodoexpedicao_id');
+        // Adicionar o status do pedido
+        $fatura->statuspedido = strtolower($request->post('statuspedido', 'pendente')); // Convertido para minúsculo
+
+        if ($fatura->save()) {
+            return [
+                'success' => true,
+                'message' => 'Fatura criada com sucesso!',
+                'data' => $fatura->toArray(),
+            ];
+        } else {
+            return [
+                'success' => false,
+                'errors' => $fatura->errors,
+            ];
+        }
     }
 
 

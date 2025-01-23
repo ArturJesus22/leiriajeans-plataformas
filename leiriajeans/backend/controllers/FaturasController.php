@@ -4,6 +4,9 @@ namespace backend\controllers;
 
 use common\models\Fatura;
 use backend\models\FaturaSearch;
+use common\models\Linhafatura;
+use common\models\MetodoExpedicao;
+use common\models\MetodoPagamento;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,7 +36,7 @@ class FaturasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'update'],
+                            'actions' => ['index', 'view', 'update', 'confirm-status'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -58,6 +61,8 @@ class FaturasController extends Controller
         ]);
     }
 
+
+
     /**
      * Displays a single Fatura model.
      * @param int $id ID
@@ -66,8 +71,24 @@ class FaturasController extends Controller
      */
     public function actionView($id)
     {
+        // Carrega a fatura
+        $model = $this->findModel($id);
+
+        // Procura as linhas da fatura
+        $linhasFatura = LinhaFatura::find()
+            ->with('produto') // Carrega o relacionamento com o produto e a linha do carrinho
+            ->where(['fatura_id' => $id])
+            ->all();
+
+        // Procura os métodos de pagamento e expedição
+        $metodoPagamento = MetodoPagamento::findOne($model->metodopagamento_id);
+        $metodoExpedicao = MetodoExpedicao::findOne($model->metodoexpedicao_id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'linhasFatura' => $linhasFatura, // Passa as linhas da fatura para a view
+            'metodoPagamento' => $metodoPagamento, // Passa o modelo do método de pagamento
+            'metodoExpedicao' => $metodoExpedicao, // Passa o modelo do método de expedição
         ]);
     }
 
@@ -104,14 +125,24 @@ class FaturasController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            // Carregue apenas o campo statusCompra
+            $model->statusCompra = \Yii::$app->request->post('Fatura')['statusCompra'];
+
+            if ($model->save(false, ['statusCompra'])) { // Salva apenas o campo statusCompra
+                \Yii::$app->session->setFlash('success', 'Status atualizado com sucesso.');
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                \Yii::$app->session->setFlash('error', 'Erro ao atualizar status: ' . var_dump($model->errors, true));
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+
+
 
     /**
      * Deletes an existing Fatura model.

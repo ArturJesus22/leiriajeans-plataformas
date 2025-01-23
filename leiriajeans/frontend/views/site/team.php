@@ -1,98 +1,49 @@
-<head>
-    <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="<?= Yii::getAlias('@web/css/bootstrap.css') ?>" />
-
-
-    <!-- fonts style -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-    <!--owl slider stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-
-
-
-    <!-- Custom styles for this template -->
-    <link href="<?= Yii::getAlias('@web/css/team.css') ?>" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="<?= Yii::getAlias('@web/css/responsive.css') ?>" rel="stylesheet" />
-
-</head>
-
-
-
-<body>
-
-<section class="team_section layout_padding centered-section">
-    <div class="container-fluid">
-        <div class="heading_container heading_center">
-            <h2 class="">
-                <span> Nossa Equipa!</span>
-            </h2>
+<section class="team_section layout_padding">
+    <div class="container">
+        <div class="heading_container text-center mb-5">
+            <h2>Nossa Equipa de Desenvolvimento</h2>
+            <div class="heading-underline"></div>
         </div>
 
-        <div class="team_container">
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box ">
-                        <div class="img-box">
-                            <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" class="img1" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                Artur Jesus
-                            </h5>
-                            <p>
-                                Desenvolvedor
-                            </p>
-                        </div>
+        <div class="row justify-content-center">
+            <!-- Membro 1 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" alt="Artur Jesus" class="img-fluid">
+                    </div>
+                    <div class="member-info text-center">
+                        <h4>Artur Jesus</h4>
+                        <p class="position">Desenvolvedor Full-Stack</p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box ">
-                        <div class="img-box">
-                            <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" class="img1" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                Diogo Fernandes
-                            </h5>
-                            <p>
-                                Desenvolvedor
-                            </p>
-                        </div>
+            </div>
+
+            <!-- Membro 2 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" alt="Diogo Fernandes" class="img-fluid">
+                    </div>
+                    <div class="member-info text-center">
+                        <h4>Diogo Fernandes</h4>
+                        <p class="position">Desenvolvedor Full-Stack</p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box ">
-                        <div class="img-box">
-                            <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" class="img1" alt="">
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                Rodrigo Costa
-                            </h5>
-                            <p>
-                                Desenvolvedor
-                            </p>
-                        </div>
+            </div>
+
+            <!-- Membro 3 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="<?= Yii::getAlias('@web/images/icondev.png') ?>" alt="Rodrigo Costa" class="img-fluid">
+                    </div>
+                    <div class="member-info text-center">
+                        <h4>Rodrigo Costa</h4>
+                        <p class="position">Desenvolvedor Full-Stack</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-</body>
-<?php

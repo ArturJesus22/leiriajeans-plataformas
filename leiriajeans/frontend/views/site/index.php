@@ -78,12 +78,12 @@ $this->title = 'LeiriaJeans';
             <div class="close_but"><i class="close1"> </i></div>
             <div class="row">
                 <div class="col-md-3 top_box">
-                    <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'Sapatilhas']) ?>">
-                            <img src="<?= Yii::getAlias('@web/images/jordancactus.webp') ?>" class="img-responsive" alt=""/>
+                    <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'T-shirt']) ?>">
+                            <img src="<?= Yii::getAlias('@web/images/nudeproject.webp') ?>" class="img-responsive" alt=""/>
                             <div class="mask mask-1"> </div>
                             <div class="mask mask-2"> </div>
                             <div class="content">
-                                <h2>Sapatilhas</h2>
+                                <h2>T-Shirts</h2>
                                 <p>Veste-te com LeiriaJeans</p>
                             </div>
                         </a> </div
@@ -105,11 +105,11 @@ $this->title = 'LeiriaJeans';
             </div>
             <div class="col-md-3 top_box">
                 <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'calças']) ?>">
-                        <img src="<?= Yii::getAlias('@web/images/calçacarhart.jpg') ?>" class="img-responsive" alt=""/>
+                        <img src="<?= Yii::getAlias('@web/images/nudeproject.webp') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">
-                            <h2>Calças</h2>
+                            <h2>T-Shirts</h2>
                             <p>Grande variedade de roupa</p>
                         </div>
                     </a> </div>
@@ -118,11 +118,11 @@ $this->title = 'LeiriaJeans';
             </div>
             <div class="col-md-3 top_box1">
                 <div class="view view-ninth"><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index', 'tipo' => 'calças']) ?>">
-                        <img src="<?= Yii::getAlias('@web/images/cap.jpg') ?>" class="img-responsive" alt=""/>
+                        <img src="<?= Yii::getAlias('@web/images/nudeproject.webp') ?>" class="img-responsive" alt=""/>
                         <div class="mask mask-1"> </div>
                         <div class="mask mask-2"> </div>
                         <div class="content">
-                            <h2>Acessorios</h2>
+                            <h2>T-Shirts</h2>
                             <p>Os melhores acessorios</p>
                         </div>
                     </a> </div>

@@ -75,21 +75,45 @@ class AvaliacoesController extends Controller
         $avaliacao = new Avaliacao();
 
         if ($avaliacao->load(Yii::$app->request->post()) && $avaliacao->validate()) {
+            // Busca a linha da fatura
             $linhaFatura = LinhaFatura::findOne($avaliacao->linhafatura_id);
 
             if (!$linhaFatura) {
                 throw new \yii\web\ForbiddenHttpException('Linha de fatura inválida.');
             }
 
+            // Busca a fatura
             $fatura = Fatura::findOne($linhaFatura->fatura_id);
 
-            if (!$fatura || $fatura->userdata_id !== Yii::$app->user->identity->userform->id) {
-                throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
+            // Verifica se a fatura existe, se pertence ao usuário e se o status é 'Entregue'
+            if (!$fatura ||
+                $fatura->userdata_id !== Yii::$app->user->identity->userform->id ||
+                $fatura->statusCompra !== 'Entregue') {
+
+                // Mensagem personalizada baseada no erro específico
+                if (!$fatura) {
+                    throw new \yii\web\ForbiddenHttpException('Fatura não encontrada.');
+                } elseif ($fatura->userdata_id !== Yii::$app->user->identity->userform->id) {
+                    throw new \yii\web\ForbiddenHttpException('Você não comprou este produto!');
+                } else {
+                    throw new \yii\web\ForbiddenHttpException('Você só pode avaliar produtos que já foram entregues.');
+                }
             }
 
-            // guardar a avaliação
+            // Verifica se o utilizador já avaliou este produto
+            $avaliacaoExistente = Avaliacao::find()
+                ->where([
+                    'linhafatura_id' => $avaliacao->linhafatura_id,
+                ])
+                ->one();
+
+            if ($avaliacaoExistente) {
+                throw new \yii\web\ForbiddenHttpException('Você já avaliou este produto.');
+            }
+
+            // Se passou por todas as verificações, guarda a avaliação
             if ($avaliacao->save()) {
-                Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
+                Yii::$app->session->setFlash('success', 'Avaliação registada com sucesso.');
                 return $this->redirect(['produtos/view', 'id' => $linhaFatura->produto_id]);
             }
         }
@@ -98,6 +122,7 @@ class AvaliacoesController extends Controller
             'model' => $avaliacao,
         ]);
     }
+
 
     /**
      * Updates an existing Avaliacao model.

@@ -147,31 +147,61 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <!-- Verificar se o utilizador pode avaliar -->
                     <?php if (!Yii::$app->user->isGuest): ?>
-                        <?php
-                        // Verificar se o utilizador comprou o produto
-                        $userId = Yii::$app->user->identity->userform->id;
-                        // Obter todas as faturas do utilizador
-                        $faturas = Fatura::find()->where(['userdata_id' => $userId])->all();
+                    <?php
+                    // Verificar se o utilizador comprou o produto
+                    $userId = Yii::$app->user->identity->userform->id;
 
-                        $linhaFatura = null;
+                    // Obter todas as faturas do utilizador onde o status é 'Entregue'
+                    $faturas = Fatura::find()
+                        ->where([
+                            'userdata_id' => $userId,
+                            'statusCompra' => 'Entregue' // Adiciona verificação do status
+                        ])
+                        ->all();
 
-                        // Verificar se o produto está em alguma linha de fatura
-                        foreach ($faturas as $fatura) {
-                            $linhaFatura = LinhaFatura::find()
-                                ->where(['produto_id' => $model->id, 'fatura_id' => $fatura->id])
-                                ->one();
+                    $linhaFatura = null;
+                    $produtoEntregue = false;
 
-                            if ($linhaFatura) {
-                                break; // Produto encontrado, parar a procura.
-                            }
+                    // Verificar se o produto está em alguma linha de fatura entregue
+                    foreach ($faturas as $fatura) {
+                        $linhaFatura = LinhaFatura::find()
+                            ->where([
+                                'produto_id' => $model->id,
+                                'fatura_id' => $fatura->id
+                            ])
+                            ->one();
+
+                        if ($linhaFatura) {
+                            $produtoEntregue = true;
+                            break; // Produto encontrado em fatura entregue, parar a procura
                         }
+                    }
 
+                    // Verificar se já existe avaliação para este produto
+                    $avaliacaoExistente = null;
+                    if ($linhaFatura) {
+                        $avaliacaoExistente = Avaliacao::find()
+                            ->where(['linhafatura_id' => $linhaFatura->id])
+                            ->one();
+                    }
 
-                        $avaliacaoModel = new Avaliacao();
+                    $avaliacaoModel = new Avaliacao();
 
-                        ?>
+                    if ($produtoEntregue && !$avaliacaoExistente):
+                    ?>
+
+                    <?php elseif (!$produtoEntregue): ?>
+                    <div class="alert alert-warning">
+                        Este produto ainda não lhe foi entregue ou ainda não o adquiriu.
+                    </div>
+                    <?php elseif ($avaliacaoExistente): ?>
+                    <div class="alert alert-info">
+                        Já avaliou este produto.
+                    </div>
+                    <?php endif; ?>
 
                         <?php if ($linhaFatura): ?>
+                            <?php if (!$avaliacaoExistente): ?>
                             <?php $form = ActiveForm::begin(['action' => ['avaliacoes/create'], 'method' => 'post']); ?>
                             <div class="mt-4">
                                 <h5>Deixe sua Avaliação</h5>
@@ -201,9 +231,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             </div>
                             <?php ActiveForm::end(); ?>
-                        <?php else: ?>
-                            <p class="text-danger">Você precisa comprar este produto antes de avaliá-lo.</p>
                         <?php endif; ?>
+                          <?php endif; ?>
                     <?php else: ?>
                         <p class="text-muted">Faça login para deixar uma avaliação.</p>
                     <?php endif; ?>

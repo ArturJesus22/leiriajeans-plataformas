@@ -65,8 +65,8 @@ class CarrinhoController extends ActiveController
     public function actionUpdatecarrinho()
     {
         $carrinhoModel = new $this->modelClass;
-        $userModel = new $this->userModelClass;
         $user_id = Yii::$app->request->post('userdata_id');
+        $userModel = new $this->userModelClass;
         $user = $userModel::find()->where(['id' => $user_id])->one();
         if ($user == null) {
             throw new \yii\web\NotFoundHttpException("Não existe o utilizador com o id " . $user_id);

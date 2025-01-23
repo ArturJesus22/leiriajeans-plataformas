@@ -195,4 +195,26 @@ class LinhasCarrinhosController extends ActiveController
         ];
     }
 
+=======
+            return [
+                'success' => false,
+                'message' => "Não existe o produto no carrinho com o id $id."
+            ];
+        }
+
+        $carrinhoId = $linhasCarrinho->carrinho_id; // Guarda o carrinho_id antes de apagar
+        $linhasCarrinho->delete();
+
+        // Atualiza o valor total do carrinho
+        $this->updateValorTotal($carrinhoId);
+
+        return [
+            'success' => true,
+            'message' => 'Produto eliminado com sucesso do carrinho.',
+            'id' => $id,
+        ];
+    }
+
+
+
 }

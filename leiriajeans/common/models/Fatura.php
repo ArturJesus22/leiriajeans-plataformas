@@ -48,6 +48,9 @@ class Fatura extends \yii\db\ActiveRecord
             [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => MetodoPagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
             [['statuspedido'], 'in', 'range' => ['pendente', 'pago', 'anulada']],
+            [['statusCompra'], 'string'],
+            [['statusCompra'], 'default', 'value' => 'Por Entregar'], // Valor padrão
+            [['statusCompra'], 'in', 'range' => ['Por Entregar', 'Entregue']], // Valores permitidos
 
         ];
     }
@@ -64,6 +67,7 @@ class Fatura extends \yii\db\ActiveRecord
             'data' => 'Data',
             'valorTotal' => 'Valor Total',
             'statuspedido' => 'Statuspedido',
+            'statusCompra' => 'Status da Compra',
         ];
     }
 

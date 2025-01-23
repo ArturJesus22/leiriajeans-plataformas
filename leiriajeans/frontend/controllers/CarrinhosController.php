@@ -331,6 +331,7 @@ class CarrinhosController extends Controller
             throw new NotFoundHttpException('UserData não encontrado para o utilizador.');
         }
 
+
         // Obter o userdata_id a partir do UserForm
         $userdataId = $userdata->id;
 
@@ -350,13 +351,16 @@ class CarrinhosController extends Controller
 
         // Procura os métodos de pagamento e expedição
         $metodosPagamento = MetodoPagamento::find()->all();
+
         $metodosExpedicao = MetodoExpedicao::find()->all();
+        Yii::debug('Métodos de Expedição:', $metodosExpedicao);
 
         // Renderiza a view
         return $this->render('checkout', [
             'linhasCarrinho' => $linhasCarrinho,
             'metodosPagamento' => $metodosPagamento,
             'metodosExpedicao' => $metodosExpedicao,
+
         ]);
     }
 }

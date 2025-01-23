@@ -156,7 +156,7 @@ class ProdutosController extends Controller
                             $imagem->fileName = basename($path);
 
                             if (!$imagem->save()) {
-                                Yii::error("Erro ao guardar imagem no banco: {$path}");
+                                Yii::error("Erro ao guardar imagem na base dados: {$path}");
                             }
                         }
                     } else {

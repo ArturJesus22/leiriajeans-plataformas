@@ -67,6 +67,7 @@ return [
                         'GET {username}/dados' => 'dados',
                         'GET {id}' => 'getuserbyid',
                         'POST signup' => 'Signup',
+                        'POST update-dados' => 'update-dados',
 
                     ],
                     'tokens' => [
@@ -74,6 +75,7 @@ return [
                         '{username}' => '<username:\w+>',
                     ],
                 ],
+
                 //produtos
                 ['class' => 'yii\rest\UrlRule',
                     'controller' => 'api/produtos',

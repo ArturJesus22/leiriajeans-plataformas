@@ -22,7 +22,7 @@ class AuthController extends ActiveController
     public function actionLogin() {
         //obter os dados
         $username = Yii::$app->request->post('username');
-        $password = Yii::$app->request->post('password_hash');
+        $password = Yii::$app->request->post('password');
 
         // Validar os dados de entrada
         if (empty($username) || empty($password)) {
@@ -55,10 +55,12 @@ class AuthController extends ActiveController
         $telefone = Yii::$app->request->post('telefone');
         $role = ('cliente');
 
+
         //validar dados
         if (empty($nome) || empty($username) || empty($password) ||empty($email)  || empty($codpostal) || empty($localidade) || empty($rua) || empty($nif) || empty($telefone)) {
             return ['message' => 'Todos os campos são obrigatórios.'];
         }
+
 
         //criar novo utilizador
         $userModel = new $this->modelClass;
@@ -76,6 +78,12 @@ class AuthController extends ActiveController
             //depois de guardar o utilizador, criar o perfil associado
             $userFormModel = new $this->modelUserForm;
             $userFormModel->user_id = $userModel->id; //associar o perfil ao utilizador
+
+        // guardar o utilizador
+        if ($userModel->save()) {
+            // Após guardar o utilizador, criar o perfil associado
+            $userFormModel = new $this->modelUserForm;
+            $userFormModel->user_id = $userModel->id; // associar o perfil ao utilizador
             $userFormModel->nome = $nome;
             $userFormModel->codpostal = $codpostal;
             $userFormModel->localidade = $localidade;

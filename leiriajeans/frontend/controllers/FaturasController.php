@@ -31,6 +31,7 @@ class FaturasController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'confirm-status' => ['POST'],
                 ],
             ],
             'access' => [
@@ -38,7 +39,7 @@ class FaturasController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create-from-cart'],
+                        'actions' => ['index', 'view', 'create-from-cart', 'confirm-status'],
                         'roles' => ['admin', 'funcionario', 'cliente'],
                     ],
                 ],
@@ -140,6 +141,24 @@ class FaturasController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionConfirmStatus($id)
+    {
+        $model = $this->findModel($id);
+        $model->statusCompra = 'Entregue';
+
+        if ($model->save(true, ['statusCompra'])) {
+            Yii::$app->session->setFlash('success', 'Entrega confirmada com sucesso.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao confirmar a entrega: ' . print_r($model->errors, true));
+
+            var_dump($model->errors);
+            var_dump($model->statusCompra);
+            die();
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**

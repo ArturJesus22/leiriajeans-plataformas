@@ -8,6 +8,8 @@ use common\models\User;
 
 class CustomAuth extends AuthMethod
 {
+    // Implementa autenticação sem estado (stateless)
+    // Cada requisição deve conter todas as informações necessárias
     public function authenticate($user, $request, $response)
     {
         $authToken = $request->getQueryString();

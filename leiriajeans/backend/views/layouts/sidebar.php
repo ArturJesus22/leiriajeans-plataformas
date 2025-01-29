@@ -43,9 +43,10 @@
 
 
                     ['label' => 'Encomendas', 'header' => true],
-                        ['label'=> 'Fatura','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
+                        ['label'=> 'Expedicoes', 'icon'=>'fas fa-clock', 'url'=>['/faturas/pendentes']],
                         ['label'=> 'Metodo Expedicao','icon'=>'fas fa-truck','url'=>['/metodos-expedicoes/index']],
                         ['label'=> 'Metodos de Pagamento','icon'=>'fas fa-credit-card','url'=>['/metodos-pagamentos/index']],
+                        ['label'=> 'Faturas','icon'=>'fas fa-file-invoice-dollar','url'=>['/faturas/index']],
 
                     ['label' => 'Gestão de Dados', 'header' => true],
                         ['label' => 'Administrar contas', 'icon' => 'user', 'url' => ['user/index'], 'options' => ['id' => 'admin']],

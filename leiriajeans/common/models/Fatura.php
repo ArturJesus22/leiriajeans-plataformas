@@ -49,8 +49,8 @@ class Fatura extends \yii\db\ActiveRecord
             [['userdata_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserForm::class, 'targetAttribute' => ['userdata_id' => 'id']],
             [['statuspedido'], 'in', 'range' => ['pendente', 'pago', 'anulada']],
             [['statusCompra'], 'string'],
-            [['statusCompra'], 'default', 'value' => 'Por Entregar'], // Valor padrão
-            [['statusCompra'], 'in', 'range' => ['Por Entregar', 'Entregue']], // Valores permitidos
+            [['statusCompra'], 'default', 'value' => 'Em Processamento'], // Valor padrão
+            [['statusCompra'], 'in', 'range' => ['Enviado', 'Entregue', 'Em Processamento']], // Valores permitidos
 
         ];
     }

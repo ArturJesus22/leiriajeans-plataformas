@@ -63,8 +63,19 @@ $total = $subtotal + $totalIva;
             <div class="mb-4">
                 <div class="progress" style="height: 25px;">
                     <?php
-                    $statusClass = $model->statusCompra === 'Entregue' ? 'bg-success' : 'bg-warning';
-                    $statusWidth = $model->statusCompra === 'Entregue' ? '100' : '50';
+                    switch ($model->statusCompra) {
+                        case 'Entregue':
+                            $statusClass = 'bg-success';
+                            $statusWidth = '100';
+                            break;
+                        case 'Em Processamento':
+                            $statusClass = 'bg-danger';
+                            $statusWidth = '30';
+                            break;
+                        default:
+                            $statusClass = 'bg-warning';
+                            $statusWidth = '50';
+                    }
                     ?>
                     <div class="progress-bar <?= $statusClass ?>"
                          role="progressbar"

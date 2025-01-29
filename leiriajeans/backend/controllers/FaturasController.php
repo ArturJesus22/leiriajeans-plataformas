@@ -36,7 +36,7 @@ class FaturasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'update', 'confirm-status'],
+                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -172,5 +172,18 @@ class FaturasController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionPendentes()
+    {
+        $searchModel = new FaturaSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        $dataProvider->query->andWhere(['statusCompra' => ['Em Processamento']]);
+
+        return $this->render('pendentes', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

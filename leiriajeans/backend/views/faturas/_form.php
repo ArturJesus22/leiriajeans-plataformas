@@ -17,8 +17,9 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'statusCompra')->dropDownList(
                 [
-                    'Por Entregar' => 'Por Entregar',
-                    'Entregue' => 'Entregue'
+                    'Enviado' => 'Enviado',
+                    'Entregue' => 'Entregue',
+                    'Em Processamento' => 'Em Processamento',
                 ],
             )->label('Estado da Entrega', ['class' => 'form-label fs-5 mb-2']) ?>
 

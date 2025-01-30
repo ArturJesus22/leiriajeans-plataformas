@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\AuthAssignment;
 use common\models\Cor;
+use common\models\Fatura;
 use common\models\LoginForm;
 use common\models\Produto;
 use Yii;
@@ -89,6 +90,20 @@ class SiteController extends Controller
         $produtos = Produto::find();
         $numProdutos= $produtos-> count();
 
+        $produtosEmFalta = Produto::find()
+            ->where(['stock' => 0])
+            ->count();
+
+        $encomendasPorEnviar = Fatura::find()
+            ->where(['statuspedido' => 'pago'])
+            ->andWhere(['statusCompra' => 'Em Processamento'])
+            ->count();
+
+        $encomendasPorReceber = Fatura::find()
+            ->where(['statuspedido' => 'pago'])
+            ->andWhere(['statusCompra' => 'Enviado'])
+            ->count();
+
         return $this->render('index', [
             //PASSAR PARA O INDEX ESTAS VARIAVEIS
             'numUsersWithClienteRole' => $numUsersWithClienteRole,
@@ -96,6 +111,9 @@ class SiteController extends Controller
             'numCores' => $numCores,
             'numProdutos' => $numProdutos,
             'numUsersWithAdminRole' => $numUsersWithAdminRole,
+            'produtosEmFalta' => $produtosEmFalta,
+            'encomendasPorEnviar' => $encomendasPorEnviar,
+            'encomendasPorReceber' => $encomendasPorReceber,
         ]);
     }
 

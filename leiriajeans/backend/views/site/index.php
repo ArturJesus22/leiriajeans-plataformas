@@ -64,7 +64,7 @@ $this->title = 'LeiriaJeans - BackOffice';
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => '0',
+            'title' => $produtosEmFalta,
             'text' => 'Produto em Falta',
             'icon' => 'fas fa-box-open',
             'linkText' => 'Consultar Stocks',
@@ -81,7 +81,7 @@ $this->title = 'LeiriaJeans - BackOffice';
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => '0',
+            'title' => $encomendasPorEnviar,
             'text' => 'Encomendas por enviar',
             'icon' => 'fas fa-boxes',
             'linkText' => 'Ver Encomendas',
@@ -90,7 +90,7 @@ $this->title = 'LeiriaJeans - BackOffice';
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => '0',
+            'title' => $encomendasPorReceber,
             'text' => 'Encomendas por entregar',
             'icon' => 'fas fa-shopping-cart',
             'linkText' => 'Ver Encomendas',

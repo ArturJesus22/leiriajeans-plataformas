@@ -18,8 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    'id',
+                    //['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'attribute' => 'Nº da Fatura',
+                        'value' => 'id'
+                    ],
                     [
                         'attribute' => 'data',
                         'format' => ['date', 'php:d/m/Y']

@@ -7,6 +7,7 @@ use backend\models\FaturaSearch;
 use common\models\Linhafatura;
 use common\models\MetodoExpedicao;
 use common\models\MetodoPagamento;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,7 +37,7 @@ class FaturasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes'],
+                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes', 'expedir'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -186,4 +187,25 @@ class FaturasController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionExpedir($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->statusCompra === 'Em Processamento') {
+            $model->statusCompra = 'Enviado';
+            $model->statuspedido = 'pago'; // Atualize também o statuspedido
+
+            if ($model->save(false)) { // Use false para ignorar validações se necessário
+                Yii::$app->session->setFlash('success', 'Fatura #' . $id . ' foi expedida com sucesso.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao expedir a fatura: ' . print_r($model->errors, true));
+            }
+        }
+
+
+
+        return $this->redirect(['pendentes']);
+    }
+
 }

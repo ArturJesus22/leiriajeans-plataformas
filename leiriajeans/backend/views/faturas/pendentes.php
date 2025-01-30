@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Faturas Pendentes';
+$this->title = 'Encomendas Pendentes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if ($model->statusCompra === 'Em Processamento') {
                                     return Html::a(
                                         'Expedir',
-                                        ['expedir', 'id' => $model->id],
+                                        ['enviar', 'id' => $model->id],
                                         [
                                             'class' => 'btn btn-sm btn-success ml-1',
                                             'data' => [

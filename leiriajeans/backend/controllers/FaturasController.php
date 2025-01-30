@@ -29,6 +29,7 @@ class FaturasController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'enviar' => ['POST'],
                     ],
                 ],
                 'access' => [
@@ -36,7 +37,7 @@ class FaturasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes'],
+                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes', 'enviar'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -44,6 +45,7 @@ class FaturasController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Fatura models.
@@ -126,10 +128,10 @@ class FaturasController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
-            // Carregue apenas o campo statusCompra
+            // carrega apenas o campo statusCompra
             $model->statusCompra = \Yii::$app->request->post('Fatura')['statusCompra'];
 
-            if ($model->save(false, ['statusCompra'])) { // Salva apenas o campo statusCompra
+            if ($model->save(false, ['statusCompra'])) { // guarda apenas o campo statusCompra
                 \Yii::$app->session->setFlash('success', 'Status atualizado com sucesso.');
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -186,4 +188,23 @@ class FaturasController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionEnviar($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->statusCompra === 'Em Processamento') {
+            $model->statusCompra = 'Enviado';
+            if ($model->save(false)) { // Adicionado false para ignorar validação
+                \Yii::$app->session->setFlash('success', 'Pedido marcado como enviado com sucesso.');
+            } else {
+                \Yii::$app->session->setFlash('error', 'Erro ao atualizar o estado do pedido.');
+            }
+        }
+
+        return $this->redirect(['view', 'id' => $id]);
+    }
+
+
+
 }

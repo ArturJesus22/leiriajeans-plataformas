@@ -17,6 +17,8 @@ foreach ($linhasFatura as $linha) {
 $total = $subtotal + $totalIva;
 ?>
 
+<link href="<?= Yii::getAlias('@web/css/style.css') ?>?v=<?= time() ?>" rel="stylesheet">
+
 <div class="fatura-view container py-5">
     <div class="card shadow-sm">
         <!-- Cabeçalho da Fatura -->
@@ -29,7 +31,7 @@ $total = $subtotal + $totalIva;
                     </p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <span class="badge bg-<?= $model->statuspedido === 'pago' ? 'success' : ($model->statuspedido === 'pendente' ? 'warning' : 'danger') ?> p-2">
+                    <span class="status-badge status-<?= strtolower($model->statuspedido) ?>">
                         <?= ucfirst($model->statuspedido) ?>
                     </span>
                 </div>

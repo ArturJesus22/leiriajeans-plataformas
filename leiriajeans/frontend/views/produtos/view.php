@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link href="<?= Yii::getAlias('@web/css/style.css') ?>" rel="stylesheet">
+<link href="<?= Yii::getAlias('@web/css/style.css') ?>?v=<?= time() ?>" rel="stylesheet">
+
 
 <div class="produtos-view">
     <div class="main">
@@ -97,8 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <p>Quantidade disponível: <?= Html::encode($model->stock) ?></p>
                             <hr>
                             <?php if ($model->stock > 0): ?>
-                                <button class="shop_btn">
-                                    <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn btn-primary">
+                                    <a href="<?= Yii::$app->urlManager->createUrl(['/carrinhos/add', 'produtos_id' => $model->id]) ?>" class="btn-add-cart">
                                         Adicionar ao carrinho
                                     </a>
                                 </>

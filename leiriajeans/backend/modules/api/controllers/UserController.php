@@ -12,7 +12,7 @@ use common\models\UserForm;
 
 class UserController extends ActiveController
 {
-    public $modelClass = 'common\models\User'; // Modelo padrão de usuário
+    public $modelClass = 'common\models\User'; // Modelo padrão de utilizador
     public $modelUserForm = 'common\models\UserForm'; // Modelo dos dados do utilizador
 
     public function behaviors()
@@ -27,13 +27,13 @@ class UserController extends ActiveController
     }
 
 
-    // Método verificar se a API está a funcionar
+    // Metodo verificar se a API está a funcionar
     public function actionPing()
     {
         return ['status' => 'Module API is working'];
     }
 
-    // Método para obter os dados do utilizador pelo username
+    // Metodo para obter os dados do utilizador pelo username
     public function actionDados($username)
     {
 
@@ -53,7 +53,7 @@ class UserController extends ActiveController
         //procura todos os dados do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
-        // Busca os dados adicionais do usuário (se existir)
+        // Busca os dados adicionais do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
 
@@ -65,8 +65,8 @@ class UserController extends ActiveController
 
 
 
-    // Método para buscar dados do utilizador pelo ID
-    public function actionGetUserById($id)
+    // Metodo para buscar dados do utilizador pelo ID
+    public function actionGetUserById($id) {
         
         //procura o utilizador pelo id
         $modelUser = new $this->modelClass;
@@ -128,7 +128,7 @@ class UserController extends ActiveController
         if (!$userForm) {
             return [
                 'success' => false,
-                'message' => 'Usuário não encontrado'
+                'message' => 'Utilizador não encontrado'
             ];
         }
 
@@ -140,7 +140,7 @@ class UserController extends ActiveController
         $userForm->nif = $nif;
         $userForm->telefone = $telefone;
 
-        // Tentar salvar
+        // Tentar guardar
         if ($userForm->save()) {
             return [
                 'success' => true,

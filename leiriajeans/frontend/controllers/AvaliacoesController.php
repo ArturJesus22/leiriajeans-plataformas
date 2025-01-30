@@ -85,7 +85,7 @@ class AvaliacoesController extends Controller
             // Busca a fatura
             $fatura = Fatura::findOne($linhaFatura->fatura_id);
 
-            // Verifica se a fatura existe, se pertence ao usuário e se o status é 'Entregue'
+            // Verifica se a fatura existe, se pertence ao utilizador e se o status é 'Entregue'
             if (!$fatura ||
                 $fatura->userdata_id !== Yii::$app->user->identity->userform->id ||
                 $fatura->statusCompra !== 'Entregue') {

@@ -155,23 +155,32 @@ $total = $subtotal + $totalIva;
 </div>
 
 <div class="text-center mt-4 mb-4">
-    <?= Html::a(
-        '<i class="fas fa-edit me-2"></i>Atualizar Estado',
-        ['update', 'id' => $model->id],
-        [
-            'class' => 'btn btn-primary btn-lg px-4 py-2 shadow-sm rounded-pill',
-            'style' => '
-                background: linear-gradient(45deg, #007bff, #0056b3);
-                border: none;
-                transition: all 0.3s ease;
-                font-weight: 500;
-                letter-spacing: 0.5px;
-            ',
-            'onmouseover' => 'this.style.transform="translateY(-2px)"',
-            'onmouseout' => 'this.style.transform="translateY(0)"'
-        ]
-    ) ?>
+    <?php if ($model->statusCompra === 'Em Processamento'): ?>
+        <?= Html::a(
+            '<i class="fas fa-paper-plane me-2"></i>Enviar',
+            ['faturas/enviar', 'id' => $model->id],
+            [
+                'class' => 'btn btn-success btn-lg px-4 py-2 shadow-sm rounded-pill',
+                'style' => '
+                    background: linear-gradient(45deg, #28a745, #218838);
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-weight: 500;
+                    letter-spacing: 0.5px;
+                ',
+                'data' => [
+                    'confirm' => 'Tem certeza que deseja marcar este pedido como enviado?',
+                    'method' => 'post',
+                ],
+                'onmouseover' => 'this.style.transform="translateY(-2px)"',
+                'onmouseout' => 'this.style.transform="translateY(0)"'
+            ]
+        ) ?>
+    <?php endif; ?>
 </div>
+
+
+
 <?php
 $this->registerCss("
     @media print {

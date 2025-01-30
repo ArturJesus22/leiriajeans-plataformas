@@ -1,15 +1,15 @@
 .imagens {
-    display: flex;  /* Usando flexbox para organizar os itens */
-    gap: 10px;      /* Espaçamento entre as imagens */
-    justify-content: center;    /* Centraliza horizontalmente */
+    display: flex;
+    gap: 10px;
+    justify-content: center;
     align-items: center;
 }
 
 .imagem {
     max-width: 100%;
-    width: 600px;        /* Aumenta a largura das imagens */
-    height: 600px;       /* Define a altura proporcional à largura */
-    object-fit: contain; /* Mostra a imagem inteira sem cortes e mantém a proporção */
+    width: 600px;
+    height: 600px;
+    object-fit: contain;
     cursor: pointer;
 
 
@@ -105,19 +105,19 @@
 
 
 .carousel-indicators button {
-    background-color: #555; /* Cor dos indicadores */
+    background-color: #555;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(1); /* Torna os ícones brancos */
+    filter: invert(1);
 }
 .carousel-item img {
-    max-width: 400px;    /* Define a largura máxima da imagem */
-    max-height: 300px;   /* Define a altura máxima da imagem */
-    object-fit: contain; /* Mantém a proporção da imagem sem cortar */
-    margin: 0 auto;      /* Centraliza a imagem no carrossel */
-    border-radius: 10px; /* Bordas arredondadas para um efeito visual agradável */
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 10px;
 }
 /* Estilo para o contêiner dos filtros */
 .filter-container {

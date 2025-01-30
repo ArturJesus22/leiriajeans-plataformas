@@ -194,8 +194,8 @@ body a{
 }
 .sb-search-submit {
 	background: #333 url('../images/img-sprite.png') no-repeat 0px 1px;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE 8 */
-	filter: alpha(opacity=0); /* IE 5-7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
 
 	color: transparent;
 	border: none;
@@ -208,7 +208,6 @@ body a{
 	background: #000 url('../images/img-sprite.png') no-repeat 0px 1px;
 	z-index: 90;
 }
-/* Open state */
 .sb-search.sb-search-open,.no-js .sb-search {
 	width:40%;
 }
@@ -220,7 +219,6 @@ body a{
 .sb-search.sb-search-open .sb-search-submit,.no-js .sb-search .sb-search-submit {
 	z-index: 90;
 }
-/* start icon styles */
 .icon1:before,.icon1:after {
 	content: "";
 	display: table;
@@ -245,7 +243,7 @@ ul.icon1 {
 .icon1 li:hover > a {
 	color: #fafafa;
 }
-*html .icon1 li a:hover { /* IE6 only */
+*html .icon1 li a:hover {
 	color: #fafafa;
 }
 .icon1 ul {
@@ -281,7 +279,6 @@ ul.icon1 {
 	margin: 0 0 0 20px;
 }
 .icon1 ul li {
-	/*--float: none;--*/
 	display: block;
 	border: 0;
 }
@@ -300,7 +297,7 @@ ul.icon1 {
 	box-shadow: none;
 }
 .icon1 ul a {
-	_height: 10px; /*IE6 only*/
+	_height: 10px;
 	white-space: nowrap;
 	float: none;
 	text-transform: none;
@@ -911,8 +908,7 @@ li.youtube a span {
 	z-index: 9999;
 	margin:0;
 }
-/* ===[ For demonstration ]=== */
-/* ===[ End demonstration ]=== */
+
 .dropdown .dropdown_button {
 	cursor: pointer;
 	width: auto;
@@ -1048,7 +1044,7 @@ li.youtube a span {
 	text-align: center;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	transition: transform 0.3s;
-	height: 100%; /* Garante que todas as caixas tenham a mesma altura */
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -1095,6 +1091,26 @@ ul.buttons{
 }
 .cart{
 	float:left;
+}
+
+.btn-add-cart {
+	display: inline-block;
+	background-color: #2ecc71;
+	color: #ffffff;
+	padding: 12px 25px;
+	text-decoration: none;
+	font-weight: 600;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+.btn-add-cart:hover {
+	background-color: #27ae60;
+	color: #ffffff;
+
 }
 .shop_btn{
 	float:right;
@@ -2052,33 +2068,33 @@ fieldset.input input[type="submit"]:hover {
 }
 /* Estilo para as imagens dos produtos */
 .product-image {
-	width: 100%;           /* Garante que a imagem ocupa toda a largura do contêiner */
-	height: 200px;         /* Define uma altura fixa para todas as imagens */
-	object-fit: cover;     /* Mantém a proporção da imagem e cobre o espaço definido */
-	border-radius: 8px;    /* Bordas arredondadas */
-	margin-bottom: 10px;   /* Espaço abaixo da imagem */
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 8px;
+	margin-bottom: 10px;
 }
 .etalage_thumb_image {
 	width: 300px;
 	height: 300px;
-	object-fit: contain; /* Ou 'cover' se preferir preencher totalmente o espaço */
-	border: 1px solid #ccc; /* Opcional: Adiciona uma borda para melhor visualização */
+	object-fit: contain;
+	border: 1px solid #ccc;
 }
 
 .carousel-indicators button {
-	background-color: #555; /* Cor dos indicadores */
+	background-color: #555;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-	filter: invert(1); /* Torna os ícones brancos */
+	filter: invert(1);
 }
 .carousel-item img {
-	max-width: 400px;    /* Define a largura máxima da imagem */
-	max-height: 300px;   /* Define a altura máxima da imagem */
-	object-fit: contain; /* Mantém a proporção da imagem sem cortar */
-	margin: 0 auto;      /* Centraliza a imagem no carrossel */
-	border-radius: 10px; /* Bordas arredondadas para um efeito visual agradável */
+	max-width: 400px;
+	max-height: 300px;
+	object-fit: contain;
+	margin: 0 auto;
+	border-radius: 10px;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 }
@@ -2117,3 +2133,116 @@ fieldset.input input[type="submit"]:hover {
 		transform: scale(1);
 	}
 }
+.order-card {
+	transition: transform 0.2s;
+	border: none;
+	border-radius: 15px;
+}
+.order-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+}
+.order-header {
+	background: linear-gradient(45deg, #2c3e50, #3498db);
+	border-radius: 15px 15px 0 0;
+	padding: 20px;
+}
+.order-id {
+	font-size: 1.2em;
+	font-weight: 600;
+	margin: 0;
+}
+.order-date {
+	opacity: 0.8;
+	font-size: 0.9em;
+}
+.status-badge {
+	padding: 8px 15px;
+	border-radius: 20px;
+	font-size: 0.85em;
+	font-weight: 500;
+}
+
+.status-pendente {
+	background-color: #ffd700;
+	color: #000;
+}
+
+.status-pago {
+	background-color: #28a745;
+	color: white;
+	padding: 8px 12px;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+
+.status-anulada { background-color: #dc3545; color: #fff; }
+.status-entregue { background-color: #17a2b8; color: #fff; }
+
+.order-table {
+	margin-top: 1rem;
+}
+.order-table th {
+	background-color: #f8f9fa;
+	border-top: none;
+}
+.order-info {
+	background-color: #f8f9fa;
+	border-radius: 10px;
+	padding: 15px;
+	margin-top: 20px;
+}
+.order-info-item {
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+}
+.order-info-label {
+	font-weight: 600;
+	margin-right: 10px;
+	color: #6c757d;
+}
+.action-buttons {
+	padding: 20px;
+	background-color: #f8f9fa;
+	border-radius: 0 0 15px 15px;
+}
+.btn-view {
+	background-color: #3498db;
+	border-color: #3498db;
+	padding: 8px 20px;
+	margin-right: 10px;
+	color: white;
+}
+
+.btn-view:hover,
+.btn-view:focus,
+.btn-view:active {
+	background-color: #1a6ea1 !important;
+	border-color: #1a6ea1 !important;
+	color: white;
+	outline: none;
+}
+
+.btn-confirm {
+	background-color: #2ecc71;
+	border-color: #2ecc71;
+	padding: 8px 20px;
+	color: white;
+}
+
+.btn-confirm:hover,
+.btn-confirm:focus,
+.btn-confirm:active {
+	background-color: #27ae60 !important;
+	border-color: #27ae60 !important;
+	color: white;
+	outline: none;
+}
+
+
+
+
+
+

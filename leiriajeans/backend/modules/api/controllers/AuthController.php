@@ -79,29 +79,31 @@ class AuthController extends ActiveController
             $userFormModel = new $this->modelUserForm;
             $userFormModel->user_id = $userModel->id; //associar o perfil ao utilizador
 
-        // guardar o utilizador
-        if ($userModel->save()) {
-            // Após guardar o utilizador, criar o perfil associado
-            $userFormModel = new $this->modelUserForm;
-            $userFormModel->user_id = $userModel->id; // associar o perfil ao utilizador
-            $userFormModel->nome = $nome;
-            $userFormModel->codpostal = $codpostal;
-            $userFormModel->localidade = $localidade;
-            $userFormModel->rua = $rua;
-            $userFormModel->nif = $nif;
-            $userFormModel->telefone = $telefone;
+            // guardar o utilizador
+            if ($userModel->save()) {
+                // Após guardar o utilizador, criar o perfil associado
+                $userFormModel = new $this->modelUserForm;
+                $userFormModel->user_id = $userModel->id; // associar o perfil ao utilizador
+                $userFormModel->nome = $nome;
+                $userFormModel->codpostal = $codpostal;
+                $userFormModel->localidade = $localidade;
+                $userFormModel->rua = $rua;
+                $userFormModel->nif = $nif;
+                $userFormModel->telefone = $telefone;
 
-            if ($userFormModel->validate()) {
-                if ($userFormModel->save()) {
-                    return ['message' => 'Utilizador e perfil criados com sucesso'];
+                if ($userFormModel->validate()) {
+                    if ($userFormModel->save()) {
+                        return ['message' => 'Utilizador e perfil criados com sucesso'];
+                    } else {
+                        return ['message' => 'Erro ao guardar o perfil do utilizador', 'errors' => $userFormModel->errors];
+                    }
                 } else {
-                    return ['message' => 'Erro ao salvar o perfil do utilizador', 'errors' => $userFormModel->errors];
+                    return ['message' => 'Erro na validação do perfil do utilizador', 'errors' => $userFormModel->errors];
                 }
             } else {
-                return ['message' => 'Erro na validação do perfil do utilizador', 'errors' => $userFormModel->errors];
+                return ['message' => 'Erro ao criar o utilizador', 'errors' => $userModel->errors];
             }
-        } else {
-            return ['message' => 'Erro ao criar o utilizador', 'errors' => $userModel->errors];
         }
     }
 }
+

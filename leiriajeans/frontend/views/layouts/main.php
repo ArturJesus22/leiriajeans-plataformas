@@ -83,9 +83,9 @@ AppAsset::register($this);
                                     <li>  |    </li>
 
                                     <li><a href="<?= Yii::$app->urlManager->createUrl(['produtos/index']) ?>">Produtos</a></li>
-
+                                    <?php if (!Yii::$app->user->isGuest) {?>
                                     <li><a href="<?= Yii::$app->urlManager->createUrl(['faturas/index']) ?>">Faturas</a></li>
-
+                                    <?php } ?>
                                     <li><a href="<?= Yii::$app->urlManager->createUrl(['empresa/index']) ?>">Sobre Nós</a></li>
 
 

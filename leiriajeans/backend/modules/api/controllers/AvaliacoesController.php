@@ -79,7 +79,6 @@ class AvaliacoesController extends ActiveController
 
     }
 
-    //function to delete a avaliacao
     public function actionDeleteavaliacao($id)
     {
         $avaliacoesModel = new $this->modelClass;

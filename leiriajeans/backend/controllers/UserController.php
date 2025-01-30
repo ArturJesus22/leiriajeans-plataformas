@@ -30,7 +30,6 @@ class UserController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
-                        'Colaboradores' => 'GET',
                     ],
                 ],
                 'access' => [
@@ -177,11 +176,11 @@ class UserController extends Controller
                         return $this->redirect(['view', 'id' => $model->id]);
                     } else {
                         // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
-                        Yii::$app->session->setFlash('error', 'Erro ao guardar os dados adicionais do usuário.');
+                        Yii::$app->session->setFlash('error', 'Erro ao guardar os dados adicionais do utilizador.');
                     }
                 } else {
                     // Se o modelo UserForm não for guardado, adiciona a mensagem de erro
-                    Yii::$app->session->setFlash('error', 'Erro ao guardar o usuário.');
+                    Yii::$app->session->setFlash('error', 'Erro ao guardar o utilizador.');
                 }
             }
         }

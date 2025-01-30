@@ -7,7 +7,6 @@ use backend\models\FaturaSearch;
 use common\models\Linhafatura;
 use common\models\MetodoExpedicao;
 use common\models\MetodoPagamento;
-use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +29,7 @@ class FaturasController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'enviar' => ['POST'],
                     ],
                 ],
                 'access' => [
@@ -37,7 +37,7 @@ class FaturasController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes', 'expedir'],
+                            'actions' => ['index', 'view', 'update', 'confirm-status', 'pendentes', 'enviar'],
                             'roles' => ['admin', 'funcionario'],
                         ],
                     ],
@@ -45,6 +45,7 @@ class FaturasController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Fatura models.
@@ -127,10 +128,10 @@ class FaturasController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
-            // Carregue apenas o campo statusCompra
+            // carrega apenas o campo statusCompra
             $model->statusCompra = \Yii::$app->request->post('Fatura')['statusCompra'];
 
-            if ($model->save(false, ['statusCompra'])) { // Salva apenas o campo statusCompra
+            if ($model->save(false, ['statusCompra'])) { // guarda apenas o campo statusCompra
                 \Yii::$app->session->setFlash('success', 'Status atualizado com sucesso.');
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -188,24 +189,22 @@ class FaturasController extends Controller
         ]);
     }
 
-    public function actionExpedir($id)
+    public function actionEnviar($id)
     {
         $model = $this->findModel($id);
 
         if ($model->statusCompra === 'Em Processamento') {
             $model->statusCompra = 'Enviado';
-            $model->statuspedido = 'pago'; // Atualize também o statuspedido
-
-            if ($model->save(false)) { // Use false para ignorar validações se necessário
-                Yii::$app->session->setFlash('success', 'Fatura #' . $id . ' foi expedida com sucesso.');
+            if ($model->save(false)) { // Adicionado false para ignorar validação
+                \Yii::$app->session->setFlash('success', 'Pedido marcado como enviado com sucesso.');
             } else {
-                Yii::$app->session->setFlash('error', 'Erro ao expedir a fatura: ' . print_r($model->errors, true));
+                \Yii::$app->session->setFlash('error', 'Erro ao atualizar o estado do pedido.');
             }
         }
 
-
-
-        return $this->redirect(['pendentes']);
+        return $this->redirect(['view', 'id' => $id]);
     }
+
+
 
 }

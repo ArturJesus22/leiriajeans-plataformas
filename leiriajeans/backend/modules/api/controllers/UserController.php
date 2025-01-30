@@ -12,10 +12,9 @@ use common\models\UserForm;
 
 class UserController extends ActiveController
 {
-    public $modelClass = 'common\models\User'; // Modelo padrão de usuário
+    public $modelClass = 'common\models\User'; // Modelo padrão de utilizador
     public $modelUserForm = 'common\models\UserForm'; // Modelo dos dados do utilizador
 
-    // Comportamentos do controlador (ex: autenticação)
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -27,29 +26,37 @@ class UserController extends ActiveController
         return $behaviors;
     }
 
-    // Método de ping para verificar se a API está funcionando
+
+    // Metodo verificar se a API está a funcionar
     public function actionPing()
     {
         return ['status' => 'Module API is working'];
     }
 
-    // Método para buscar dados do utilizador pelo username
+    // Metodo para obter os dados do utilizador pelo username
     public function actionDados($username)
     {
-        // Busca o usuário pelo username
+
+        //procura pelo username
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['username' => $username])->one();
 
-        // Verifica se o usuário existe
+        //verifica se o utilizador existe
+        $modelUser = new $this->modelClass;
+        $user = $modelUser::find()->where(['username' => $username])->one();
+
         if ($user === null) {
             throw new NotFoundHttpException("O Utilizador {$username} não foi encontrado");
         }
 
-        // Busca os dados adicionais do usuário (se existir)
+
+        //procura todos os dados do utilizador (se existir)
+        $usersFormModel = new $this->modelUserForm;
+        $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
+        // Busca os dados adicionais do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
 
-        // Retorna tanto o usuário quanto o formulário do usuário
         return [
             'user' => $user,
             'userForm' => $userForm,
@@ -58,30 +65,34 @@ class UserController extends ActiveController
 
 
 
-    // Método para buscar dados do utilizador pelo ID
-    public function actionGetUserById($id)
-    {
-        // Busca o usuário pelo ID
+    // Metodo para buscar dados do utilizador pelo ID
+    public function actionGetUserById($id) {
+        
+        //procura o utilizador pelo id
         $modelUser = new $this->modelClass;
         $user = $modelUser::find()->where(['id' => $id])->one();
 
-        // Verifica se o usuário existe
+        //verifica se o utilizador existe
+        $modelUser = new $this->modelClass;
+        $user = $modelUser::find()->where(['id' => $id])->one();
+
         if ($user === null) {
             throw new NotFoundHttpException("O Utilizador com ID {$id} não foi encontrado");
         }
 
-        // Busca os dados adicionais do usuário (se existir)
+        //procura todos os dados do utilizador (se existir)
         $usersFormModel = new $this->modelUserForm;
         $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
 
-        // Retorna apenas os dados do formulário do utilizador
+        $usersFormModel = new $this->modelUserForm;
+        $userForm = $usersFormModel::find()->where(['user_id' => $user->id])->one();
+
         return [
             'user' => $user,
             'userForm' => $userForm,
         ];
     }
 
-    // Método de ação de índice (caso você precise de uma página inicial)
     public function actionIndex()
     {
         return $this->render('index');
@@ -117,7 +128,7 @@ class UserController extends ActiveController
         if (!$userForm) {
             return [
                 'success' => false,
-                'message' => 'Usuário não encontrado'
+                'message' => 'Utilizador não encontrado'
             ];
         }
 
@@ -129,7 +140,7 @@ class UserController extends ActiveController
         $userForm->nif = $nif;
         $userForm->telefone = $telefone;
 
-        // Tentar salvar
+        // Tentar guardar
         if ($userForm->save()) {
             return [
                 'success' => true,

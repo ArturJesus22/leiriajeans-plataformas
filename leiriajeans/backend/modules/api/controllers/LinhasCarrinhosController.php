@@ -179,6 +179,23 @@ class LinhasCarrinhosController extends ActiveController
         $linhasCarrinho = $linhasCarrinhoModel::find()->where(['id' => $id])->one();
 
         if ($linhasCarrinho == null) {
+            throw new \yii\web\NotFoundHttpException("Não existe o produto no carrinho com o id " . $id);
+        }
+
+        $carrinhoId = $linhasCarrinho->carrinho_id; // Armazena o carrinho_id antes de deletar
+        $linhasCarrinho->delete();
+
+        // Atualiza o valor total do carrinho
+        $this->updateValorTotal($carrinhoId);
+
+        // Retorna mensagem de sucesso
+        return [
+            'message' => 'Produto eliminado com sucesso do carrinho.',
+            'id' => $id,
+        ];
+    }
+
+=======
             return [
                 'success' => false,
                 'message' => "Não existe o produto no carrinho com o id $id."
@@ -197,6 +214,7 @@ class LinhasCarrinhosController extends ActiveController
             'id' => $id,
         ];
     }
+
 
 
 }

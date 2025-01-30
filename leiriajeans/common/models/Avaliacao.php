@@ -78,7 +78,7 @@ class Avaliacao extends \yii\db\ActiveRecord
         return $this->hasOne(UserForm::class, ['id' => 'userdata_id']);
     }
 
-// Relacionamento para User (final)
+    // Relacionamento para User (final)
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id'])
@@ -102,28 +102,6 @@ class Avaliacao extends \yii\db\ActiveRecord
         }
     }
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        // Get the user data
-        $utilizador = $this->userdata;
-        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
-
-        // Get the product related to the review
-        $produto = $this->linhafatura ? $this->linhafatura->produto->nome : 'Desconhecido';  // Assuming LinhaFatura has a 'produto_nome' field
-
-        // Message to be sent
-        $mensagem = "O utilizador {$nomeUtilizador} deixou uma avaliacao no produto {$produto}.";
-
-        // Define the MQTT channel
-        $canal = $insert ? "INSERT_AVALIACOES" : "UPDATE_AVALIACOES";
-
-        // Publish the message to Mosquitto
-        $this->FazPublishNoMosquitto($canal, $mensagem);
-    }
-
-    // Method to publish to Mosquitto
     public function FazPublishNoMosquitto($canal, $msg)
     {
         $server = "localhost";
@@ -138,5 +116,21 @@ class Avaliacao extends \yii\db\ActiveRecord
         } else {
             file_put_contents("debug_output.log", "Time out!");
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $utilizador = $this->userdata;
+        $nomeUtilizador = $utilizador ? $utilizador->nome : 'Desconhecido';
+
+        $produto = $this->linhafatura ? $this->linhafatura->produto->nome : 'Desconhecido';  // Assuming LinhaFatura has a 'produto_nome' field
+
+        $mensagem = "O utilizador {$nomeUtilizador} deixou uma avaliacao no produto {$produto}.";
+
+        $canal = $insert ? "INSERT_AVALIACOES" : "UPDATE_AVALIACOES";
+
+        $this->FazPublishNoMosquitto($canal, $mensagem);
     }
 }

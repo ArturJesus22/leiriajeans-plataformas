@@ -4,83 +4,9 @@ use yii\grid\GridView;
 
 $this->title = 'Os meus Pedidos';
 $this->params['breadcrumbs'][] = $this->title;
-
-// Adicione estes estilos CSS no início do arquivo ou em um arquivo CSS separado
-$this->registerCss("
-    .order-card {
-        transition: transform 0.2s;
-        border: none;
-        border-radius: 15px;
-    }
-    .order-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
-    }
-    .order-header {
-        background: linear-gradient(45deg, #2c3e50, #3498db);
-        border-radius: 15px 15px 0 0;
-        padding: 20px;
-    }
-    .order-id {
-        font-size: 1.2em;
-        font-weight: 600;
-        margin: 0;
-    }
-    .order-date {
-        opacity: 0.8;
-        font-size: 0.9em;
-    }
-    .status-badge {
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-size: 0.85em;
-        font-weight: 500;
-    }
-    .status-pendente { background-color: #ffd700; color: #000; }
-    .status-pago { background-color: #28a745; color: #fff; }
-    .status-anulada { background-color: #dc3545; color: #fff; }
-    .status-entregue { background-color: #17a2b8; color: #fff; }
-    .order-table {
-        margin-top: 1rem;
-    }
-    .order-table th {
-        background-color: #f8f9fa;
-        border-top: none;
-    }
-    .order-info {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 15px;
-        margin-top: 20px;
-    }
-    .order-info-item {
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-    }
-    .order-info-label {
-        font-weight: 600;
-        margin-right: 10px;
-        color: #6c757d;
-    }
-    .action-buttons {
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 0 0 15px 15px;
-    }
-    .btn-view {
-        background-color: #3498db;
-        border-color: #3498db;
-        padding: 8px 20px;
-        margin-right: 10px;
-    }
-    .btn-confirm {
-        background-color: #2ecc71;
-        border-color: #2ecc71;
-        padding: 8px 20px;
-    }
-");
 ?>
+
+<link href="<?= Yii::getAlias('@web/css/style.css') ?>?v=<?= time() ?>" rel="stylesheet">
 
 <div class="faturas-index container py-5">
     <h1 class="display-4 mb-5 text-center"><?= Html::encode($this->title) ?></h1>
@@ -167,7 +93,7 @@ $this->registerCss("
                                 ['class' => 'btn btn-view text-white']
                             ) ?>
 
-                            <?php if ($fatura->statusCompra !== 'Entregue'): ?>
+                            <?php if ($fatura->statusCompra === 'Enviado'): ?>
                                 <?= Html::a(
                                     '<i class="fas fa-check mr-2"></i>Confirmar Entrega',
                                     ['confirm-status', 'id' => $fatura->id],
@@ -180,6 +106,7 @@ $this->registerCss("
                                     ]
                                 ) ?>
                             <?php endif; ?>
+
                         </div>
                     </div>
                 </div>

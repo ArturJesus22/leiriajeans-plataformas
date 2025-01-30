@@ -203,7 +203,7 @@ class CarrinhosController extends Controller
             return $this->redirect(['index']);
         }
 
-        //procura o carrinho de compras associado ao usuário "logado"
+        //procura o carrinho de compras associado ao utilizador "logado"
         $carrinho = Carrinho::findOne(['userdata_id' => $userForm->id]);
 
         //remove o Produto(linhacarrinho) do Carrinho

@@ -67,7 +67,8 @@ return [
                         'GET {username}/dados' => 'dados',
                         'GET {id}' => 'getuserbyid',
                         'POST signup' => 'Signup',
-                        'POST update-dados' => 'update-dados', // Adicione esta linha
+                        'POST update-dados' => 'update-dados',
+
                     ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',

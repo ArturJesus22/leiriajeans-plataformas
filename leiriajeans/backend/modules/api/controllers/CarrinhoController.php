@@ -38,7 +38,6 @@ class CarrinhoController extends ActiveController
         return $this->render('index');
     }
 
-
     public function actionCriar()
     {
         \Yii::$app->response->format = Response::FORMAT_JSON; // Define o formato da resposta como JSON
@@ -54,37 +53,38 @@ class CarrinhoController extends ActiveController
     }
 
     //function to get a carrinho through the user id
+
     public function actionCarrinho($user_id)
     {
         $carrinhoModel = new $this->modelClass;
         $linhasCarrinhoModel = new $this->linhaCarrinhoModelClass;
         $produtoModel = new $this->produtoModelClass;
 
-        // Encontra o carrinho do usuário
+        //vai buscar o carrinho do utilizador
         $carrinho = $carrinhoModel::find()->where(['userdata_id' => $user_id])->one();
 
         if ($carrinho == null) {
             throw new \yii\web\NotFoundHttpException("Não existe um carrinho do user " . $user_id);
         }
 
-        // Encontra as linhas do carrinho
+        //vai buscar as linhas do carrinho
         $linhasCarrinho = $linhasCarrinhoModel::find()->where(['carrinho_id' => $carrinho->id])->all();
 
-        // Para cada linha do carrinho, encontra o produto relacionado
+        //para cada linha do carrinho, procura o produto relacionado
         foreach ($linhasCarrinho as $linhaCarrinho) {
             $produto = $produtoModel::find()->where(['id' => $linhaCarrinho->produto_id])->one();
             $linhaCarrinho->produto_id = $produto;
         }
 
-        return $carrinho;  // Retorna o carrinho com as linhas e produtos
+        return $carrinho;
     }
 
 
     public function actionUpdatecarrinho()
     {
         $carrinhoModel = new $this->modelClass;
-        $userModel = new $this->userModelClass;
         $user_id = Yii::$app->request->post('userdata_id');
+        $userModel = new $this->userModelClass;
         $user = $userModel::find()->where(['id' => $user_id])->one();
         if ($user == null) {
             throw new \yii\web\NotFoundHttpException("Não existe o utilizador com o id " . $user_id);

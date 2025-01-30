@@ -73,8 +73,8 @@ $this->title = 'LeiriaJeans - BackOffice';
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <?= \hail812\adminlte\widgets\SmallBox::widget([
-            'title' => '0',
-            'text' => 'Total de Marcas',
+            'title' => $encomendasConfirmadas,
+            'text' => 'Encomendas Entregues',
             'icon' => 'fas fa-registered',
             'linkText' => 'Ver Marcas',
         ]) ?>
@@ -97,5 +97,6 @@ $this->title = 'LeiriaJeans - BackOffice';
             'linkUrl' => Url::toRoute(["/faturas/index"]),
         ]) ?>
     </div>
+
 
 </div>

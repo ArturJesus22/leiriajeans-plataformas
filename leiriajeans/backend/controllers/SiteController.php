@@ -104,6 +104,11 @@ class SiteController extends Controller
             ->andWhere(['statusCompra' => 'Enviado'])
             ->count();
 
+        $encomendasConfirmadas = Fatura::find()
+            ->where(['statuspedido' => 'pago'])
+            ->andWhere(['statusCompra' => 'Entregue'])
+            ->count();
+
         return $this->render('index', [
             //PASSAR PARA O INDEX ESTAS VARIAVEIS
             'numUsersWithClienteRole' => $numUsersWithClienteRole,
@@ -114,6 +119,7 @@ class SiteController extends Controller
             'produtosEmFalta' => $produtosEmFalta,
             'encomendasPorEnviar' => $encomendasPorEnviar,
             'encomendasPorReceber' => $encomendasPorReceber,
+            'encomendasConfirmadas' => $encomendasConfirmadas,
         ]);
     }
 
